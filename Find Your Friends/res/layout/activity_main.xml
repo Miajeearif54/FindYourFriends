@@ -26,5 +26,10 @@
         android:textSize="20sp" />
     </LinearLayout>
 
+     <ImageView
+         android:id="@+id/btMap"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:src="@drawable/common_signin_btn_icon_dark" />
 
 </LinearLayout>
