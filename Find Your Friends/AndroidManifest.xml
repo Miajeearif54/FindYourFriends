@@ -54,7 +54,14 @@
         Werton -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBIoVxcSVhVUb6D5ePixBPiZU0eeFkjItM" />
+            android:value="AIzaSyBIoVxcSVhVUb6D5ePixBPiZU0eeFkjItM"/>
+        <!-- 
+        Renan -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyApmdKNo-yvpF1v5sX3TkKGr3-nVo7ocxE"/>
+        
+        
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
