@@ -22,6 +22,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    
     <!-- Necessário para utilizar o google Maps (OpenGL ES v2) -->
     <uses-feature
         android:glEsVersion="0x00020000"
