@@ -12,6 +12,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -85,6 +86,9 @@ public class Map extends Activity implements LocationListener {
 		double lat =  location.getLatitude();
         double lng = location.getLongitude();
         LatLng coordinate = new LatLng(lat, lng);
+        
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 17));
+
         
         startPerc = googleMap.addMarker(new MarkerOptions()
         .position(coordinate)
