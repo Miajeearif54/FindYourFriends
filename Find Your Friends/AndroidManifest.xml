@@ -64,10 +64,10 @@
         
         
         <!-- 
-        Renan 
+        Renan (embedded) -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyApmdKNo-yvpF1v5sX3TkKGr3-nVo7ocxE"/> -->
+            android:value="AIzaSyBruwhOHlNXf5HVYiVbBh31CeNejxhrffY"/>
         
         
         <meta-data
