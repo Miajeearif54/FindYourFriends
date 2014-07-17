@@ -72,6 +72,8 @@ public class Map extends Activity implements LocationListener {
 				googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 			}
 			googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+			googleMap.setMyLocationEnabled(true);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -87,7 +89,7 @@ public class Map extends Activity implements LocationListener {
         double lng = location.getLongitude();
         LatLng coordinate = new LatLng(lat, lng);
         
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 17));
+        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(coordinate));
 
         
         startPerc = googleMap.addMarker(new MarkerOptions()
