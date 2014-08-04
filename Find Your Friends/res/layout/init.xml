@@ -8,11 +8,11 @@
     
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
-        android:src="@drawable/logo" />
+        android:layout_gravity="top|center"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/id" />
 
     <TextView
        android:id="@+id/tap"
