@@ -9,10 +9,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -34,6 +34,8 @@ public class Map extends Activity implements LocationListener {
 	private LocationManager locationManager;
     private String provider;
     private Marker startPerc;
+    
+    private ImageButton editar, grupos, meusGrupos;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,33 @@ public class Map extends Activity implements LocationListener {
         if (location != null) {
             onLocationChanged(location);
         }
+        
+        grupos = (ImageButton) findViewById(R.id.grupos);        
+        grupos.setOnClickListener(new View.OnClickListener() {	
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(mContext, ViewGroupActivity.class);
+				startActivity(i);
+			}
+		});
+              
+        meusGrupos = (ImageButton) findViewById(R.id.meusGrupos);        
+        meusGrupos.setOnClickListener(new View.OnClickListener() {	
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(mContext, MeusGruposActivity.class);
+				startActivity(i);
+			}
+		});
+        
+        editar = (ImageButton) findViewById(R.id.editar);
+        editar.setOnClickListener(new View.OnClickListener() {	
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(mContext, EditarActivity.class);
+				startActivity(i);
+			}
+		});
         
 	}
 
