@@ -4,15 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin" >
+    android:orientation="vertical" >
 
     <!-- 
     	colocar isso como titulo da tela inteira -->
-	    
+	<!--     
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
@@ -41,6 +37,37 @@
         android:layout_width="100dp"
         android:layout_height="match_parent"
         android:src="@drawable/editnormal" />
+    </LinearLayout>
+    -->
+   <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal"
+        android:gravity="center" 
+        android:background="@color/bg_gray">
+        
+        <ImageButton
+            android:id="@+id/grupos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/selector_grupos"/>
+        
+        <ImageButton
+            android:id="@+id/meusGrupos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/selector_meus_grupos"/>
+        
+        <ImageButton
+            android:id="@+id/editar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/selector_edit"/>
+        
+        
     </LinearLayout>
     
     <!-- 
