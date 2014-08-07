@@ -9,6 +9,12 @@
     <string name="btn_logout_from_google">Sair do Google</string>
     <string name="btn_revoke_access">Revogar acesso</string>
     
+    <string name="criarGrupo">Criar grupo</string>
+    <string name="editar">Editar</string>
+    <string name="meusGrupo">Meus grupos</string>
+    <string name="todosOsGrupos">Todos os grupos</string>
+    
+    
     
     
 

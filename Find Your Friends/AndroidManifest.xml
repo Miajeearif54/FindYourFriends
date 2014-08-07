@@ -50,6 +50,26 @@
             android:label="@string/app_name">
         </activity>
         
+        <activity
+            android:name="com.findyourfriends.activitys.ViewGroupActivity"
+            android:label="@string/todosOsGrupos">
+        </activity>
+        
+        <activity
+            android:name="com.findyourfriends.activitys.EditarActivity"
+            android:label="@string/editar">
+        </activity>
+        
+        <activity
+            android:name="com.findyourfriends.activitys.MeusGruposActivity"
+            android:label="@string/meusGrupo">
+        </activity>
+        
+        <activity
+            android:name="com.findyourfriends.activitys.CriarGrupoActivity"
+            android:label="@string/criarGrupo">
+        </activity>
+        
         <!--
         Werton (embedded)
         <meta-data

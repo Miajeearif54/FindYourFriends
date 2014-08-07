@@ -10,6 +10,11 @@
     <string name="btn_revoke_access">Revoke Access</string>
     
     
+    <string name="criarGrupo">Create group </string>
+    <string name="editar">Edit</string>
+    <string name="meusGrupo">My groups </string>
+    <string name="todosOsGrupos">All groups</string>
+    
     
 
 </resources>
