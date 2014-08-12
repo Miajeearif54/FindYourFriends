@@ -3,39 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    android:orientation="vertical" >
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:background="@color/bg_gray" 
-        android:layout_marginBottom="10dp">
-        
-        <ImageButton
-            android:id="@+id/grupos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/selector_grupos"/>
-        
-        <ImageButton
-            android:id="@+id/meusGrupos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/selector_meus_grupos"/>
-        
-        <ImageButton
-            android:id="@+id/editar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/selector_edit"/> 
-        
-    </LinearLayout>
+    android:background="@drawable/bg3"
+    android:orientation="vertical" >    
     
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,7 +21,7 @@
             android:id="@+id/edNomeGrupo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:ems="11"
             android:inputType="text"
             android:textColor="@color/white"
             android:layout_marginBottom="20dp" >
@@ -70,11 +39,10 @@
             android:id="@+id/edSenha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:ems="11"
             android:inputType="textPassword"
             android:textColor="@color/white"
-            android:layout_marginBottom="20dp" >
-
+            android:layout_marginBottom="20dp">
             <requestFocus />
         </EditText>
                

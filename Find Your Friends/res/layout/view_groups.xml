@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/bg3"
     android:orientation="vertical" >
 
     <!-- 
@@ -44,28 +44,28 @@
         android:layout_height="wrap_content" 
         android:orientation="horizontal"
         android:gravity="center" 
-        android:background="@color/bg_gray">
+        android:background="@color/transparent_white">
         
         <ImageButton
             android:id="@+id/grupos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/selector_grupos"/>
+            android:src="@drawable/todos_grupos_vermelho"/>
         
         <ImageButton
             android:id="@+id/meusGrupos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/selector_meus_grupos"/>
+            android:src="@drawable/meus_grupos2"/>
         
         <ImageButton
             android:id="@+id/editar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/selector_edit"/>
+            android:src="@drawable/editar2"/>
         
         
     </LinearLayout>
