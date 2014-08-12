@@ -18,15 +18,6 @@ public class ViewGroupActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.view_groups);
 		mContext = getApplicationContext();
-		
-		grupos = (ImageButton) findViewById(R.id.grupos);        
-        grupos.setOnClickListener(new View.OnClickListener() {	
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(mContext, ViewGroupActivity.class);
-				startActivity(i);
-			}
-		});
               
         meusGrupos = (ImageButton) findViewById(R.id.meusGrupos);        
         meusGrupos.setOnClickListener(new View.OnClickListener() {	

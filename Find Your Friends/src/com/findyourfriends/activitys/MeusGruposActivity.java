@@ -27,15 +27,6 @@ public class MeusGruposActivity extends Activity{
 				startActivity(i);
 			}
 		});
-              
-        meusGrupos = (ImageButton) findViewById(R.id.meusGrupos);        
-        meusGrupos.setOnClickListener(new View.OnClickListener() {	
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(mContext, MeusGruposActivity.class);
-				startActivity(i);
-			}
-		});
         
         editar = (ImageButton) findViewById(R.id.editar);
         editar.setOnClickListener(new View.OnClickListener() {	

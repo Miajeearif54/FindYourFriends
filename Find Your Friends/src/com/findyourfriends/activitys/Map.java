@@ -121,9 +121,9 @@ public class Map extends Activity implements LocationListener {
         //googleMap.moveCamera(CameraUpdateFactory.newLatLng(coordinate));
 
         
-        startPerc = googleMap.addMarker(new MarkerOptions()
+       /* startPerc = googleMap.addMarker(new MarkerOptions()
         .position(coordinate)
-        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher)));
+        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher)));*/
 	}
 
 	@Override

@@ -48,15 +48,6 @@ public class EditarActivity extends Activity{
 				startActivity(i);
 			}
 		});
-        
-        editar = (ImageButton) findViewById(R.id.editar);
-        editar.setOnClickListener(new View.OnClickListener() {	
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(mContext, EditarActivity.class);
-				startActivity(i);
-			}
-		});
 		
 	}
 }
