@@ -18,3 +18,4 @@ public class CriarGrupoActivity extends Activity{
 		setContentView(R.layout.criar_grupo);
 	}
 }
+
