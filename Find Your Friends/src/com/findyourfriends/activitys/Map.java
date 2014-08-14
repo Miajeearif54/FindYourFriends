@@ -68,6 +68,7 @@ public class Map extends Activity implements LocationListener {
 			@Override
 			public void onClick(View v) {
 			    Intent i = new Intent(mContext, ViewGroupActivity.class);
+			    i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(i);
 			    
 			}
@@ -78,6 +79,7 @@ public class Map extends Activity implements LocationListener {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(mContext, MeusGruposActivity.class);
+				i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 				startActivity(i);
 			}
 		});
@@ -87,6 +89,7 @@ public class Map extends Activity implements LocationListener {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(mContext, EditarActivity.class);
+				i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 				startActivity(i);
 			}
 		});
