@@ -4,16 +4,21 @@ import java.util.List;
 
 public class Grupo {
     
-    private String nome, dono, senha;
-    private String duracao;
+    private String nome, dono, senha, duracao;
+    private Integer id ;
     private List<Usuario> usuarios;
     
-    public Grupo(String nome, String dono, String duracao, String senha, List<Usuario> usuarios) {
+    public Grupo(Integer id, String nome, String dono, String duracao, String senha, List<Usuario> usuarios) {
         this.nome = nome;
         this.dono = dono;
         this.senha = senha;
         this.duracao = duracao;
         this.usuarios = usuarios;
+        this.id = id;
+    }
+    
+    public Integer getId() {
+        return id;
     }
     
     public String getDono() {

@@ -26,6 +26,7 @@ public class JSONParse {
     private static final String NOME = "nome";
     private static final String SENHA = "senha";
     private static final String USUARIOS = "usuarios";
+    private static final String ID = "id";
     
     private boolean adicionou;
     
@@ -41,18 +42,19 @@ public class JSONParse {
     
     private void json() {
         try {
-            String jsonString = convertStreamToString(feedUrl.openConnection().getInputStream());
-//            String jsonString = "[{\"class\":\"findyoufriends.Grupo\",\"id\":1,\"dono\":\"werton007\",\"duracao\":60,\"nome\":\"Forninho\",\"senha\":\"123\",\"usuarios\":[{\"class\":\"Usuario\",\"id\":1}]},"
-//                    + "{\"class\":\"findyoufriends.Grupo\",\"id\":2,\"dono\":\"werton\",\"duracao\":132,\"nome\":\"Plecas\",\"senha\":\"adsad\",\"usuarios\":[]}," 
-//                    + "{\"class\":\"findyoufriends.Grupo\",\"id\":3,\"dono\":\"Ines Brasil\",\"duracao\":123123,\"nome\":\"xpto\",\"senha\":\"adsa\",\"usuarios\":[]},"
-//                    + "{\"class\":\"findyoufriends.Grupo\",\"id\":4,\"dono\":\"pff\",\"duracao\":12313,\"nome\":\"Pff\",\"senha\":\"ww\",\"usuarios\":[]}]";
+//            String jsonString = convertStreamToString(feedUrl.openConnection().getInputStream());
+            String jsonString = "[{\"class\":\"findyoufriends.Grupo\",\"id\":1,\"dono\":\"werton007\",\"duracao\":60,\"nome\":\"Forninho\",\"senha\":\"123\",\"usuarios\":[{\"class\":\"Usuario\",\"id\":1}]},"
+                    + "{\"class\":\"findyoufriends.Grupo\",\"id\":2,\"dono\":\"werton\",\"duracao\":132,\"nome\":\"Plecas\",\"senha\":\"adsad\",\"usuarios\":[]}," 
+                    + "{\"class\":\"findyoufriends.Grupo\",\"id\":3,\"dono\":\"Ines Brasil\",\"duracao\":123123,\"nome\":\"xpto\",\"senha\":\"adsa\",\"usuarios\":[]},"
+                    + "{\"class\":\"findyoufriends.Grupo\",\"id\":4,\"dono\":\"pff\",\"duracao\":12313,\"nome\":\"Pff\",\"senha\":\"ww\",\"usuarios\":[]}]";
             json = new JSONArray(jsonString);
             
         } catch (JSONException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } 
+//        catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
     
     private String convertStreamToString(final InputStream input) {
@@ -99,11 +101,12 @@ public class JSONParse {
         String nome = convert(item.get(NOME), String.class);
         nome = mudaCaractere(nome, "_", " ");   
         
-        return new Grupo(nome,
+        return new Grupo(convert(item.get(ID), Integer.class),
+                nome,
                 convert(item.get(DONO), String.class),
-                null,
+                null, //aqui deve ser colocado a duracao
                 convert(item.get(SENHA), String.class),
-                null);
+                null); //aqui deve ser colocado a lista de usuarios (os id deles?);
     }
     
     /**
