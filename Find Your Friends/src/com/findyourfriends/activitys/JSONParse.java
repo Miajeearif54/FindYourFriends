@@ -106,7 +106,7 @@ public class JSONParse {
                 convert(item.get(DONO), String.class),
                 null, //aqui deve ser colocado a duracao
                 convert(item.get(SENHA), String.class),
-                null); //aqui deve ser colocado a lista de usuarios (os id deles?);
+                null); //aqui deve ser colocado a lista de usuarios (os id deles);
     }
     
     /**
