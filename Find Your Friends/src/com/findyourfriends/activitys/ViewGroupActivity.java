@@ -1,5 +1,6 @@
 package com.findyourfriends.activitys;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.les.findyourfriends.R;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
 public class ViewGroupActivity extends Activity{
 	private Context mContext;
@@ -55,7 +57,7 @@ public class ViewGroupActivity extends Activity{
         protected void onPreExecute() {
             super.onPreExecute();
             
-            //dialog = ProgressDialog.show(Map.this, "Espere", "Sincronizando os dados");
+            dialog = ProgressDialog.show(ViewGroupActivity.this, "Aguarde", "Gerando lista de grupos.");
         }
 
         @Override
@@ -67,22 +69,15 @@ public class ViewGroupActivity extends Activity{
         protected void onPostExecute(List<Grupo> result) {
             super.onPostExecute(result);
             
-//            Session.delInstancia();
-//            Session.getInstancia().setDono(email); //login.getText().toString()
-//            
-//            for (Ti ti : result) {
-//                Session.getInstancia().getAtividades().add(ti);
-//            }
+            ListView list = (ListView) findViewById(R.id.listGroups);
+            GrupoAdapter adapter = new GrupoAdapter(getApplicationContext(), result);
+            list.setAdapter(adapter);
             
-            
-            
-            Log.d("werton", result.size()+"");
-            
-            //dialog.dismiss();
+            dialog.dismiss();
         }
 
         private List<Grupo> getJSON() {
-            JSONParse parser = new JSONParse("aqui deve ter um link");
+            JSONParse parser = new JSONParse("http://23.227.167.93:8085/findYouFriends/grupo/listGroups");
             return parser.getGruposBD();
         }
     }
