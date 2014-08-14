@@ -8,13 +8,15 @@
     <string name="continar">Continue</string>
     <string name="btn_logout_from_google">Logout from Google</string>
     <string name="btn_revoke_access">Revoke Access</string>
-    
-    
+        
     <string name="criarGrupo">Create group </string>
     <string name="editar">Edit</string>
     <string name="meusGrupo">My groups </string>
     <string name="todosOsGrupos">All groups</string>
     
+    <string name="salvar">Save</string>
+    <string name="cancelar">Cancel</string>
+    <string name="senha">Password</string>
+    <string name="nomeDoGrupo">Group Name:</string>
     
-
 </resources>
