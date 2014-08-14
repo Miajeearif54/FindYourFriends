@@ -4,18 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg3"
-    android:orientation="vertical" >    
+    android:orientation="vertical">    
     
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="15dp">
         
        <TextView 
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:textSize="20sp"
-           android:text="Nome do grupo: "/>
+           android:textSize="16sp"
+           android:textColor="@color/black"
+           android:text="@string/nomeDoGrupo"/>
        
        <EditText
             android:id="@+id/edNomeGrupo"
@@ -25,15 +27,15 @@
             android:inputType="text"
             android:textColor="@color/white"
             android:layout_marginBottom="20dp" >
-
             <requestFocus />
         </EditText>    
        
        <TextView 
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:textSize="20sp"
-           android:text="Senha: "/>
+           android:textSize="16sp"
+           android:textColor="@color/black"
+           android:text="@string/senha"/>
        
 		<EditText
             android:id="@+id/edSenha"
@@ -43,30 +45,31 @@
             android:inputType="textPassword"
             android:textColor="@color/white"
             android:layout_marginBottom="20dp">
-            <requestFocus />
         </EditText>
                
     </LinearLayout>
     
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:orientation="horizontal"
-        android:layout_gravity="bottom" >
+        android:layout_height="match_parent" 
+        android:orientation="horizontal" 
+        android:layout_marginBottom="15dp">
         
         <Button 
-        android:id="@+id/ok"
+        android:id="@+id/salvar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Ok"/>
+        android:text="@string/salvar"
+        android:layout_gravity="bottom"/>
         
         <Button 
         android:id="@+id/cancelar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Cancelar"/>
+        android:text="@string/cancelar"
+        android:layout_gravity="bottom"/>
              
     </LinearLayout>
     
