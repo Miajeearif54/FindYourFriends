@@ -18,7 +18,7 @@ import android.widget.ListView;
 public class MeusGruposActivity extends Activity{
 	private Context mContext;
 	private static final Object USUARIO = "werton";
-	private ImageButton editar, grupos, meusGrupos;
+	private ImageButton editar, grupos;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

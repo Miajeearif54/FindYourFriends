@@ -16,7 +16,7 @@ import android.widget.ListView;
 
 public class ViewGroupActivity extends Activity{
 	private Context mContext;
-	private ImageButton editar, grupos, meusGrupos;
+	private ImageButton editar, meusGrupos;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
