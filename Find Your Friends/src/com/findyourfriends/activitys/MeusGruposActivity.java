@@ -57,7 +57,7 @@ public class MeusGruposActivity extends Activity{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(MeusGruposActivity.this, "Aguarde", "Gerando lista de seus grupos.");
+            dialog = ProgressDialog.show(MeusGruposActivity.this, "Aguarde", "Estamos conferindo seus grupos ...");
         }
 
         @Override
