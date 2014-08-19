@@ -78,6 +78,10 @@ public class JSONParse {
         return sBuf.toString();
     }
     
+    public boolean isNull(){
+        return (json == null);
+    }
+    
     public List<Grupo> getGruposBD() {
         List<Grupo> grupos = new ArrayList<Grupo>();
 

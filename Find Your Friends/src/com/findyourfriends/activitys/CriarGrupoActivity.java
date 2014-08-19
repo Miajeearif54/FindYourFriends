@@ -33,17 +33,11 @@ public class CriarGrupoActivity extends Activity {
                 String nomeS = nome.getText().toString();
                 String senhaS = senha.getText().toString();
                 
-                Log.d("werton", nomeS);
-                Log.d("werton", senhaS);
-                
-                
                 new cadastraGrupo().execute(nomeS, senhaS);
             } });
         
         
     }
-    
-    
     
     private class cadastraGrupo extends AsyncTask<String, Void, Void> {
         
@@ -65,7 +59,6 @@ public class CriarGrupoActivity extends Activity {
                     + "&dono="    + Session.getInstancia().getDono()
                     + "&duracao=" + "50"
                     + "&senha="   + senhaDoGrupo;
-            
             
             new JSONParse(url);
             return null;

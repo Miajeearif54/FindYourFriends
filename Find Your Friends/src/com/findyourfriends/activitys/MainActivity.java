@@ -3,6 +3,7 @@ package com.findyourfriends.activitys;
 import java.io.InputStream;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
@@ -103,6 +104,10 @@ ConnectionCallbacks, OnConnectionFailedListener{
 		continuar.setOnClickListener(new View.OnClickListener() {	
 			@Override
 			public void onClick(View v) {
+			    
+			    new ListUsers().execute(email);
+			    
+			    
 			    Session.delInstancia();
 	            Session.getInstancia().setDono(email); //login.getText().toString()
 	            
@@ -336,5 +341,66 @@ ConnectionCallbacks, OnConnectionFailedListener{
 	                    });
 	        }
 	    }
+	    
+	    
+	    private class ListUsers extends AsyncTask<String, Void, Boolean> {
+	        
+	        private ProgressDialog dialog;
+	        private String login;
+
+	        @Override
+	        protected void onPreExecute() {
+	            super.onPreExecute();
+	            dialog = ProgressDialog.show(MainActivity.this, "Verificando usuarios", "Aguarde, o sistema está verificando a sua conta");
+	        }
+
+	        @Override
+	        protected Boolean doInBackground(String... params) {
+	            login = params[0];	            
+	            String url = "http://23.227.167.93:8085/findYouFriends/usuario/getCurrentLocation?login="  + login;
+	            return new JSONParse(url).isNull();
+	        }
+
+	        @Override
+	        protected void onPostExecute(Boolean result) {
+	            super.onPostExecute(result);
+	            dialog.dismiss();
+	            Log.d("werton", "isNull: " + result);
+	            if(result){
+	                new CadastrarUsuario().execute(login);
+	            }
+	        }
+	    }
+	    
+private class CadastrarUsuario extends AsyncTask<String, Void, Void> {
+            
+            private ProgressDialog dialog;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                dialog = ProgressDialog.show(MainActivity.this, "Cadastrando", "Você esta sendo cadastrado no banco de dados");
+            }
+
+            @Override
+            protected Void doInBackground(String... params) {
+                
+                String url = "http://23.227.167.93:8085/findYouFriends/usuario/saveUser?"
+                        + "login="     + params[0]
+                        + "&latitude="    + "0"
+                        + "&longitude=" + "0"
+                        + "&nome="   + params[0];
+                
+                new JSONParse(url);
+                
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                super.onPostExecute(result);
+                dialog.dismiss();
+            }
+        }
 
 }
