@@ -20,7 +20,7 @@ public class EditarActivity extends Activity{
 	private Context mContext;
 	private Button criarGrupo;
 	private ImageButton grupos, meusGrupos;
-	private static final Object DONO= "werton007";
+	private static final Object DONO= Session.getInstancia().getDono();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class EditarActivity extends Activity{
         
     }
     
-    private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
+private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
         
         private ProgressDialog dialog;
 
@@ -99,4 +99,5 @@ public class EditarActivity extends Activity{
             return parser.getGruposBD();
         }
     }
+    
 }

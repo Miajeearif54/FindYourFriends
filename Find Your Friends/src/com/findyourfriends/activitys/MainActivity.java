@@ -103,6 +103,9 @@ ConnectionCallbacks, OnConnectionFailedListener{
 		continuar.setOnClickListener(new View.OnClickListener() {	
 			@Override
 			public void onClick(View v) {
+			    Session.delInstancia();
+	            Session.getInstancia().setDono(email); //login.getText().toString()
+	            
 				Intent i = new Intent(mContext, Map.class);
 				startActivity(i);
 			}
