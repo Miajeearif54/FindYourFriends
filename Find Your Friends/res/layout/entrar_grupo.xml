@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_map"
+    android:orientation="vertical">    
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="vertical"
+        android:layout_marginTop="15dp">
+        
+       <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="16sp"
+           android:textColor="@color/black"
+           android:text="@string/nomeDoGrupo"/>
+       
+       <EditText
+            android:id="@+id/edNomeGrupo_entrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="11"
+            android:editable="false"
+            android:inputType="text"
+            android:layout_marginBottom="20dp" >
+            <requestFocus />
+        </EditText>    
+       
+       <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="16sp"
+           android:textColor="@color/black"
+           android:text="@string/senha"/>
+       
+		<EditText
+            android:id="@+id/edSenha_entrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="11"
+            android:inputType="textPassword"
+            android:layout_marginBottom="20dp">
+        </EditText>
+               
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" 
+        android:orientation="horizontal" 
+        android:layout_marginBottom="15dp">
+        
+        <Button 
+        android:id="@+id/entrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Entrar no Grupo"
+        android:layout_gravity="bottom"/>
+        
+        <Button 
+        android:id="@+id/cancelar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/cancelar"
+        android:layout_gravity="bottom"/>
+             
+    </LinearLayout>
+    
+    
+    
+</LinearLayout>

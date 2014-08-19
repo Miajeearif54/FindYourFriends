@@ -11,12 +11,16 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class ViewGroupActivity extends Activity{
 	private Context mContext;
 	private ImageButton editar, meusGrupos;
+	private List<Grupo> gruposBackup;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +73,32 @@ public class ViewGroupActivity extends Activity{
         protected void onPostExecute(List<Grupo> result) {
             super.onPostExecute(result);
             
+            gruposBackup = result;
+            
             ListView list = (ListView) findViewById(R.id.listGroups);
-            GrupoAdapter adapter = new GrupoAdapter(getApplicationContext(), result);
+            GrupoAdapter adapter = new GrupoAdapter(getApplicationContext(), gruposBackup);
             list.setAdapter(adapter);
+            
+            list.setOnItemClickListener(new OnItemClickListener() {
+                
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                        int position, long id) {
+                    // getting values from selected ListItem
+                    String name = ((TextView) view.findViewById(R.id.nomeGrupo)).getText().toString();
+//                    String cost = ((TextView) view.findViewById(R.id.cost)).getText().toString();
+//                    String description = ((TextView) view.findViewById(R.id.desciption)).getText().toString();
+//                     
+                    // Starting new intent
+                    
+                    Bundle param = new Bundle();
+                    param.putString("KEY_NAME",name);
+                    
+                    Intent intent = new Intent(getApplicationContext(), EntraNoGrupo.class);
+                    intent.putExtras(param);
+                    startActivity(intent);
+                }
+            });
             
             dialog.dismiss();
         }
