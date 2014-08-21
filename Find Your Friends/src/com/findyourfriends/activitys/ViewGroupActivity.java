@@ -86,13 +86,22 @@ public class ViewGroupActivity extends Activity{
                         int position, long id) {
                     // getting values from selected ListItem
                     String name = ((TextView) view.findViewById(R.id.nomeGrupo)).getText().toString();
+                    String idGrupo = ((TextView) view.findViewById(R.id.idGrupo)).getText().toString();
+                    
 //                    String cost = ((TextView) view.findViewById(R.id.cost)).getText().toString();
 //                    String description = ((TextView) view.findViewById(R.id.desciption)).getText().toString();
 //                     
                     // Starting new intent
                     
                     Bundle param = new Bundle();
-                    param.putString("KEY_NAME",name);
+                    
+                    for (Grupo grupo : gruposBackup) {
+                        if(String.valueOf(grupo.getId()).equals(idGrupo)){
+                            param.putString("KEY_NAME", grupo.getNome());
+                            param.putInt("KEY_ID", grupo.getId());
+                            param.putString("KEY_SENHA", grupo.getSenha());
+                        }
+                    }
                     
                     Intent intent = new Intent(getApplicationContext(), EntraNoGrupo.class);
                     intent.putExtras(param);

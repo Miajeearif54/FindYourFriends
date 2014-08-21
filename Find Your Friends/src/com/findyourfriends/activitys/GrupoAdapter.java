@@ -44,7 +44,9 @@ public class GrupoAdapter extends BaseAdapter {
         
         TextView tvNome = (TextView) view.findViewById(R.id.nomeGrupo);
         tvNome.setText(grupo.getNome());
-
+        
+        TextView tvId = (TextView) view.findViewById(R.id.idGrupo);
+        tvId.setText(String.valueOf(grupo.getId()));
 
         return view;
     }
