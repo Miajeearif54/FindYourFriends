@@ -89,7 +89,7 @@ private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
             ListView list = (ListView) findViewById(R.id.listEditar);
             List<Grupo> editarGrupos = new ArrayList<Grupo>();
             for (Grupo grupo : result) {
-                if(grupo.getDono().equals(DONO)){
+                if(grupo.getDono().equals(DONO) && grupo.isAtivo()){
                     editarGrupos.add(grupo);
                 }
             }

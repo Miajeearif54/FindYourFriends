@@ -109,7 +109,7 @@ public class MeusGruposActivity extends Activity{
             
             for (Grupo grupo : result) {
                 for (Integer idGrupo : idGrupos) {
-                    if (grupo.getId() == idGrupo){
+                    if (grupo.getId() == idGrupo && grupo.isAtivo()){
                         gruposDoUsuario.add(grupo);
                         break;
                     }

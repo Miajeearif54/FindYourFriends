@@ -24,7 +24,7 @@ public class JSONParse {
     private String jsonString; 
     
     private static final String DONO = "dono";
-    private static final String DURACAO = "duracao";
+    private static final String ATIVO = "duracao";
     private static final String NOME = "nome";
     private static final String SENHA = "senha";
     private static final String USUARIOS = "usuarios";
@@ -146,10 +146,15 @@ public class JSONParse {
         String nome = convert(item.get(NOME), String.class);
         nome = mudaCaractere(nome, "_", " ");   
         
+        Boolean ativo = true;
+        if(convert(item.get(ATIVO), Integer.class) == 0){
+            ativo = false;
+        }
+        
         return new Grupo(convert(item.get(ID), Integer.class),
                 nome,
                 convert(item.get(DONO), String.class),
-                null, //aqui deve ser colocado a duracao
+                ativo,
                 convert(item.get(SENHA), String.class),
                 getUsuariosDoGrupo(convert(item.get(USUARIOS), JSONArray.class))); //aqui deve ser colocado a lista de usuarios (os id deles);
     }

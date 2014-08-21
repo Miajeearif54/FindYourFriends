@@ -4,15 +4,16 @@ import java.util.List;
 
 public class Grupo {
     
-    private String nome, dono, senha, duracao;
+    private String nome, dono, senha;
+    private boolean ativo;
     private Integer id ;
     private List<Integer> usuarios;
     
-    public Grupo(Integer id, String nome, String dono, String duracao, String senha, List<Integer> usuarios) {
+    public Grupo(Integer id, String nome, String dono, Boolean ativo, String senha, List<Integer> usuarios) {
         this.nome = nome;
         this.dono = dono;
         this.senha = senha;
-        this.duracao = duracao;
+        this.ativo = ativo;
         this.usuarios = usuarios;
         this.id = id;
     }
@@ -25,8 +26,8 @@ public class Grupo {
         return dono;
     }
     
-    public String getDuracao() {
-        return duracao;
+    public boolean isAtivo() {
+        return ativo;
     }
     
     public String getNome() {
