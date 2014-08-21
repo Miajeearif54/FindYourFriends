@@ -24,10 +24,11 @@ public class JSONParse {
     private String jsonString; 
     
     private static final String DONO = "dono";
-    private static final String ATIVO = "duracao";
+    private static final String ATIVO = "ativo";
     private static final String NOME = "nome";
     private static final String SENHA = "senha";
     private static final String USUARIOS = "usuarios";
+    
     private static final String ID = "id";
     
     private boolean adicionou;
@@ -40,6 +41,7 @@ public class JSONParse {
         } catch (MalformedURLException e) {
             adicionou = false;
         }
+        
     }
     
     private void json() {
@@ -103,6 +105,37 @@ public class JSONParse {
         return grupos;
     }
     
+    public List<Usuario> getUsuariosBD() {
+        List<Usuario> usuarios = new ArrayList<Usuario>();
+
+        if(json != null){
+            for (int i = 0; i < json.length(); i++) {
+                JSONObject usuario;
+                try {
+                    usuario = json.getJSONObject(i);
+                    usuarios.add(recuperaUsuarios(usuario));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+    
+            }
+        }
+
+        return usuarios;
+    }
+    
+    public Integer getIdUsuario(){
+        try {
+            JSONObject idUser = new JSONObject(jsonString);
+            return convert(idUser.get("id"), Integer.class);
+            
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return -1;
+    }
+    
     public List<Integer> getGruposUsuarios() {
         List<Integer> idGrupos = new ArrayList<Integer>();
         try {
@@ -126,37 +159,39 @@ public class JSONParse {
         return idGrupos;
     }
     
-    public List<Integer> getUsuariosDoGrupo(JSONArray usuarios) {
-        List<Integer> idUsuarios = new ArrayList<Integer>();
-        for (int i = 0; i < usuarios.length(); i++) {
+    public List<Integer> getIds(JSONArray ids) {
+        List<Integer> idList = new ArrayList<Integer>();
+        for (int i = 0; i < ids.length(); i++) {
             JSONObject usuario;
             try {
-                usuario = usuarios.getJSONObject(i);
-                idUsuarios.add(convert(usuario.get("id"), Integer.class));
+                usuario = ids.getJSONObject(i);
+                idList.add(convert(usuario.get("id"), Integer.class));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        return idUsuarios;
+        return idList;
     }
     
-    
+    private Usuario recuperaUsuarios(JSONObject item) throws JSONException {
+        return new Usuario(convert(item.get(ID), Integer.class),
+                convert(item.get("login"), String.class),
+                Double.parseDouble(convert(item.get("latitude"), String.class)),
+                Double.parseDouble(convert(item.get("longitude"), String.class)),
+                convert(item.get(NOME), String.class),
+                getIds(convert(item.get("grupos"), JSONArray.class))); //aqui deve ser colocado a lista de usuarios (os id deles);
+    }
     
     private Grupo recuperaGrupos(JSONObject item) throws JSONException {
         String nome = convert(item.get(NOME), String.class);
         nome = mudaCaractere(nome, "_", " ");   
         
-        Boolean ativo = true;
-        if(convert(item.get(ATIVO), Integer.class) == 0){
-            ativo = false;
-        }
-        
         return new Grupo(convert(item.get(ID), Integer.class),
                 nome,
                 convert(item.get(DONO), String.class),
-                ativo,
+                convert(item.get(ATIVO), Boolean.class),
                 convert(item.get(SENHA), String.class),
-                getUsuariosDoGrupo(convert(item.get(USUARIOS), JSONArray.class))); //aqui deve ser colocado a lista de usuarios (os id deles);
+                getIds(convert(item.get(USUARIOS), JSONArray.class))); //aqui deve ser colocado a lista de usuarios (os id deles);
     }
     
     /**

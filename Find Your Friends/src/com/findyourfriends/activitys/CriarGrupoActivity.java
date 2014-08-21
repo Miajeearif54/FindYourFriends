@@ -6,6 +6,7 @@ import com.les.findyourfriends.R;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,8 +21,6 @@ public class CriarGrupoActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.criar_grupo);
-        
-        
         
         Button salvar = (Button) findViewById(R.id.salvar);
         salvar.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +56,8 @@ public class CriarGrupoActivity extends Activity {
             String url = "http://23.227.167.93:8085/findYouFriends/grupo/saveGroup?"
                     + "nome="     + nomeDoGrupo
                     + "&dono="    + Session.getInstancia().getDono()
-                    + "&duracao=" + "50"
+                    + "&duracao=" + "0"
+                    + "&ativo="   + true
                     + "&senha="   + senhaDoGrupo;
             
             new JSONParse(url);
@@ -67,6 +67,10 @@ public class CriarGrupoActivity extends Activity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+            
+            Intent i = new Intent(getApplicationContext(), MeusGruposActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(i);
             
             dialog.dismiss();
         }

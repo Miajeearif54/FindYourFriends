@@ -367,6 +367,8 @@ ConnectionCallbacks, OnConnectionFailedListener{
 	            dialog.dismiss();
 	            if(result){
 	                new CadastrarUsuario().execute(login);
+	            }else{
+	                new CapturaID().execute(login);
 	            }
 	        }
 	    }
@@ -374,6 +376,7 @@ ConnectionCallbacks, OnConnectionFailedListener{
 private class CadastrarUsuario extends AsyncTask<String, Void, Void> {
             
             private ProgressDialog dialog;
+            private String login;
 
             @Override
             protected void onPreExecute() {
@@ -384,8 +387,10 @@ private class CadastrarUsuario extends AsyncTask<String, Void, Void> {
             @Override
             protected Void doInBackground(String... params) {
                 
+                login = params[0];
+                
                 String url = "http://23.227.167.93:8085/findYouFriends/usuario/saveUser?"
-                        + "login="     + params[0]
+                        + "login="     + login
                         + "&latitude="    + "0"
                         + "&longitude=" + "0"
                         + "&nome="   + params[0];
@@ -398,8 +403,38 @@ private class CadastrarUsuario extends AsyncTask<String, Void, Void> {
             @Override
             protected void onPostExecute(Void result) {
                 super.onPostExecute(result);
+                new CapturaID().execute(login);
                 dialog.dismiss();
             }
         }
 
+
+private class CapturaID extends AsyncTask<String, Void, Integer> {
+    
+    private ProgressDialog dialog;
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        dialog = ProgressDialog.show(MainActivity.this, "Cadastrando", "Você esta sendo cadastrado no banco de dados");
+    }
+
+    @Override
+    protected Integer doInBackground(String... params) {
+        
+        String url = "http://23.227.167.93:8085/findYouFriends/usuario/getCurrentLocation?login="  + params[0];    
+        return new JSONParse(url).getIdUsuario();
+    }
+
+    @Override
+    protected void onPostExecute(Integer result) {
+        super.onPostExecute(result);
+        
+        Session.getInstancia().setIdUser(result);
+        
+        dialog.dismiss();
+    }
+
 }
+}
+

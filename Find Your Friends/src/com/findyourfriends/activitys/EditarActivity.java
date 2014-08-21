@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -90,6 +91,7 @@ private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
             List<Grupo> editarGrupos = new ArrayList<Grupo>();
             for (Grupo grupo : result) {
                 if(grupo.getDono().equals(DONO) && grupo.isAtivo()){
+                    Log.d("werton", "----");
                     editarGrupos.add(grupo);
                 }
             }
@@ -103,9 +105,9 @@ private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
                         int position, long id) {
                     // getting values from selected ListItem
                     String name = ((TextView) view.findViewById(R.id.nomeGrupo)).getText().toString();
-                    String idGrupo = ((TextView) view.findViewById(R.id.idGrupo)).getText().toString();
+                    Integer idGrupo = Integer.parseInt(((TextView) view.findViewById(R.id.idGrupo)).getText().toString());
                     
-                    openAlert("Excluir Grupo", "Você realmente gostaria de excluir o grupo \"" + name +"\"?");
+                    openAlert("Excluir Grupo", "Você realmente gostaria de excluir o grupo \"" + name +"\"?", idGrupo);
                 }
             });
             
@@ -118,7 +120,7 @@ private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
         }
     }
 
-    private void openAlert(String title, String msg) {
+    private void openAlert(String title, String msg, final Integer idGrupo) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setMessage(msg);
@@ -126,9 +128,7 @@ private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
         alertDialogBuilder.setPositiveButton("OK",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog,int id) {
-                //COLOCAR O LINK PARA EXCLUIR AQUI!
-                Intent intent = new Intent(getApplicationContext(), Map.class);
-                startActivity(intent);
+                new RemoveGrupo().execute(idGrupo);
             }
         });
         
@@ -142,7 +142,35 @@ private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
         // show alert
         alertDialog.show();
     }
+    
+private class RemoveGrupo extends AsyncTask<Integer, Void, Void> {
+        
+        private ProgressDialog dialog;
+        private Integer idGrupo;
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = ProgressDialog.show(EditarActivity.this, "Aguarde", "Removendo o grupo");
+        }
+
+        @Override
+        protected Void doInBackground(Integer... params) {
+            idGrupo = params[0];
+            new JSONParse("http://23.227.167.93:8085/findYouFriends/grupo/updateStatus?idGrupo=" + idGrupo +"&status=false");
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            
+            Intent intent = new Intent(getApplicationContext(), Map.class);
+            startActivity(intent);
+            
+        }
+        
+}
 
     
 }

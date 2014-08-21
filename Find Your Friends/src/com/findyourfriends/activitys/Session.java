@@ -4,6 +4,7 @@ public class Session {
 
     private static Session instancia;
     private String dono;
+    private Integer idUser;
 
     protected Session() {
     }
@@ -22,6 +23,15 @@ public class Session {
     public void setDono(String dono) {
         this.dono = dono;
     }
+    
+    public Integer getIdUser() {
+        return idUser;
+    }
+    
+    public void setIdUser(Integer idUser) {
+        this.idUser = idUser;
+    }
+    
     
     public String getDono() {
         return dono;

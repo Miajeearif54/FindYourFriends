@@ -88,6 +88,7 @@ public class MeusGruposActivity extends Activity{
 	private class RecuperaGruposDoUsuario extends AsyncTask<List<Integer>, Void, List<Grupo>> {
         private ProgressDialog dialog;
         private List<Integer> idGrupos;
+        private List<Grupo> gruposDoUsuario;
 
         @Override
         protected void onPreExecute() {
@@ -105,7 +106,7 @@ public class MeusGruposActivity extends Activity{
         protected void onPostExecute(List<Grupo> result) {
             super.onPostExecute(result);
             
-            List<Grupo> gruposDoUsuario = new ArrayList<Grupo>();
+            gruposDoUsuario = new ArrayList<Grupo>();
             
             for (Grupo grupo : result) {
                 for (Integer idGrupo : idGrupos) {
@@ -120,6 +121,30 @@ public class MeusGruposActivity extends Activity{
             ListView list = (ListView) findViewById(R.id.listMyGroups);
             GrupoAdapter adapter = new GrupoAdapter(getApplicationContext(), gruposDoUsuario);
             list.setAdapter(adapter);
+            
+            list.setOnItemClickListener(new OnItemClickListener() {
+                
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                        int position, long id) {
+                    String name = ((TextView) view.findViewById(R.id.nomeGrupo)).getText().toString();
+                    String idGrupo = ((TextView) view.findViewById(R.id.idGrupo)).getText().toString();
+                    
+                    Bundle param = new Bundle();
+                    
+                    for (Grupo grupo : gruposDoUsuario) {
+                        if(String.valueOf(grupo.getId()).equals(idGrupo)){
+                            param.putString("KEY_NAME", grupo.getNome());
+                            param.putInt("KEY_ID", grupo.getId());
+                            
+                        }
+                    }
+                    
+                    Intent intent = new Intent(getApplicationContext(), GrupoActivity.class);
+                    intent.putExtras(param);
+                    startActivity(intent);
+                }
+            });
             
             dialog.dismiss();
         }

@@ -80,6 +80,12 @@
             android:label="@string/criarGrupo">
         </activity>
         
+        <activity
+            android:name="com.findyourfriends.activitys.GrupoActivity"
+            android:label="@string/criarGrupo">
+        </activity>
+        
+        
         <!--
         Werton (embedded)
         <meta-data
