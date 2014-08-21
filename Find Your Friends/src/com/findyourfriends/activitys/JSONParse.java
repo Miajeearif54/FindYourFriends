@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -20,6 +21,7 @@ public class JSONParse {
     
     protected URL feedUrl;
     private JSONArray json;
+    private String jsonString; 
     
     private static final String DONO = "dono";
     private static final String DURACAO = "duracao";
@@ -42,7 +44,7 @@ public class JSONParse {
     
     private void json() {
         try {
-            String jsonString = convertStreamToString(feedUrl.openConnection().getInputStream());
+            jsonString = convertStreamToString(feedUrl.openConnection().getInputStream());
 //            String jsonString = "[{\"class\":\"findyoufriends.Grupo\",\"id\":1,\"dono\":\"werton007\",\"duracao\":60,\"nome\":\"Forninho\",\"senha\":\"123\",\"usuarios\":[{\"class\":\"Usuario\",\"id\":1}]},"
 //                    + "{\"class\":\"findyoufriends.Grupo\",\"id\":2,\"dono\":\"werton\",\"duracao\":132,\"nome\":\"Plecas\",\"senha\":\"adsad\",\"usuarios\":[]}," 
 //                    + "{\"class\":\"findyoufriends.Grupo\",\"id\":3,\"dono\":\"Ines Brasil\",\"duracao\":123123,\"nome\":\"xpto\",\"senha\":\"adsa\",\"usuarios\":[]},"
@@ -100,6 +102,32 @@ public class JSONParse {
 
         return grupos;
     }
+    
+    public List<Integer> getGruposUsuarios() {
+        List<Integer> idGrupos = new ArrayList<Integer>();
+        try {
+            JSONObject usuario = new JSONObject(jsonString);
+            JSONArray gUsuarios = convert(usuario.get("grupos"), JSONArray.class);
+            
+            for (int i = 0; i < gUsuarios.length(); i++) {
+                JSONObject grupo;
+                try {
+                    grupo = gUsuarios.getJSONObject(i);
+                    idGrupos.add(convert(grupo.get("id"), Integer.class));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        Log.d("werton", idGrupos.size()+"");
+        return idGrupos;
+    }
+    
+    
     
     private Grupo recuperaGrupos(JSONObject item) throws JSONException {
         String nome = convert(item.get(NOME), String.class);

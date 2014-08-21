@@ -11,13 +11,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class MeusGruposActivity extends Activity{
 	private Context mContext;
-	private static final Object USUARIO = "werton";
+	private static final Object USUARIO = Session.getInstancia().getDono();
 	private ImageButton editar, grupos;
 	
 	@Override
@@ -50,7 +54,7 @@ public class MeusGruposActivity extends Activity{
 		
 	}
 	
-	private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
+	private class CapturaJSON extends AsyncTask<Void, Void, List<Integer>> {
         
         private ProgressDialog dialog;
 
@@ -59,9 +63,41 @@ public class MeusGruposActivity extends Activity{
             super.onPreExecute();
             dialog = ProgressDialog.show(MeusGruposActivity.this, "Aguarde", "Estamos conferindo seus grupos ...");
         }
+        
+        @Override
+        protected List<Integer> doInBackground(Void... params) {
+            return getJSON(Session.getInstancia().getDono());
+        }
 
         @Override
-        protected List<Grupo> doInBackground(Void... params) {
+        protected void onPostExecute(List<Integer> result) {
+            super.onPostExecute(result);
+            
+            new RecuperaGruposDoUsuario().execute(result);
+               
+            dialog.dismiss();
+        }
+
+        private List<Integer> getJSON(String login) {
+            String url = "http://23.227.167.93:8085/findYouFriends/usuario/getCurrentLocation?login="  + login;
+            JSONParse parser = new JSONParse(url);
+            return parser.getGruposUsuarios();
+        }
+    }
+	
+	private class RecuperaGruposDoUsuario extends AsyncTask<List<Integer>, Void, List<Grupo>> {
+        private ProgressDialog dialog;
+        private List<Integer> idGrupos;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = ProgressDialog.show(MeusGruposActivity.this, "Aguarde", "Gerando lista de grupos.");
+        }
+
+        @Override
+        protected List<Grupo> doInBackground(List<Integer>... params) {
+            idGrupos = params[0];
             return getJSON();
         }
 
@@ -69,14 +105,20 @@ public class MeusGruposActivity extends Activity{
         protected void onPostExecute(List<Grupo> result) {
             super.onPostExecute(result);
             
-            ListView list = (ListView) findViewById(R.id.listMyGroups);
-            List<Grupo> meusGrupos = new ArrayList<Grupo>();
+            List<Grupo> gruposDoUsuario = new ArrayList<Grupo>();
+            
             for (Grupo grupo : result) {
-                if(grupo.getDono().equals(USUARIO)){
-                    meusGrupos.add(grupo);
+                for (Integer idGrupo : idGrupos) {
+                    if (grupo.getId() == idGrupo){
+                        gruposDoUsuario.add(grupo);
+                        break;
+                    }
                 }
             }
-            GrupoAdapter adapter = new GrupoAdapter(getApplicationContext(), meusGrupos);
+            
+            
+            ListView list = (ListView) findViewById(R.id.listMyGroups);
+            GrupoAdapter adapter = new GrupoAdapter(getApplicationContext(), gruposDoUsuario);
             list.setAdapter(adapter);
             
             dialog.dismiss();

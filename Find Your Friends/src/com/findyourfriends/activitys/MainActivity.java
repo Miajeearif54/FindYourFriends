@@ -365,7 +365,6 @@ ConnectionCallbacks, OnConnectionFailedListener{
 	        protected void onPostExecute(Boolean result) {
 	            super.onPostExecute(result);
 	            dialog.dismiss();
-	            Log.d("werton", "isNull: " + result);
 	            if(result){
 	                new CadastrarUsuario().execute(login);
 	            }
