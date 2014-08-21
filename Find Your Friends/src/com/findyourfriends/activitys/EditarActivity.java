@@ -6,15 +6,20 @@ import java.util.List;
 import com.les.findyourfriends.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class EditarActivity extends Activity{
 	private Context mContext;
@@ -91,6 +96,19 @@ private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
             GrupoAdapter adapter = new GrupoAdapter(getApplicationContext(), editarGrupos);
             list.setAdapter(adapter);
             
+            list.setOnItemClickListener(new OnItemClickListener() {
+                
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                        int position, long id) {
+                    // getting values from selected ListItem
+                    String name = ((TextView) view.findViewById(R.id.nomeGrupo)).getText().toString();
+                    String idGrupo = ((TextView) view.findViewById(R.id.idGrupo)).getText().toString();
+                    
+                    openAlert("Excluir Grupo", "Você realmente gostaria de excluir o grupo \"" + name +"\"?");
+                }
+            });
+            
             dialog.dismiss();
         }
 
@@ -99,5 +117,32 @@ private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
             return parser.getGruposBD();
         }
     }
+
+    private void openAlert(String title, String msg) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setMessage(msg);
+        // set positive button: Yes message
+        alertDialogBuilder.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog,int id) {
+                //COLOCAR O LINK PARA EXCLUIR AQUI!
+                Intent intent = new Intent(getApplicationContext(), Map.class);
+                startActivity(intent);
+            }
+        });
+        
+        alertDialogBuilder.setNegativeButton("Cancelar",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog,int id) {
+            }
+        });
+    
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show alert
+        alertDialog.show();
+    }
+
+
     
 }

@@ -6,9 +6,9 @@ public class Grupo {
     
     private String nome, dono, senha, duracao;
     private Integer id ;
-    private List<Usuario> usuarios;
+    private List<Integer> usuarios;
     
-    public Grupo(Integer id, String nome, String dono, String duracao, String senha, List<Usuario> usuarios) {
+    public Grupo(Integer id, String nome, String dono, String duracao, String senha, List<Integer> usuarios) {
         this.nome = nome;
         this.dono = dono;
         this.senha = senha;
@@ -37,7 +37,7 @@ public class Grupo {
         return senha;
     }
     
-    public List<Usuario> getUsuarios() {
+    public List<Integer> getUsuarios() {
         return usuarios;
     }
 }

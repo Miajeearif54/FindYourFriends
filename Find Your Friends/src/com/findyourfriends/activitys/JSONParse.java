@@ -123,8 +123,21 @@ public class JSONParse {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        Log.d("werton", idGrupos.size()+"");
         return idGrupos;
+    }
+    
+    public List<Integer> getUsuariosDoGrupo(JSONArray usuarios) {
+        List<Integer> idUsuarios = new ArrayList<Integer>();
+        for (int i = 0; i < usuarios.length(); i++) {
+            JSONObject usuario;
+            try {
+                usuario = usuarios.getJSONObject(i);
+                idUsuarios.add(convert(usuario.get("id"), Integer.class));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return idUsuarios;
     }
     
     
@@ -138,7 +151,7 @@ public class JSONParse {
                 convert(item.get(DONO), String.class),
                 null, //aqui deve ser colocado a duracao
                 convert(item.get(SENHA), String.class),
-                null); //aqui deve ser colocado a lista de usuarios (os id deles);
+                getUsuariosDoGrupo(convert(item.get(USUARIOS), JSONArray.class))); //aqui deve ser colocado a lista de usuarios (os id deles);
     }
     
     /**
