@@ -29,12 +29,21 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
+    
 
+	<instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:targetPackage="com.les.findyourfriends" />
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        
+        <uses-library android:name="android.test.runner" />
+        
+        
         <activity
             android:name="com.findyourfriends.activitys.Splash"
             android:label="@string/app_name" >
@@ -80,12 +89,6 @@
             android:label="@string/criarGrupo">
         </activity>
         
-        <activity
-            android:name="com.findyourfriends.activitys.GrupoActivity"
-            android:label="@string/criarGrupo">
-        </activity>
-        
-        
         <!--
         Werton (embedded)
         <meta-data
@@ -104,8 +107,12 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyDDKDTEx5OG9PbNInf6FvotwOtHbwiS_Dg"/> 
-        
-        
+            
+       <!-- 
+        Renan (casa) 
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAtTeWtYyH5Bqq60Xri_F0XcNFytwn_VoQ"/> -->
         
         <!-- 
         Talita (casa) -->
