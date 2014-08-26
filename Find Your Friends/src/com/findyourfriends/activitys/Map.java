@@ -1,7 +1,5 @@
 package com.findyourfriends.activitys;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,12 +16,11 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.les.findyourfriends.R;
 
 
@@ -48,8 +45,6 @@ public class Map extends Activity implements LocationListener {
 		setContentView(R.layout.map);
 		mContext = getApplicationContext();
 		
-		initilizeMap();
-		
 		LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
         boolean enabledGPS = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
         habilitaGPS(enabledGPS);
@@ -58,6 +53,8 @@ public class Map extends Activity implements LocationListener {
         Criteria criteria = new Criteria();
         provider = locationManager.getBestProvider(criteria, false);
         Location location = locationManager.getLastKnownLocation(provider);
+        
+        initilizeMap(location);
 
         if (location != null) {
             onLocationChanged(location);
@@ -104,7 +101,7 @@ public class Map extends Activity implements LocationListener {
         }
 	}
 	
-	private void initilizeMap() {
+	private void initilizeMap(Location location) {
 		try {
 			if (googleMap == null) {
 				googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
@@ -112,24 +109,26 @@ public class Map extends Activity implements LocationListener {
 			googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 			googleMap.setMyLocationEnabled(true);
 			
+			double lat = location.getLatitude();
+            double lng = location.getLongitude();
+            LatLng coordinate = new LatLng(lat, lng);
+            
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 15));
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void zoomInicio(Location location){
+	    
 	}
 
 	@Override
 	public void onLocationChanged(Location location) {
 		if(startPerc != null){
 			startPerc.remove();
-		}
-		
-		double lat =  location.getLatitude();
-        double lng = location.getLongitude();
-        LatLng coordinate = new LatLng(lat, lng);
-        
-        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(coordinate));
-
-        
+		}  
        /* startPerc = googleMap.addMarker(new MarkerOptions()
         .position(coordinate)
         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher)));*/
@@ -164,8 +163,5 @@ public class Map extends Activity implements LocationListener {
         super.onPause();
         locationManager.removeUpdates(this);
     }
-    
-    
-
 	
 }
