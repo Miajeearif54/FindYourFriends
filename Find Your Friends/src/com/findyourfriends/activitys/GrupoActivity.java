@@ -19,7 +19,7 @@ import com.les.findyourfriends.R;
 public class GrupoActivity extends Activity{
     private Context mContext;
     private ImageButton editar, meusGrupos;
-    private Integer idGrupo = 10;
+    private Integer idGrupo;
     private String nameGrupo;
     
     @Override
@@ -28,9 +28,10 @@ public class GrupoActivity extends Activity{
         setContentView(R.layout.view_users_in_groups);
         mContext = getApplicationContext();
         
+        
         Intent it = getIntent();
         Bundle param = it.getExtras();
-        nameGrupo = param.getString("KEY_NAME");
+        //nameGrupo = param.getString("KEY_NAME");
         idGrupo = param.getInt("KEY_ID");
         
         new CapturaJSON().execute();
@@ -43,7 +44,7 @@ public class GrupoActivity extends Activity{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(GrupoActivity.this, "Aguarde", "Gerando lista de usu·rios nesse grupo.");
+            dialog = ProgressDialog.show(GrupoActivity.this, "Aguarde", "Gerando lista de usu√°rios nesse grupo.");
         }
 
         @Override
@@ -64,7 +65,7 @@ public class GrupoActivity extends Activity{
             for (Usuario usuario : result) {
                 List<Integer> idsGruposDoUsuario = usuario.getIdGrupos();
                 for (Integer idGrupoDoUsuario : idsGruposDoUsuario) {
-                    Log.d("werton", idGrupoDoUsuario+"");
+                    Log.d("werton id grupo", idGrupoDoUsuario+"");
                     if(idGrupoDoUsuario == idGrupo){
                         usuariosDoGrupo.add(usuario);
                     }

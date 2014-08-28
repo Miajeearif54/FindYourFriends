@@ -35,10 +35,8 @@ public class EntraNoGrupo extends Activity {
             public void onClick(View v) {
                 String senha = ((EditText) findViewById(R.id.edSenha_entrar)).getText().toString();
                 
-                if(senhaGrupo.equals(senha)){
-                    
+                if(senhaGrupo.equals(senha)){     
                     new EntraNoGrupoAsync().execute();
-                    
                 }
                                 
             } });
@@ -53,7 +51,7 @@ private class EntraNoGrupoAsync extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(EntraNoGrupo.this, "Aguarde", "Adicionando você ao grupo.");
+            dialog = ProgressDialog.show(EntraNoGrupo.this, "Aguarde", "Adicionando vocÃª ao grupo.");
         }
 
         @Override
@@ -66,7 +64,7 @@ private class EntraNoGrupoAsync extends AsyncTask<Void, Void, Void> {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             
-            Intent i = new Intent(getApplicationContext(), MeusGruposActivity.class);
+            Intent i = new Intent(getApplicationContext(), GrupoActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(i);
             

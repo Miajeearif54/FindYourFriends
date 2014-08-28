@@ -13,6 +13,7 @@
     <string name="editar">Edit</string>
     <string name="meusGrupo">My groups </string>
     <string name="todosOsGrupos">All groups</string>
+    <string name="grupo">Group </string>
     
     <string name="salvar">Save</string>
     <string name="cancelar">Cancel</string>
