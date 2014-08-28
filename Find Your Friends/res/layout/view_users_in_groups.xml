@@ -5,7 +5,13 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_map"
     android:orientation="vertical" >
-
+    
+    <Button 
+        android:id="@+id/visualizarMapa"
+        android:layout_width="280dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
+        android:text="@string/visualizarMapa"/>
     
     <LinearLayout
         android:layout_width="match_parent"

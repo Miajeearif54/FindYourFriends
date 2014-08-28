@@ -8,9 +8,12 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.media.audiofx.Visualizer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -19,6 +22,7 @@ import com.les.findyourfriends.R;
 public class GrupoActivity extends Activity{
     private Context mContext;
     private ImageButton editar, meusGrupos;
+    private Button visualizarMapa;
     private Integer idGrupo;
     private String nameGrupo;
     
@@ -27,6 +31,15 @@ public class GrupoActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_users_in_groups);
         mContext = getApplicationContext();
+        
+        visualizarMapa = (Button) findViewById(R.id.visualizarMapa);
+        visualizarMapa.setOnClickListener(new View.OnClickListener() {  
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mContext, Map.class);
+                startActivity(i);
+            }
+        });
         
         
         Intent it = getIntent();

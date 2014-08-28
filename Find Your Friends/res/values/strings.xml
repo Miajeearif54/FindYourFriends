@@ -19,5 +19,6 @@
     <string name="cancelar">Cancel</string>
     <string name="senha">Password</string>
     <string name="nomeDoGrupo">Group Name:</string>
+    <string name="visualizarMapa">View map </string>
     
 </resources>
