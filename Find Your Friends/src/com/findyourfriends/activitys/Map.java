@@ -41,8 +41,8 @@ public class Map extends Activity implements LocationListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.map);
+		super.onCreate(savedInstanceState);		
+		            
 		mContext = getApplicationContext();
 		
 		LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -54,7 +54,55 @@ public class Map extends Activity implements LocationListener {
         provider = locationManager.getBestProvider(criteria, false);
         Location location = locationManager.getLastKnownLocation(provider);
         
-        initilizeMap(location);
+        Intent it = getIntent();
+        boolean exibirBotoes = it.getBooleanExtra("mostrar_botoes", false);
+        
+        if(exibirBotoes){
+            setContentView(R.layout.map);
+            
+            initilizeMap(location, exibirBotoes);
+
+            if (location != null) {
+                onLocationChanged(location);
+            }
+            
+            grupos = (ImageButton) findViewById(R.id.grupos);        
+            grupos.setOnClickListener(new View.OnClickListener() {  
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(mContext, ViewGroupActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivity(i);
+                    
+                }
+            });
+                  
+            meusGrupos = (ImageButton) findViewById(R.id.meusGrupos);        
+            meusGrupos.setOnClickListener(new View.OnClickListener() {  
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(mContext, MeusGruposActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivity(i);
+                }
+            });
+            
+            editar = (ImageButton) findViewById(R.id.editar);
+            editar.setOnClickListener(new View.OnClickListener() {  
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(mContext, EditarActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivity(i);
+                }
+            });
+        } else {
+            setContentView(R.layout.mapa_grupo);
+            initilizeMap(location, exibirBotoes);
+        }
+        
+        /*
+        initilizeMap(location, exibirBotoes);
 
         if (location != null) {
             onLocationChanged(location);
@@ -89,7 +137,7 @@ public class Map extends Activity implements LocationListener {
 				i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 				startActivity(i);
 			}
-		});
+		});*/
         
 	}
 
@@ -101,10 +149,15 @@ public class Map extends Activity implements LocationListener {
         }
 	}
 	
-	private void initilizeMap(Location location) {
+	private void initilizeMap(Location location, boolean exibirBotoes) {
 		try {
 			if (googleMap == null) {
-				googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+			    if(exibirBotoes){
+			        googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+			    }
+			    else {
+			        googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapGrupo)).getMap();
+			    }
 			}
 			googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 			googleMap.setMyLocationEnabled(true);

@@ -112,6 +112,7 @@ ConnectionCallbacks, OnConnectionFailedListener{
 	            Session.getInstancia().setDono(email); //login.getText().toString()
 	            
 				Intent i = new Intent(mContext, Map.class);
+                i.putExtra("mostrar_botoes", true);
 				startActivity(i);
 			}
 		});
