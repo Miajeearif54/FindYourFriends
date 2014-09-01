@@ -45,7 +45,7 @@ public class CriarGrupoActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(CriarGrupoActivity.this, "Criando Grupo", "Aguarde, o sistema est· cadastrando o grupo.");
+            dialog = ProgressDialog.show(CriarGrupoActivity.this, "Criando Grupo", "Aguarde, o sistema est√° cadastrando o grupo.");
         }
 
         @Override
@@ -53,7 +53,7 @@ public class CriarGrupoActivity extends Activity {
             String nomeDoGrupo = params[0];
             String senhaDoGrupo = params[1];
             
-            String url = "http://23.227.167.93:8085/findYouFriends/grupo/saveGroup?"
+            String url = "http://23.227.167.93:8081/findYouFriends/grupo/saveGroup?"
                     + "nome="     + nomeDoGrupo
                     + "&dono="    + Session.getInstancia().getDono()
                     + "&duracao=" + "0"

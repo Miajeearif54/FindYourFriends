@@ -120,7 +120,7 @@ public class ViewGroupActivity extends Activity{
         }
 
         private List<Grupo> getJSON() {
-            JSONParse parser = new JSONParse("http://23.227.167.93:8085/findYouFriends/grupo/listGroups");
+            JSONParse parser = new JSONParse("http://23.227.167.93:8081/findYouFriends/grupo/listGroups");
             return parser.getGruposBD();
         }
     }

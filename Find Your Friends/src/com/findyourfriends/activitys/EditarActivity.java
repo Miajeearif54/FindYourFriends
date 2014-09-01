@@ -107,7 +107,7 @@ private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
                     String name = ((TextView) view.findViewById(R.id.nomeGrupo)).getText().toString();
                     Integer idGrupo = Integer.parseInt(((TextView) view.findViewById(R.id.idGrupo)).getText().toString());
                     
-                    openAlert("Excluir Grupo", "Você realmente gostaria de excluir o grupo \"" + name +"\"?", idGrupo);
+                    openAlert("Excluir Grupo", "Vocï¿½ realmente gostaria de excluir o grupo \"" + name +"\"?", idGrupo);
                 }
             });
             
@@ -115,7 +115,7 @@ private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
         }
 
         private List<Grupo> getJSON() {
-            JSONParse parser = new JSONParse("http://23.227.167.93:8085/findYouFriends/grupo/listGroups");
+            JSONParse parser = new JSONParse("http://23.227.167.93:8081/findYouFriends/grupo/listGroups");
             return parser.getGruposBD();
         }
     }
@@ -157,7 +157,7 @@ private class RemoveGrupo extends AsyncTask<Integer, Void, Void> {
         @Override
         protected Void doInBackground(Integer... params) {
             idGrupo = params[0];
-            new JSONParse("http://23.227.167.93:8085/findYouFriends/grupo/updateStatus?idGrupo=" + idGrupo +"&status=false");
+            new JSONParse("http://23.227.167.93:8081/findYouFriends/grupo/updateStatus?idGrupo=" + idGrupo +"&status=false");
             return null;
         }
 

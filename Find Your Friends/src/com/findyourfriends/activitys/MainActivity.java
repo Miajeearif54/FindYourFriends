@@ -351,13 +351,13 @@ ConnectionCallbacks, OnConnectionFailedListener{
 	        @Override
 	        protected void onPreExecute() {
 	            super.onPreExecute();
-	            dialog = ProgressDialog.show(MainActivity.this, "Verificando usuarios", "Aguarde, o sistema está verificando a sua conta");
+	            dialog = ProgressDialog.show(MainActivity.this, "Verificando usuarios", "Aguarde, o sistema estï¿½ verificando a sua conta");
 	        }
 
 	        @Override
 	        protected Boolean doInBackground(String... params) {
 	            login = params[0];	            
-	            String url = "http://23.227.167.93:8085/findYouFriends/usuario/getCurrentLocation?login="  + login;
+	            String url = "http://23.227.167.93:8081/findYouFriends/usuario/getCurrentLocation?login="  + login;
 	            return new JSONParse(url).isNull();
 	        }
 
@@ -381,7 +381,7 @@ private class CadastrarUsuario extends AsyncTask<String, Void, Void> {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                dialog = ProgressDialog.show(MainActivity.this, "Cadastrando", "Você esta sendo cadastrado no banco de dados");
+                dialog = ProgressDialog.show(MainActivity.this, "Cadastrando", "Vocï¿½ esta sendo cadastrado no banco de dados");
             }
 
             @Override
@@ -389,7 +389,7 @@ private class CadastrarUsuario extends AsyncTask<String, Void, Void> {
                 
                 login = params[0];
                 
-                String url = "http://23.227.167.93:8085/findYouFriends/usuario/saveUser?"
+                String url = "http://23.227.167.93:8081/findYouFriends/usuario/saveUser?"
                         + "login="     + login
                         + "&latitude="    + "0"
                         + "&longitude=" + "0"
@@ -416,13 +416,13 @@ private class CapturaID extends AsyncTask<String, Void, Integer> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        dialog = ProgressDialog.show(MainActivity.this, "Cadastrando", "Você esta sendo cadastrado no banco de dados");
+        dialog = ProgressDialog.show(MainActivity.this, "Cadastrando", "Vocï¿½ esta sendo cadastrado no banco de dados");
     }
 
     @Override
     protected Integer doInBackground(String... params) {
         
-        String url = "http://23.227.167.93:8085/findYouFriends/usuario/getCurrentLocation?login="  + params[0];    
+        String url = "http://23.227.167.93:8081/findYouFriends/usuario/getCurrentLocation?login="  + params[0];    
         return new JSONParse(url).getIdUsuario();
     }
 

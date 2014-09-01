@@ -79,7 +79,7 @@ public class MeusGruposActivity extends Activity{
         }
 
         private List<Integer> getJSON(String login) {
-            String url = "http://23.227.167.93:8085/findYouFriends/usuario/getCurrentLocation?login="  + login;
+            String url = "http://23.227.167.93:8081/findYouFriends/usuario/getCurrentLocation?login="  + login;
             JSONParse parser = new JSONParse(url);
             return parser.getGruposUsuarios();
         }
@@ -150,7 +150,7 @@ public class MeusGruposActivity extends Activity{
         }
 
         private List<Grupo> getJSON() {
-            JSONParse parser = new JSONParse("http://23.227.167.93:8085/findYouFriends/grupo/listGroups");
+            JSONParse parser = new JSONParse("http://23.227.167.93:8081/findYouFriends/grupo/listGroups");
             return parser.getGruposBD();
         }
     }

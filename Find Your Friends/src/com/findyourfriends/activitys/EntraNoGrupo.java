@@ -56,7 +56,7 @@ private class EntraNoGrupoAsync extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... params) {
-            new JSONParse("http://23.227.167.93:8085/findYouFriends/grupo/addUser?idGrupo="+ idGrupo+"&idUsuario="+ Session.getInstancia().getIdUser());
+            new JSONParse("http://23.227.167.93:8081/findYouFriends/grupo/addUser?idGrupo="+ idGrupo+"&idUsuario="+ Session.getInstancia().getIdUser());
             return null;
         }
 

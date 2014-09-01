@@ -93,7 +93,7 @@ public class GrupoActivity extends Activity{
         }
 
         private List<Usuario> getJSON() {
-            JSONParse parser = new JSONParse("http://23.227.167.93:8085/findYouFriends/usuario/listUsers");
+            JSONParse parser = new JSONParse("http://23.227.167.93:8081/findYouFriends/usuario/listUsers");
             return parser.getUsuariosBD();
         }
     }
