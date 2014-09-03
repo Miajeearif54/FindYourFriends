@@ -71,10 +71,6 @@ public class GrupoActivity extends Activity{
             
            usuariosDoGrupo = new ArrayList<Usuario>();
            
-           Log.d("werton", "idGrupo = " + idGrupo);
-           Log.d("werton", result.size()+"");
-           
-            
             for (Usuario usuario : result) {
                 List<Integer> idsGruposDoUsuario = usuario.getIdGrupos();
                 for (Integer idGrupoDoUsuario : idsGruposDoUsuario) {

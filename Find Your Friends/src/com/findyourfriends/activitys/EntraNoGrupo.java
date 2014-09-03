@@ -63,9 +63,12 @@ private class EntraNoGrupoAsync extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+            Bundle param = new Bundle();
+            param.putInt("KEY_ID",idGrupo);
             
             Intent i = new Intent(getApplicationContext(), GrupoActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            i.putExtras(param);
             startActivity(i);
             
             dialog.dismiss();
