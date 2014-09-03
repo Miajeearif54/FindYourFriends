@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -24,12 +25,14 @@ public class GrupoActivity extends Activity{
     private Integer idGrupo;
     private String nameGrupo;
     private GPSManager gpsManager;
+    private List<Usuario> usuariosDoGrupo;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_users_in_groups);
         mContext = getApplicationContext();
+        
         
         visualizarMapa = (Button) findViewById(R.id.visualizarMapa);
         visualizarMapa.setOnClickListener(new View.OnClickListener() {  
@@ -59,7 +62,7 @@ public class GrupoActivity extends Activity{
     
     private class CapturaJSON extends AsyncTask<Void, Void, List<Usuario>> {
         private ProgressDialog dialog;
-        private List<Usuario> usuariosDoGrupo;
+        
 
         @Override
         protected void onPreExecute() {
@@ -125,11 +128,30 @@ public class GrupoActivity extends Activity{
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             
+            Bundle param = new Bundle();
+            ArrayList<String> usuariosParse = new ArrayList<String>();
+            ArrayList<String> latParse = new ArrayList<String>();
+            ArrayList<String> longParse = new ArrayList<String>();
+           
+            for (Usuario usuario : usuariosDoGrupo) {
+                usuariosParse.add(usuario.getNome());
+                
+                String latitude = Double.toString(usuario.getLatitude());
+                latParse.add(latitude);
+                
+                String longitude = Double.toString(usuario.getLongitude());
+                latParse.add(longitude);
+            }
+                       
+            param.putStringArrayList("NOMES", usuariosParse);
+            param.putStringArrayList("LATITUDE", latParse);
+            param.putStringArrayList("LONGITUDE", longParse);
+
             Intent i = new Intent(mContext, Map.class);
+            i.putExtras(param);
             startActivity(i);
             dialog.dismiss();
         }
-
         
     }
     

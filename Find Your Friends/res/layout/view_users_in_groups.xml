@@ -8,7 +8,7 @@
     
     <Button 
         android:id="@+id/visualizarMapa"
-        android:layout_width="280dp"
+        android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_gravity="center"
         android:text="@string/visualizarMapa"/>
