@@ -8,10 +8,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.media.audiofx.Visualizer;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -25,6 +23,7 @@ public class GrupoActivity extends Activity{
     private Button visualizarMapa;
     private Integer idGrupo;
     private String nameGrupo;
+    private GPSManager gpsManager;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +35,15 @@ public class GrupoActivity extends Activity{
         visualizarMapa.setOnClickListener(new View.OnClickListener() {  
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(mContext, Map.class);
-                startActivity(i);
+                if(gpsManager == null){
+                    gpsManager = new GPSManager(mContext);
+                }
+                gpsManager.searchProvider();
+                gpsManager.updateCurrentPosition();
+                
+                new AtualizaPosicao().execute();
+                
+                
             }
         });
         
@@ -49,6 +55,7 @@ public class GrupoActivity extends Activity{
         
         new CapturaJSON().execute();
     }
+    
     
     private class CapturaJSON extends AsyncTask<Void, Void, List<Usuario>> {
         private ProgressDialog dialog;
@@ -74,7 +81,6 @@ public class GrupoActivity extends Activity{
             for (Usuario usuario : result) {
                 List<Integer> idsGruposDoUsuario = usuario.getIdGrupos();
                 for (Integer idGrupoDoUsuario : idsGruposDoUsuario) {
-                    Log.d("werton id grupo", idGrupoDoUsuario+"");
                     if(idGrupoDoUsuario == idGrupo){
                         usuariosDoGrupo.add(usuario);
                     }
@@ -92,6 +98,39 @@ public class GrupoActivity extends Activity{
             JSONParse parser = new JSONParse("http://23.227.167.93:8081/findYouFriends/usuario/listUsers");
             return parser.getUsuariosBD();
         }
+    }
+    
+    private class AtualizaPosicao extends AsyncTask<Void, Void, Void> {
+        private ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = ProgressDialog.show(GrupoActivity.this, "Aguarde", "Atualizando Posição");
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            while (gpsManager.isCurrentPositionNull()) {
+            }
+            
+            new JSONParse("http://23.227.167.93:8081/findYouFriends/usuario/updateLocation?"
+                        + "id=" + Session.getInstancia().getIdUser()
+                        + "&latitude=" + gpsManager.getLatitude()
+                        + "&longitude=" + gpsManager.getLongitude());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            
+            Intent i = new Intent(mContext, Map.class);
+            startActivity(i);
+            dialog.dismiss();
+        }
+
+        
     }
     
 }
