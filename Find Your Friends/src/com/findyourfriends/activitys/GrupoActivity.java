@@ -140,7 +140,7 @@ public class GrupoActivity extends Activity{
                 latParse.add(latitude);
                 
                 String longitude = Double.toString(usuario.getLongitude());
-                latParse.add(longitude);
+                longParse.add(longitude);
             }
                        
             param.putStringArrayList("NOMES", usuariosParse);

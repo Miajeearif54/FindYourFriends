@@ -107,7 +107,7 @@ private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
                     String name = ((TextView) view.findViewById(R.id.nomeGrupo)).getText().toString();
                     Integer idGrupo = Integer.parseInt(((TextView) view.findViewById(R.id.idGrupo)).getText().toString());
                     
-                    openAlert("Excluir Grupo", "Voc� realmente gostaria de excluir o grupo \"" + name +"\"?", idGrupo);
+                    openAlert("Excluir Grupo", "Você realmente gostaria de excluir o grupo \"" + name +"\"? :(", idGrupo);
                 }
             });
             

@@ -352,7 +352,7 @@ ConnectionCallbacks, OnConnectionFailedListener{
 	        @Override
 	        protected void onPreExecute() {
 	            super.onPreExecute();
-	            dialog = ProgressDialog.show(MainActivity.this, "Verificando usuarios", "Aguarde, o sistema est� verificando a sua conta");
+	            dialog = ProgressDialog.show(MainActivity.this, "Verificando usuários", "Aguarde, o sistema está verificando a sua conta");
 	        }
 
 	        @Override
@@ -382,7 +382,7 @@ private class CadastrarUsuario extends AsyncTask<String, Void, Void> {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                dialog = ProgressDialog.show(MainActivity.this, "Cadastrando", "Voc� esta sendo cadastrado no banco de dados");
+                dialog = ProgressDialog.show(MainActivity.this, "Cadastrando", "Você esta sendo cadastrado");
             }
 
             @Override
@@ -417,7 +417,7 @@ private class CapturaID extends AsyncTask<String, Void, Integer> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        dialog = ProgressDialog.show(MainActivity.this, "Cadastrando", "Voc� esta sendo cadastrado no banco de dados");
+        dialog = ProgressDialog.show(MainActivity.this, "Cadastrando", "Você esta sendo cadastrado");
     }
 
     @Override

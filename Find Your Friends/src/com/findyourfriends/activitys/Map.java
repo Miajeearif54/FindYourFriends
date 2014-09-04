@@ -132,34 +132,30 @@ public class Map extends Activity implements LocationListener {
 
                     ArrayList<String> usuariosParse = it2
                             .getStringArrayListExtra("NOMES");
+
                     ArrayList<String> latParse = it2
                             .getStringArrayListExtra("LATITUDE");
+
                     ArrayList<String> longParse = it2
                             .getStringArrayListExtra("LONGITUDE");
 
+                    double latitude, longitude;
                     int indice = 0;
-                    Double latitude, longitude;
 
                     for (String nome : usuariosParse) {
-                        latitude = Double.parseDouble(latParse.get(indice));
-                        longitude = Double.parseDouble(longParse.get(indice));
 
-                        LatLng coordinate = new LatLng(latitude, longitude);
-                        googleMap.addMarker(new MarkerOptions()
-                                .title(nome)
-                                .position(coordinate)
-                                .icon(BitmapDescriptorFactory
-                                        .fromResource(R.drawable.ic_launcher)));
+                        if (indice < latParse.size()) {
 
-                        indice++;
-
+                            longitude = Double.parseDouble(longParse
+                                    .get(indice));
+                            latitude = Double.parseDouble(latParse.get(indice));
+                            
+                            marcaUsuario(nome, latitude, longitude);
+                            indice++;
+                        }
                     }
 
                     googleMap.setOnMapClickListener(new OnMapClickListener() {
-
-                        Intent it2 = getIntent();
-                        boolean exibirBotoes = it2.getBooleanExtra(
-                                "mostrar_botoes", false);
 
                         @Override
                         public void onMapClick(LatLng latLng) {
@@ -168,8 +164,8 @@ public class Map extends Activity implements LocationListener {
                             markerOptions.title("Ponto de encontro");
 
                             markerOptions.icon(BitmapDescriptorFactory
-                                    .fromResource(R.drawable.ic_launcher));
-                            googleMap.clear();
+                                    .fromResource(R.drawable.marker));
+                             //googleMap.clear();
                             googleMap.animateCamera(CameraUpdateFactory
                                     .newLatLng(latLng));
                             googleMap.addMarker(markerOptions);
@@ -177,6 +173,7 @@ public class Map extends Activity implements LocationListener {
                     });
                 }
             }
+            
             googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             googleMap.setMyLocationEnabled(true);
 
@@ -192,25 +189,22 @@ public class Map extends Activity implements LocationListener {
         }
     }
 
-    /*
-     * private void marcaUsuario(String nome, double latitude, double longitude)
-     * {
-     * 
-     * 
-     * startPerc = googleMap.addMarker(new MarkerOptions() .position(coordinate)
-     * .icon(BitmapDescriptorFactory .fromResource(R.drawable.ic_launcher))); }
-     */
+    private void marcaUsuario(String nome, double latitude, double longitude) {
+        
+        LatLng coordinate = new LatLng(latitude, longitude);
+
+        startPerc = googleMap.addMarker(new MarkerOptions()
+                .title(nome)
+                .position(coordinate)
+                .icon(BitmapDescriptorFactory
+                        .fromResource(R.drawable.ic_launcher)).visible(true));
+    }
 
     @Override
     public void onLocationChanged(Location location) {
         if (startPerc != null) {
             startPerc.remove();
         }
-        /*
-         * startPerc = googleMap.addMarker(new MarkerOptions()
-         * .position(coordinate)
-         * .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher)));
-         */
     }
 
     @Override
