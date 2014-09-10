@@ -1,7 +1,5 @@
 package com.findyourfriends.activitys;
 
-import java.util.List;
-
 import com.les.findyourfriends.R;
 
 import android.app.Activity;
@@ -9,11 +7,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class CriarGrupoActivity extends Activity {
 
@@ -33,6 +29,13 @@ public class CriarGrupoActivity extends Activity {
                 String senhaS = senha.getText().toString();
                 
                 new cadastraGrupo().execute(nomeS, senhaS);
+            } });
+        
+        Button voltar = (Button) findViewById(R.id.cancelar);
+        voltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             } });
         
         

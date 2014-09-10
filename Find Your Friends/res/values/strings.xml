@@ -21,4 +21,12 @@
     <string name="nomeDoGrupo">Group Name:</string>
     <string name="visualizarMapa">View map </string>
     
+    <string name="about">About</string>
+    <string name="renan">Renan Pinto</string>
+    <string name="talita">Talita Lobo</string>
+    <string name="werton">Werton Guimaraes</string>
+    <string name="ano">2014</string>
+    <string name="versao">Version 1.0</string>
+    
+    
 </resources>

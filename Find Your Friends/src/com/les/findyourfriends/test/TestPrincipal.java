@@ -81,7 +81,7 @@ public class TestPrincipal extends ActivityInstrumentationTestCase2 {
         assertTrue("EntraNoGrupo is not found!", solo.waitForActivity("EntraNoGrupo"));
         
         solo.clickOnView(solo.getView("edSenha_entrar"));
-        solo.enterText((android.widget.EditText) solo.getView("edSenha_entrar"), "12345");
+        solo.enterText((android.widget.EditText) solo.getView("edSenha_entrar"), "renan");
         
 
         solo.clickOnView(solo.getView("entrar"));
@@ -90,7 +90,7 @@ public class TestPrincipal extends ActivityInstrumentationTestCase2 {
    	}
    	
    	
-   	public void testApagarGrupo(){
+   	/*public void testApagarGrupo(){
    	    login();
 
         solo.clickOnView(solo.getView("editar"));
@@ -101,7 +101,7 @@ public class TestPrincipal extends ActivityInstrumentationTestCase2 {
         solo.clickOnView(solo.getView(android.R.id.button1));
 
         assertTrue("Map is not found!", solo.waitForActivity("Map"));
-   	}
+   	}*/
    	
    	
    	public void testDeslogar(){

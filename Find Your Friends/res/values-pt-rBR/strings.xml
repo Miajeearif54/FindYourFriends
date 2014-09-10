@@ -20,5 +20,12 @@
     <string name="senha">Senha</string>
     <string name="nomeDoGrupo">Nome do grupo:</string>  
     <string name="visualizarMapa">Visualizar mapa </string>
+    
+    <string name="about">Sobre</string>
+    <string name="renan">Renan Pinto</string>
+    <string name="talita">Talita Lobo</string>
+    <string name="werton">Werton Guimaraes</string>
+    <string name="ano">2014</string>
+    <string name="versao">Versão 1.0</string>
 
 </resources>

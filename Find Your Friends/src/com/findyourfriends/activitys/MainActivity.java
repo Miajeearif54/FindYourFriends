@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -38,7 +39,7 @@ import com.google.android.gms.plus.model.people.Person;
 public class MainActivity extends Activity implements OnClickListener,
 ConnectionCallbacks, OnConnectionFailedListener{
 	
-	private String email = "";
+	private String email = "", personName;
 	
 	private static final int RC_SIGN_IN = 0;
  
@@ -125,6 +126,16 @@ ConnectionCallbacks, OnConnectionFailedListener{
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
+	@Override
+    public boolean onMenuItemSelected(final int featureId, final MenuItem item) {
+        if (item.getItemId() == R.id.about) {
+            final Intent i = new Intent(mContext, About.class);
+            startActivity(i);
+            return true;
+        }
+        return super.onMenuItemSelected(featureId, item);
+    }
 	
 	
 	//--google
@@ -260,7 +271,8 @@ ConnectionCallbacks, OnConnectionFailedListener{
 	            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
 	                Person currentPerson = Plus.PeopleApi
 	                        .getCurrentPerson(mGoogleApiClient);
-	                String personName = currentPerson.getDisplayName();
+	                //String personName = currentPerson.getDisplayName();
+	                personName = currentPerson.getDisplayName();
 	                String personPhotoUrl = currentPerson.getImage().getUrl();
 	                String personGooglePlusProfile = currentPerson.getUrl();
 	                email = Plus.AccountApi.getAccountName(mGoogleApiClient);

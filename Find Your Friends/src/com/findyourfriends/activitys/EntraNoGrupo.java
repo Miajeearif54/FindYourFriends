@@ -41,6 +41,13 @@ public class EntraNoGrupo extends Activity {
                                 
             } });
         
+        Button voltar = (Button) findViewById(R.id.cancelarEntrarGrupo);
+        voltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            } });
+        
     }
     
     

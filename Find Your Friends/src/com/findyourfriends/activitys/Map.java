@@ -1,7 +1,6 @@
 package com.findyourfriends.activitys;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,7 +11,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -23,9 +23,7 @@ import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import com.google.android.gms.maps.MapFragment;
-
 import com.google.android.gms.maps.model.Marker;
 
 import com.les.findyourfriends.R;
@@ -108,6 +106,22 @@ public class Map extends Activity implements LocationListener {
             initilizeMap(location, exibirBotoes);
         }
 
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onMenuItemSelected(final int featureId, final MenuItem item) {
+        if (item.getItemId() == R.id.about) {
+            final Intent i = new Intent(mContext, About.class);
+            startActivity(i);
+            return true;
+        }
+        return super.onMenuItemSelected(featureId, item);
     }
 
     private void habilitaGPS(boolean enabledGPS) {

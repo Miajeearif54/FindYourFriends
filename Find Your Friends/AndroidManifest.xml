@@ -94,6 +94,11 @@
             android:label="@string/grupo">
         </activity>
         
+        <activity
+            android:name="com.findyourfriends.activitys.About"
+            android:label="@string/about">
+        </activity>
+        
         <!--
         Werton (embedded)
         <meta-data

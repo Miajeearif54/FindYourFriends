@@ -63,7 +63,7 @@
         android:layout_gravity="bottom"/>
         
         <Button 
-        android:id="@+id/cancelar"
+        android:id="@+id/cancelarEntrarGrupo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
