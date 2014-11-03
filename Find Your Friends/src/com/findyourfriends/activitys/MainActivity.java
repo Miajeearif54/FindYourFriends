@@ -30,7 +30,6 @@ import android.widget.Toast;
 
 import com.les.findyourfriends.R;
 
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
@@ -43,120 +42,115 @@ import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
 public class MainActivity extends Activity implements OnClickListener,
-ConnectionCallbacks, OnConnectionFailedListener{
-	
-	private String email = "", personName;
-	
-	private static final int RC_SIGN_IN = 0;
- 
+        ConnectionCallbacks, OnConnectionFailedListener {
+
+    private String email = "", personName;
+
+    private static final int RC_SIGN_IN = 0;
+
     private static final String TAG = "LoginActivity";
-	
 
     // Profile pic image size in pixels
     private static final int PROFILE_PIC_SIZE = 350;
- 
+
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
- 
+
     /**
      * A flag indicating that a PendingIntent is in progress and prevents us
      * from starting further intents.
      */
     private boolean mIntentInProgress;
- 
+
     private boolean mSignInClicked;
- 
+
     private ConnectionResult mConnectionResult;
- 
+
     private SignInButton btnSignIn;
     private Button btnSignOut, btnRevokeAccess, continuar;
     private ImageView imgProfilePic;
     private TextView txtName, txtEmail;
     private LinearLayout llProfileLayout;
-	
-	private Context mContext;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		
-		//testar conexao
-		haveNetworkConnection();
-		
-		//--google
-				continuar = (Button) findViewById(R.id.buttonContinuar);
-				btnSignIn = (SignInButton) findViewById(R.id.btn_sign_in);
-		        btnSignOut = (Button) findViewById(R.id.btn_sign_out);
-		        btnRevokeAccess = (Button) findViewById(R.id.btn_revoke_access);
-		        imgProfilePic = (ImageView) findViewById(R.id.imgProfilePic);
-		        txtName = (TextView) findViewById(R.id.txtName);
-		        txtEmail = (TextView) findViewById(R.id.txtEmail);
-		        llProfileLayout = (LinearLayout) findViewById(R.id.llProfile);
-			
-		        
-		       // Button click listeners
-		        btnSignIn.setOnClickListener(this);
-		        btnSignOut.setOnClickListener(this);
-		        btnRevokeAccess.setOnClickListener(this);
-		 
-		        // Initializing google plus api client
-		        mGoogleApiClient = new GoogleApiClient.Builder(this)
-		                .addConnectionCallbacks(this)
-		                .addOnConnectionFailedListener(this).addApi(Plus.API) //(plusApi,null)
-		                .addScope(Plus.SCOPE_PLUS_LOGIN).build();
-		
-		mContext = getApplicationContext();
-				
-		//ImageView btMap = (ImageView) findViewById(R.id.btMap);
-		//btMap.setOnClickListener(new View.OnClickListener() {
-		
-		continuar.setOnClickListener(new View.OnClickListener() {	
-			@Override
-			public void onClick(View v) {
-		         if (haveNetworkConnection()){
-		                Log.d("internet", "tem internet");
-		                new ListUsers().execute(email);
-		                
-		                
-		                Session.delInstancia();
-		                Session.getInstancia().setDono(email); //login.getText().toString()
-		                
-		                Intent i = new Intent(mContext, Map.class);
-		                i.putExtra("mostrar_botoes", true);
-		                startActivity(i);
-		          } else {
-		              confirmacaoDeRede();
-		          }
-			    
-			}
-		});
-		
-	}
+    private Context mContext;
 
-	@SuppressWarnings("deprecation")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // testar conexao
+        haveNetworkConnection();
+
+        // --google
+        continuar = (Button) findViewById(R.id.buttonContinuar);
+        btnSignIn = (SignInButton) findViewById(R.id.btn_sign_in);
+        btnSignOut = (Button) findViewById(R.id.btn_sign_out);
+        btnRevokeAccess = (Button) findViewById(R.id.btn_revoke_access);
+        imgProfilePic = (ImageView) findViewById(R.id.imgProfilePic);
+        txtName = (TextView) findViewById(R.id.txtName);
+        txtEmail = (TextView) findViewById(R.id.txtEmail);
+        llProfileLayout = (LinearLayout) findViewById(R.id.llProfile);
+
+        // Button click listeners
+        btnSignIn.setOnClickListener(this);
+        btnSignOut.setOnClickListener(this);
+        btnRevokeAccess.setOnClickListener(this);
+
+        // Initializing google plus api client
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this).addApi(Plus.API) // (plusApi,null)
+                .addScope(Plus.SCOPE_PLUS_LOGIN).build();
+
+        mContext = getApplicationContext();
+
+        // ImageView btMap = (ImageView) findViewById(R.id.btMap);
+        // btMap.setOnClickListener(new View.OnClickListener() {
+
+        continuar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (haveNetworkConnection()) {
+                    new ListUsers().execute(email);
+
+                    Session.delInstancia();
+                    Session.getInstancia().setDono(email); // login.getText().toString()
+
+                    Intent i = new Intent(mContext, Map.class);
+                    i.putExtra("mostrar_botoes", true);
+                    startActivity(i);
+                } else {
+                    confirmacaoDeRede();
+                }
+
+            }
+        });
+
+    }
+
+    @SuppressWarnings("deprecation")
     private void confirmacaoDeRede() {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle(R.string.semConexao);
         alertDialog.setMessage("Verifique sua conexão com a internet");
-        
+
         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
             }
         });
-        //alertDialog.setIcon(R.drawable.icon);
+        // alertDialog.setIcon(R.drawable.icon);
         alertDialog.show();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-	
-	@Override
+    @Override
     public boolean onMenuItemSelected(final int featureId, final MenuItem item) {
         if (item.getItemId() == R.id.about) {
             final Intent i = new Intent(mContext, About.class);
@@ -165,339 +159,340 @@ ConnectionCallbacks, OnConnectionFailedListener{
         }
         return super.onMenuItemSelected(featureId, item);
     }
-	
-	
-	//--google
-		protected void onStart() {
-	        super.onStart();
-	        mGoogleApiClient.connect();
-	    }
-	 
-	    protected void onStop() {
-	        super.onStop();
-	        if (mGoogleApiClient.isConnected()) {
-	            mGoogleApiClient.disconnect();
-	        }
-	    }
-	 
 
-	    @Override
-	    public void onClick(View v) {
-	        switch (v.getId()) {
-	        case R.id.btn_sign_in:
-	            // Signin button clicked
-	            signInWithGplus();
-	            break;
-	        case R.id.btn_sign_out:
-	            // Signout button clicked
-	            signOutFromGplus();
-	            break;
-	        case R.id.btn_revoke_access:
-	            // Revoke access button clicked
-	            revokeGplusAccess();
-	            break;
-	        }
-	    }
-	    
-	    @Override
-	    public void onConnectionFailed(ConnectionResult result) {
-	        if (!result.hasResolution()) {
-	            GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), this,
-	                    0).show();
-	            return;
-	        }
-	     
-	        if (!mIntentInProgress) {
-	            // Store the ConnectionResult for later usage
-	            mConnectionResult = result;
-	     
-	            if (mSignInClicked) {
-	                resolveSignInError();
-	            }
-	        }
-	     
-	    }
-	     
-	    @Override
-	    protected void onActivityResult(int requestCode, int responseCode,
-	            Intent intent) {
-	        if (requestCode == RC_SIGN_IN) {
-	            if (responseCode != RESULT_OK) {
-	                mSignInClicked = false;
-	            }
-	     
-	            mIntentInProgress = false;
-	     
-	            if (!mGoogleApiClient.isConnecting()) {
-	                mGoogleApiClient.connect();
-	            }
-	        }
-	    }
-	     
-	    @Override
-	    public void onConnected(Bundle arg0) {
-	        mSignInClicked = false;
-	        //Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
-	     
-	        // Get user's information
-	        getProfileInformation();
-	     
-	        // Update the UI after signin
-	        updateUI(true);
-	     
-	    }
-	     
-	    @Override
-	    public void onConnectionSuspended(int arg0) {
-	        mGoogleApiClient.connect();
-	        updateUI(false);
-	    }
-	     
+    // --google
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
 
-	    private void updateUI(boolean isSignedIn) {
-	        if (isSignedIn) {
-	            btnSignIn.setVisibility(View.GONE);
-	            btnSignOut.setVisibility(View.VISIBLE);
-	            btnRevokeAccess.setVisibility(View.VISIBLE);
-	            llProfileLayout.setVisibility(View.VISIBLE);
-	            continuar.setVisibility(View.VISIBLE);
-	        } else {
-	            btnSignIn.setVisibility(View.VISIBLE);
-	            btnSignOut.setVisibility(View.GONE);
-	            btnRevokeAccess.setVisibility(View.GONE);
-	            llProfileLayout.setVisibility(View.GONE);
-	            continuar.setVisibility(View.GONE);
-	            
-	        }
-	    }
-	    
-	    
-	    
-	    private boolean haveNetworkConnection() 
-	    {
-	        boolean haveConnectedWifi = false;
-	        boolean haveConnectedMobile = false;
+    protected void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
 
-	        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-	        for (NetworkInfo ni : netInfo) 
-	        {
-	            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
-	                if (ni.isConnected())
-	                    haveConnectedWifi = true;
-	            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
-	                if (ni.isConnected())
-	                    haveConnectedMobile = true;
-	        }
-	        return haveConnectedWifi || haveConnectedMobile;
-	    }
-	    
-	    //login----------------------------
-	    private void signInWithGplus() {	        
-	        if (!mGoogleApiClient.isConnecting()) {
-	            mSignInClicked = true;
-	            resolveSignInError();
-	        }
-	    }
-	     
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+        case R.id.btn_sign_in:
+            // Signin button clicked
+            signInWithGplus();
+            break;
+        case R.id.btn_sign_out:
+            // Signout button clicked
+            signOutFromGplus();
+            break;
+        case R.id.btn_revoke_access:
+            // Revoke access button clicked
+            revokeGplusAccess();
+            break;
+        }
+    }
 
-	    private void resolveSignInError() {
-	        if (mConnectionResult.hasResolution()) {
-	            try {
-	                mIntentInProgress = true;
-	                mConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
-	            } catch (SendIntentException e) {
-	                mIntentInProgress = false;
-	                mGoogleApiClient.connect();
-	            }
-	        }
-	    }
-	    
-	    
-	    //-------------------
-	    
-	    private void getProfileInformation() {
-	        try {
-	            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-	                Person currentPerson = Plus.PeopleApi
-	                        .getCurrentPerson(mGoogleApiClient);
-	                //String personName = currentPerson.getDisplayName();
-	                personName = currentPerson.getDisplayName();
-	                String personPhotoUrl = currentPerson.getImage().getUrl();
-	                String personGooglePlusProfile = currentPerson.getUrl();
-	                email = Plus.AccountApi.getAccountName(mGoogleApiClient);
-	     
-	                Log.e(TAG, "Name: " + personName + ", plusProfile: "
-	                        + personGooglePlusProfile + ", email: " + email
-	                        + ", Image: " + personPhotoUrl);
-	     
-	                txtName.setText(personName);
-	                txtEmail.setText(email);
-	     
-	                // by default the profile url gives 50x50 px image only
-	                // we can replace the value with whatever dimension we want by
-	                // replacing sz=X
-	                personPhotoUrl = personPhotoUrl.substring(0,
-	                        personPhotoUrl.length() - 2)
-	                        + PROFILE_PIC_SIZE;
-	     
-	                new LoadProfileImage(imgProfilePic).execute(personPhotoUrl);
-	     
-	            } else {
-	                Toast.makeText(getApplicationContext(),
-	                        "Person information is null", Toast.LENGTH_LONG).show();
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	    }
-	     
-	 
-	    private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
-	        ImageView bmImage;
-	     
-	        public LoadProfileImage(ImageView bmImage) {
-	            this.bmImage = bmImage;
-	        }
-	     
-	        protected Bitmap doInBackground(String... urls) {
-	            String urldisplay = urls[0];
-	            Bitmap mIcon11 = null;
-	            try {
-	                InputStream in = new java.net.URL(urldisplay).openStream();
-	                mIcon11 = BitmapFactory.decodeStream(in);
-	            } catch (Exception e) {
-	                Log.e("Error", e.getMessage());
-	                e.printStackTrace();
-	            }
-	            return mIcon11;
-	        }
-	     
-	        protected void onPostExecute(Bitmap result) {
-	            bmImage.setImageBitmap(result);
-	        }
-	    }
-		
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        if (!result.hasResolution()) {
+            GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), this,
+                    0).show();
+            return;
+        }
 
-	    private void signOutFromGplus() {
-	        if (mGoogleApiClient.isConnected()) {
-	            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-	            mGoogleApiClient.disconnect();
-	            mGoogleApiClient.connect();
-	            updateUI(false);
-	        }
-	    }
-	    
+        if (!mIntentInProgress) {
+            // Store the ConnectionResult for later usage
+            mConnectionResult = result;
 
-	    private void revokeGplusAccess() {
-	        if (mGoogleApiClient.isConnected()) {
-	            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-	            Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient)
-	                    .setResultCallback(new ResultCallback<Status>() {
-	                        @Override
-	                        public void onResult(Status arg0) {
-	                            Log.e(TAG, "User access revoked!");
-	                            mGoogleApiClient.connect();
-	                            updateUI(false);
-	                        }
-	     
-	                    });
-	        }
-	    }
-	    
-	    
-	    private class ListUsers extends AsyncTask<String, Void, Boolean> {
-	        
-	        private ProgressDialog dialog;
-	        private String login;
-
-	        @Override
-	        protected void onPreExecute() {
-	            super.onPreExecute();
-	            dialog = ProgressDialog.show(MainActivity.this, "Verificando usuários", "Aguarde, o sistema está verificando a sua conta");
-	        }
-
-	        @Override
-	        protected Boolean doInBackground(String... params) {
-	            login = params[0];	            
-	            String url = "http://23.227.167.93:8081/findYouFriends/usuario/getCurrentLocation?login="  + login;
-	            return new JSONParse(url).isNull();
-	        }
-
-	        @Override
-	        protected void onPostExecute(Boolean result) {
-	            super.onPostExecute(result);
-	            dialog.dismiss();
-	            if(result){
-	                new CadastrarUsuario().execute(login);
-	            }else{
-	                new CapturaID().execute(login);
-	            }
-	        }
-	    }
-	    
-private class CadastrarUsuario extends AsyncTask<String, Void, Void> {
-            
-            private ProgressDialog dialog;
-            private String login;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                dialog = ProgressDialog.show(MainActivity.this, "Cadastrando", "Você esta sendo cadastrado");
-            }
-
-            @Override
-            protected Void doInBackground(String... params) {
-                
-                login = params[0];
-                
-                String url = "http://23.227.167.93:8081/findYouFriends/usuario/saveUser?"
-                        + "login="     + login
-                        + "&latitude="    + "0"
-                        + "&longitude=" + "0"
-                        + "&nome="   + params[0];
-                
-                new JSONParse(url);
-                
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void result) {
-                super.onPostExecute(result);
-                new CapturaID().execute(login);
-                dialog.dismiss();
+            if (mSignInClicked) {
+                resolveSignInError();
             }
         }
 
+    }
 
-private class CapturaID extends AsyncTask<String, Void, Integer> {
+    @Override
+    protected void onActivityResult(int requestCode, int responseCode,
+            Intent intent) {
+        if (requestCode == RC_SIGN_IN) {
+            if (responseCode != RESULT_OK) {
+                mSignInClicked = false;
+            }
+
+            mIntentInProgress = false;
+
+            if (!mGoogleApiClient.isConnecting()) {
+                mGoogleApiClient.connect();
+            }
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle arg0) {
+        mSignInClicked = false;
+        // Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
+
+        // Get user's information
+        getProfileInformation();
+
+        // Update the UI after signin
+        updateUI(true);
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int arg0) {
+        mGoogleApiClient.connect();
+        updateUI(false);
+    }
+
+    private void updateUI(boolean isSignedIn) {
+        if (isSignedIn) {
+            btnSignIn.setVisibility(View.GONE);
+            btnSignOut.setVisibility(View.VISIBLE);
+            btnRevokeAccess.setVisibility(View.VISIBLE);
+            llProfileLayout.setVisibility(View.VISIBLE);
+            continuar.setVisibility(View.VISIBLE);
+        } else {
+            btnSignIn.setVisibility(View.VISIBLE);
+            btnSignOut.setVisibility(View.GONE);
+            btnRevokeAccess.setVisibility(View.GONE);
+            llProfileLayout.setVisibility(View.GONE);
+            continuar.setVisibility(View.GONE);
+
+        }
+    }
+
+    private boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+    }
+
+    // login----------------------------
+    private void signInWithGplus() {
+        if (!mGoogleApiClient.isConnecting()) {
+            mSignInClicked = true;
+            resolveSignInError();
+        }
+    }
+
+    private void resolveSignInError() {
+        if (mConnectionResult.hasResolution()) {
+            try {
+                mIntentInProgress = true;
+                mConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
+            } catch (SendIntentException e) {
+                mIntentInProgress = false;
+                mGoogleApiClient.connect();
+            }
+        }
+    }
+
+    // -------------------
+
+    private void getProfileInformation() {
+        try {
+            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+                Person currentPerson = Plus.PeopleApi
+                        .getCurrentPerson(mGoogleApiClient);
+                // String personName = currentPerson.getDisplayName();
+                personName = currentPerson.getDisplayName();
+                String personPhotoUrl = currentPerson.getImage().getUrl();
+                String personGooglePlusProfile = currentPerson.getUrl();
+                email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+
+                Log.e(TAG, "Name: " + personName + ", plusProfile: "
+                        + personGooglePlusProfile + ", email: " + email
+                        + ", Image: " + personPhotoUrl);
+
+                txtName.setText(personName);
+                txtEmail.setText(email);
+
+                // by default the profile url gives 50x50 px image only
+                // we can replace the value with whatever dimension we want by
+                // replacing sz=X
+                personPhotoUrl = personPhotoUrl.substring(0,
+                        personPhotoUrl.length() - 2)
+                        + PROFILE_PIC_SIZE;
+
+                new LoadProfileImage(imgProfilePic).execute(personPhotoUrl);
+
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "Person information is null", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public LoadProfileImage(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
+
+    private void signOutFromGplus() {
+        if (mGoogleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+            mGoogleApiClient.connect();
+            updateUI(false);
+        }
+    }
+
+    private void revokeGplusAccess() {
+        if (mGoogleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient)
+                    .setResultCallback(new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status arg0) {
+                            Log.e(TAG, "User access revoked!");
+                            mGoogleApiClient.connect();
+                            updateUI(false);
+                        }
+
+                    });
+        }
+    }
+
+    private class ListUsers extends AsyncTask<String, Void, Boolean> {
+
+        private ProgressDialog dialog;
+        private String login;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = ProgressDialog.show(MainActivity.this,
+                    "Verificando usuários",
+                    "Aguarde, o sistema está verificando a sua conta");
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            login = params[0];
+            String url = "http://23.227.167.93:8081/findYouFriends/usuario/getCurrentLocation?login="
+                    + login;
+            return new JSONParse(url).isNull();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            dialog.dismiss();
+            if (result) {
+                new CadastrarUsuario().execute(login);
+            } else {
+                new CapturaID().execute(login);
+            }
+        }
+    }
+
+    private class CadastrarUsuario extends AsyncTask<String, Void, Void> {
+
+        private ProgressDialog dialog;
+        private String login;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = ProgressDialog.show(MainActivity.this, "Cadastrando",
+                    "Você esta sendo cadastrado");
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+
+            login = params[0];
+            
+            String nome = mudaCaractere(personName, " ", "_");
+            Log.d("renan", nome);
+
+            String url = "http://23.227.167.93:8081/findYouFriends/usuario/saveUser?"
+                    + "login="
+                    + login
+                    + "&latitude="
+                    + "0"
+                    + "&longitude="
+                    + "0" + "&nome=" + nome;
+
+            new JSONParse(url);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            new CapturaID().execute(login);
+            dialog.dismiss();
+        }
+    }
+
+    private class CapturaID extends AsyncTask<String, Void, Integer> {
+
+        private ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = ProgressDialog.show(MainActivity.this, "Cadastrando",
+                    "Você esta sendo cadastrado");
+        }
+
+        @Override
+        protected Integer doInBackground(String... params) {
+
+            String url = "http://23.227.167.93:8081/findYouFriends/usuario/getCurrentLocation?login="
+                    + params[0];
+            return new JSONParse(url).getIdUsuario();
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+
+            Session.getInstancia().setIdUser(result);
+
+            dialog.dismiss();
+        }
+
+    }
     
-    private ProgressDialog dialog;
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        dialog = ProgressDialog.show(MainActivity.this, "Cadastrando", "Você esta sendo cadastrado");
+    public String mudaCaractere(String str, String antigo, String novo){
+        str = str.replace(antigo, novo);
+        return str;
     }
-
-    @Override
-    protected Integer doInBackground(String... params) {
-        
-        String url = "http://23.227.167.93:8081/findYouFriends/usuario/getCurrentLocation?login="  + params[0];    
-        return new JSONParse(url).getIdUsuario();
-    }
-
-    @Override
-    protected void onPostExecute(Integer result) {
-        super.onPostExecute(result);
-        
-        Session.getInstancia().setIdUser(result);
-        
-        dialog.dismiss();
-    }
-
 }
-}
-

@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,6 +56,8 @@ public class CriarGrupoActivity extends Activity {
         protected Void doInBackground(String... params) {
             String nomeDoGrupo = params[0];
             String senhaDoGrupo = params[1];
+            
+            Log.d("renan", "dono: " + Session.getInstancia().getDono());
             
             String url = "http://23.227.167.93:8081/findYouFriends/grupo/saveGroup?"
                     + "nome="     + nomeDoGrupo

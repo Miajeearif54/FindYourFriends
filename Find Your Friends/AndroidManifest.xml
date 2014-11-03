@@ -119,10 +119,10 @@
             android:value="AIzaSyDDKDTEx5OG9PbNInf6FvotwOtHbwiS_Dg"/> 
             
         <!-- 
-        Diego -->
+        Diego 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyB36AJPJu5FjLDf7TrH2v-j6dwaVGG3k2s"/>
+            android:value="AIzaSyB36AJPJu5FjLDf7TrH2v-j6dwaVGG3k2s"/> -->
             
        <!-- 
         Renan (casa) 

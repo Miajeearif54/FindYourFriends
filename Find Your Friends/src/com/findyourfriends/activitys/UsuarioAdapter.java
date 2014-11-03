@@ -5,6 +5,7 @@ import java.util.List;
 import com.les.findyourfriends.R;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +43,17 @@ public class UsuarioAdapter extends BaseAdapter {
         view = mInflater.inflate(R.layout.usuario_adapter_item, null);
         Usuario usuario = mUsuario.get(posicao);
         
+        String nome = mudaCaractere(usuario.getNome(), "_", " ");
+        Log.d("renan", "usuario grupo: " + nome);
+        
         TextView tvNome = (TextView) view.findViewById(R.id.nomeUsuario);
-        tvNome.setText(usuario.getNome());
+        tvNome.setText(nome);
         
         return view;
+    }
+    
+    public String mudaCaractere(String str, String antigo, String novo){
+        str = str.replace(antigo, novo);
+        return str;
     }
 }
