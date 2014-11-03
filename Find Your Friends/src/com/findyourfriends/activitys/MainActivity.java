@@ -3,9 +3,11 @@ package com.findyourfriends.activitys;
 import java.io.InputStream;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.graphics.Bitmap;
@@ -132,29 +134,24 @@ ConnectionCallbacks, OnConnectionFailedListener{
 		
 	}
 
-	private void confirmacaoDeRede() {
-        final Dialog alertDialog = new Dialog(this);
-        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        alertDialog.setContentView(R.layout.confirmacao_internet_dialog);
-        TextView tvMsgToShow = (TextView) alertDialog.findViewById(R.id.conexao_texto);        
+	@SuppressWarnings("deprecation")
+    private void confirmacaoDeRede() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(R.string.semConexao);
+        alertDialog.setMessage("Verifique sua conexão com a internet");
         
-        Button ok = (Button) alertDialog.findViewById(R.id.sem_conexao_ok);
-        ok.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
             }
         });
-        
+        //alertDialog.setIcon(R.drawable.icon);
         alertDialog.show();
-
     }
 
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}

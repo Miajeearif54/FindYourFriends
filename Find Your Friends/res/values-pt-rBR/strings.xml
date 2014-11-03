@@ -27,5 +27,9 @@
     <string name="werton">Werton Guimaraes</string>
     <string name="ano">2014</string>
     <string name="versao">Versão 1.0</string>
+    
+    <!--  menssagens dialog -->
+    <string name="semConexao">Sem conexão </string>
+    <string name="verifiqueConexao">Verifique sua conexão com a internet</string>
 
 </resources>

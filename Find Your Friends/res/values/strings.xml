@@ -28,5 +28,9 @@
     <string name="ano">2014</string>
     <string name="versao">Version 1.0</string>
     
+    <!--  menssagens dialog -->
+    <string name="semConexao">No connection </string>
+    <string name="verifiqueConexao">Verify you network connection</string>
+    
     
 </resources>
