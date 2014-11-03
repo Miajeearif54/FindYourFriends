@@ -11,6 +11,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -157,6 +158,7 @@ public class Map extends Activity implements LocationListener {
                     int indice = 0;
 
                     for (String nome : usuariosParse) {
+                        String userName = mudaCaractere(nome, "_", " ");
 
                         if (indice < latParse.size()) {
 
@@ -164,7 +166,7 @@ public class Map extends Activity implements LocationListener {
                                     .get(indice));
                             latitude = Double.parseDouble(latParse.get(indice));
                             
-                            marcaUsuario(nome, latitude, longitude);
+                            marcaUsuario(userName, latitude, longitude);
                             indice++;
                         }
                     }
@@ -202,11 +204,16 @@ public class Map extends Activity implements LocationListener {
             e.printStackTrace();
         }
     }
+    
+    public String mudaCaractere(String str, String antigo, String novo){
+        str = str.replace(antigo, novo);
+        return str;
+    }
 
     private void marcaUsuario(String nome, double latitude, double longitude) {
         
         LatLng coordinate = new LatLng(latitude, longitude);
-
+               
         startPerc = googleMap.addMarker(new MarkerOptions()
                 .title(nome)
                 .position(coordinate)
@@ -217,7 +224,7 @@ public class Map extends Activity implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         if (startPerc != null) {
-            startPerc.remove();
+            //startPerc.remove();
         }
     }
 

@@ -44,7 +44,7 @@ public class UsuarioAdapter extends BaseAdapter {
         Usuario usuario = mUsuario.get(posicao);
         
         String nome = mudaCaractere(usuario.getNome(), "_", " ");
-        Log.d("renan", "usuario grupo: " + nome);
+        
         
         TextView tvNome = (TextView) view.findViewById(R.id.nomeUsuario);
         tvNome.setText(nome);
