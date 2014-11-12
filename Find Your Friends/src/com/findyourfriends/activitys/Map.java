@@ -117,7 +117,16 @@ public class Map extends Activity implements LocationListener {
     
     @Override
     public boolean onMenuItemSelected(final int featureId, final MenuItem item) {
-        if (item.getItemId() == R.id.about) {
+        
+        //about - depois mudar
+        if (item.getItemId() == R.id.perfil) {
+            final Intent i = new Intent(mContext, MainActivity.class);
+            i.putExtra("perfil", true);
+            startActivity(i); 
+            return true;
+        }
+        
+        if (item.getItemId() == R.id.about2) {
             final Intent i = new Intent(mContext, About.class);
             startActivity(i);
             return true;
@@ -185,6 +194,12 @@ public class Map extends Activity implements LocationListener {
                             googleMap.animateCamera(CameraUpdateFactory
                                     .newLatLng(latLng));
                             googleMap.addMarker(markerOptions);
+                            
+                            double lat = markerOptions.getPosition().latitude;
+                            double lng = markerOptions.getPosition().longitude;
+                            
+                            Log.d("ponto", "lat:" + lat + " - long:" + lng);
+                            
                         }
                     });
                 }
@@ -257,6 +272,11 @@ public class Map extends Activity implements LocationListener {
     protected void onPause() {
         super.onPause();
         locationManager.removeUpdates(this);
+    }
+    
+    @Override
+    public void onBackPressed() {
+        this.finish();
     }
 
 }

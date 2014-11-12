@@ -120,13 +120,18 @@ public class MainActivity extends Activity implements OnClickListener,
                     Intent i = new Intent(mContext, Map.class);
                     i.putExtra("mostrar_botoes", true);
                     startActivity(i);
+                    finish();
                 } else {
                     confirmacaoDeRede();
                 }
 
             }
         });
-
+        btnSignIn.setVisibility(View.GONE);
+        btnSignOut.setVisibility(View.GONE);
+        btnRevokeAccess.setVisibility(View.GONE);
+        llProfileLayout.setVisibility(View.GONE);
+        continuar.setVisibility(View.GONE);
     }
 
     @SuppressWarnings("deprecation")
@@ -146,7 +151,7 @@ public class MainActivity extends Activity implements OnClickListener,
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.perfil, menu);
         return true;
     }
 
@@ -193,6 +198,7 @@ public class MainActivity extends Activity implements OnClickListener,
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
+        updateUI(false);
         if (!result.hasResolution()) {
             GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), this,
                     0).show();
@@ -228,21 +234,36 @@ public class MainActivity extends Activity implements OnClickListener,
 
     @Override
     public void onConnected(Bundle arg0) {
-        mSignInClicked = false;
+        
         // Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 
         // Get user's information
         getProfileInformation();
 
+        // TODO
+        Intent it = getIntent();
+        boolean perfil = it.getBooleanExtra("perfil", false);
+        if (!perfil || mSignInClicked) {
+            Intent i = new Intent(mContext, Map.class);
+            i.putExtra("mostrar_botoes", true);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            finish();
+            
+        } else {
+            updateUI(true);
+        }
+        
+        mSignInClicked = false;
         // Update the UI after signin
-        updateUI(true);
-
+        // updateUI(true);
     }
 
     @Override
     public void onConnectionSuspended(int arg0) {
         mGoogleApiClient.connect();
         updateUI(false);
+
     }
 
     private void updateUI(boolean isSignedIn) {
@@ -251,13 +272,13 @@ public class MainActivity extends Activity implements OnClickListener,
             btnSignOut.setVisibility(View.VISIBLE);
             btnRevokeAccess.setVisibility(View.VISIBLE);
             llProfileLayout.setVisibility(View.VISIBLE);
-            continuar.setVisibility(View.VISIBLE);
+//            continuar.setVisibility(View.VISIBLE);
         } else {
             btnSignIn.setVisibility(View.VISIBLE);
             btnSignOut.setVisibility(View.GONE);
             btnRevokeAccess.setVisibility(View.GONE);
             llProfileLayout.setVisibility(View.GONE);
-            continuar.setVisibility(View.GONE);
+//            continuar.setVisibility(View.GONE);
 
         }
     }
@@ -368,6 +389,7 @@ public class MainActivity extends Activity implements OnClickListener,
             mGoogleApiClient.disconnect();
             mGoogleApiClient.connect();
             updateUI(false);
+            
         }
     }
 
@@ -436,7 +458,7 @@ public class MainActivity extends Activity implements OnClickListener,
         protected Void doInBackground(String... params) {
 
             login = params[0];
-            
+
             String nome = mudaCaractere(personName, " ", "_");
             Log.d("renan", nome);
 
@@ -490,9 +512,25 @@ public class MainActivity extends Activity implements OnClickListener,
         }
 
     }
-    
-    public String mudaCaractere(String str, String antigo, String novo){
+
+    public String mudaCaractere(String str, String antigo, String novo) {
         str = str.replace(antigo, novo);
         return str;
+    }
+    
+    @Override
+    public void onBackPressed() {
+        finish();
+       /* //
+        if (this.btnSignIn.isShown()) {
+            Log.d("renan", "matar app");
+            //android.os.Process.killProcess(android.os.Process.myPid());
+            //new Intent(mContext, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            onDestroy();
+        
+        } else {
+            Log.d("renan", "finish");
+            this.finish();
+        }*/
     }
 }
