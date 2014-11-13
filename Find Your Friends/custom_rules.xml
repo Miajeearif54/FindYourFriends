@@ -9,7 +9,7 @@
         </findbugs>
     </target>
  
-    <taskdef resource="checkstyletask.properties" classpath="/opt/checkstyle-5.7/checkstyle-5.7-all.jar"/>
+    <taskdef resource="checkstyletask.properties" classpath="/opt/checkstyle-6.0/checkstyle-6.0-all.jar"/>
  
     <target name="checkstyle">
         <checkstyle config="/opt/checkstyle-6.0/sun_checks.xml" failonviolation="false">
