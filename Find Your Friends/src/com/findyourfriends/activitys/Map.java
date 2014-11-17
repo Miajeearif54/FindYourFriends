@@ -3,7 +3,9 @@ package com.findyourfriends.activitys;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
@@ -11,11 +13,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -41,6 +46,10 @@ public class Map extends Activity implements LocationListener {
     private LocationManager locationManager;
     private String provider;
     private Marker startPerc;
+    
+    private AlertDialog tipoDePontoDialog; 
+    private final CharSequence[] tiposDePonto = {"Ponto de encontro","Local especifico"};
+    private boolean pontoDeEcontro;
 
     private ImageButton editar, grupos, meusGrupos;
 
@@ -61,7 +70,8 @@ public class Map extends Activity implements LocationListener {
         Location location = locationManager.getLastKnownLocation(provider);
 
         Intent it = getIntent();
-        boolean exibirBotoes = it.getBooleanExtra("mostrar_botoes", false);
+        //boolean exibirBotoes = it.getBooleanExtra("mostrar_botoes", false);
+        boolean exibirBotoes = false;
 
         if (exibirBotoes) {
             setContentView(R.layout.map);
@@ -105,6 +115,9 @@ public class Map extends Activity implements LocationListener {
         } else {
             setContentView(R.layout.mapa_grupo);
             initilizeMap(location, exibirBotoes);
+            if (location != null) {
+                onLocationChanged(location);
+            }
         }
 
     }
@@ -145,16 +158,23 @@ public class Map extends Activity implements LocationListener {
 
     private void initilizeMap(Location location, boolean exibirBotoes) {
         try {
+            
             if (googleMap == null) {
-                if (exibirBotoes) {
-                    googleMap = ((MapFragment) getFragmentManager()
-                            .findFragmentById(R.id.map)).getMap();
-                } else {
-                    Intent it2 = getIntent();
-                    googleMap = ((MapFragment) getFragmentManager()
-                            .findFragmentById(R.id.mapGrupo)).getMap();
 
-                    ArrayList<String> usuariosParse = it2
+                if (exibirBotoes) {
+
+                    googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+                } else {
+                    
+                    Log.d("ponto", "cancer");
+                    
+                    googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapGrupo)).getMap();
+                    
+                    
+             
+                  //Intent it2 = getIntent();
+
+                    /*ArrayList<String> usuariosParse = it2
                             .getStringArrayListExtra("NOMES");
 
                     ArrayList<String> latParse = it2
@@ -178,46 +198,99 @@ public class Map extends Activity implements LocationListener {
                             marcaUsuario(userName, latitude, longitude);
                             indice++;
                         }
-                    }
-
+                    }*/
+                    
                     googleMap.setOnMapClickListener(new OnMapClickListener() {
 
                         @Override
                         public void onMapClick(LatLng latLng) {
-                            MarkerOptions markerOptions = new MarkerOptions();
+                            
+                            
+                            selecionarTipoPonto(latLng);
+                            
+                            
+                            /*MarkerOptions markerOptions = new MarkerOptions();
                             markerOptions.position(latLng);
                             markerOptions.title("Ponto de encontro");
 
-                            markerOptions.icon(BitmapDescriptorFactory
-                                    .fromResource(R.drawable.marker));
+                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
                              //googleMap.clear();
-                            googleMap.animateCamera(CameraUpdateFactory
-                                    .newLatLng(latLng));
+                            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                             googleMap.addMarker(markerOptions);
                             
                             double lat = markerOptions.getPosition().latitude;
-                            double lng = markerOptions.getPosition().longitude;
-                            
-                            Log.d("ponto", "lat:" + lat + " - long:" + lng);
+                            double lng = markerOptions.getPosition().longitude;*/
                             
                         }
                     });
+                    
+                    googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                    googleMap.setMyLocationEnabled(true);
+
+                    double lat = location.getLatitude();
+                    double lng = location.getLongitude();
+                    LatLng coordinate = new LatLng(lat, lng);
+                    
+                    Log.d("ponto", "lat: " + lat + " lng: " + lng);
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 14));
                 }
             }
             
-            googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-            googleMap.setMyLocationEnabled(true);
-
-            double lat = location.getLatitude();
-            double lng = location.getLongitude();
-            LatLng coordinate = new LatLng(lat, lng);
-
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                    coordinate, 15));
-
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public void selecionarTipoPonto(final LatLng latLng){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Defina o nome e o tipo");
+        
+        final EditText nomePonto = new EditText(this);
+        builder.setView(nomePonto);
+        
+        builder.setSingleChoiceItems(tiposDePonto, -1, new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int item) {
+            
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(latLng);
+            double lat, lng;
+       
+            switch(item)
+            {
+                case 0:
+                    
+                    if (TextUtils.isEmpty(nomePonto.getText().toString())) {
+                        markerOptions.title("Ponto de encontro");
+                    } else {
+                        markerOptions.title(nomePonto.getText().toString());
+                    }
+                    
+                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                    googleMap.addMarker(markerOptions);
+                    lat = markerOptions.getPosition().latitude;
+                    lng = markerOptions.getPosition().longitude;
+                    break;
+                    
+                case 1:
+                    if (TextUtils.isEmpty(nomePonto.getText().toString())) {
+                        markerOptions.title("Local especifico");
+                    } else {
+                        markerOptions.title(nomePonto.getText().toString());
+                    }
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                    googleMap.addMarker(markerOptions);
+                    lat = markerOptions.getPosition().latitude;
+                    lng = markerOptions.getPosition().longitude;
+                    break;                
+            }
+            tipoDePontoDialog.dismiss();    
+            }
+        });
+        
+        tipoDePontoDialog = builder.create();
+        tipoDePontoDialog.show();
     }
     
     public String mudaCaractere(String str, String antigo, String novo){

@@ -139,6 +139,9 @@ public class JSONParse {
     public List<Integer> getGruposUsuarios() {
         List<Integer> idGrupos = new ArrayList<Integer>();
         try {
+            if (jsonString == null) {
+                return idGrupos;
+            }
             JSONObject usuario = new JSONObject(jsonString);
             JSONArray gUsuarios = convert(usuario.get("grupos"), JSONArray.class);
             
