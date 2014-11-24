@@ -6,7 +6,7 @@
     <string name="hello_world">Hello world!</string>
     
     <string name="continar">Continuar</string>
-    <string name="btn_logout_from_google">Sair do Google</string>
+    <string name="btn_logout_from_google">Sair</string>
     <string name="btn_revoke_access">Revogar acesso</string>
     
     <string name="criarGrupo">Criar grupo</string>
@@ -27,7 +27,9 @@
     <string name="werton">Werton Guimaraes</string>
     <string name="ano">2014</string>
     <string name="versao">Versão 1.0</string>
-    
+       
+     <string name="perfil">Perfil</string>
+     
     <!--  menssagens dialog -->
     <string name="semConexao">Sem conexão </string>
     <string name="verifiqueConexao">Verifique sua conexão com a internet</string>

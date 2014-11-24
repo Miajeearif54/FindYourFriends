@@ -99,6 +99,11 @@
             android:label="@string/about">
         </activity>
         
+        <activity
+            android:name="com.findyourfriends.activitys.PerfilActivity"
+            android:label="@string/perfil">
+        </activity>
+        
         <!--
         Werton (embedded)
         <meta-data

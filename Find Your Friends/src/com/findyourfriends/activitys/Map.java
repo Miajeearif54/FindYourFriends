@@ -133,8 +133,8 @@ public class Map extends Activity implements LocationListener {
         
         //about - depois mudar
         if (item.getItemId() == R.id.perfil) {
-            final Intent i = new Intent(mContext, MainActivity.class);
-            i.putExtra("perfil", true);
+            final Intent i = new Intent(mContext, PerfilActivity.class);
+            //i.putExtra("perfil", true);
             startActivity(i); 
             return true;
         }

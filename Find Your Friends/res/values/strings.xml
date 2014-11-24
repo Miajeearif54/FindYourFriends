@@ -6,7 +6,7 @@
     <string name="hello_world">Hello world!</string>
     
     <string name="continar">Continue</string>
-    <string name="btn_logout_from_google">Logout from Google</string>
+    <string name="btn_logout_from_google">Logout</string>
     <string name="btn_revoke_access">Revoke Access</string>
         
     <string name="criarGrupo">Create group </string>
@@ -27,6 +27,8 @@
     <string name="werton">Werton Guimaraes</string>
     <string name="ano">2014</string>
     <string name="versao">Version 1.0</string>
+    
+    <string name="perfil">Profile</string>
     
     <!--  menssagens dialog -->
     <string name="semConexao">No connection </string>
