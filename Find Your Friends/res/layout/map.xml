@@ -1,43 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_map" >
+
+    <!--
+     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/bg_map">
+    -->
+
     
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:orientation="horizontal"
-        android:gravity="center">
-        
-        <ImageButton
-            android:id="@+id/grupos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/selector_grupos"
-            tools:ignore="ContentDescription" />
-        
-        <ImageButton
-            android:id="@+id/meusGrupos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/selector_meus_grupos"
-            tools:ignore="ContentDescription" />
-        
-        <ImageButton
-            android:id="@+id/editar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/selector_edit"
-            tools:ignore="ContentDescription" />
-        
-        
-    </LinearLayout>
 
     <fragment
         android:id="@+id/map"
@@ -45,5 +21,54 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:visibility="visible" >
 
-</LinearLayout>
+        <ImageButton
+            android:id="@+id/grupos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/selector_grupos" />
+
+        <ImageButton
+            android:id="@+id/meusGrupos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/selector_meus_grupos" />
+
+        <ImageButton
+            android:id="@+id/editar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/selector_edit" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LayoutNoInternet"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/black"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="invisible" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Não foi possivel carregar o mapa! Verifique sua conexão com a internet."
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</RelativeLayout>

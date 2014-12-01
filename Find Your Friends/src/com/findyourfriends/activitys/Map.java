@@ -12,6 +12,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,12 +21,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -39,17 +42,23 @@ import com.les.findyourfriends.R;
  * rights reserved.
  */
 
-public class Map extends Activity implements LocationListener {
+public class Map extends Activity implements LocationListener,
+        OnMapLoadedCallback {
+
+    private static final int COUNTDOWNTIMER_PARAM = 5000;
+    private static final int COUNTDOWNTIMER_PARAM_LOADED = 10000;
 
     private Context mContext;
     private GoogleMap googleMap;
     private LocationManager locationManager;
     private String provider;
     private Marker startPerc;
-    
-    private AlertDialog tipoDePontoDialog; 
-    private final CharSequence[] tiposDePonto = {"Ponto de encontro","Local especifico"};
+
+    private AlertDialog tipoDePontoDialog;
+    private final CharSequence[] tiposDePonto = { "Ponto de encontro",
+            "Local especifico" };
     private boolean pontoDeEcontro;
+    private Boolean loadedMap = false;
 
     private ImageButton editar, grupos, meusGrupos;
 
@@ -71,11 +80,12 @@ public class Map extends Activity implements LocationListener {
 
         Intent it = getIntent();
         boolean exibirBotoes = it.getBooleanExtra("mostrar_botoes", false);
-        //boolean exibirBotoes = false;
+        // boolean exibirBotoes = false;
 
         if (exibirBotoes) {
             setContentView(R.layout.map);
             initilizeMap(location, exibirBotoes);
+            countLoadedMap();
             if (location != null) {
                 onLocationChanged(location);
             }
@@ -119,24 +129,61 @@ public class Map extends Activity implements LocationListener {
         }
 
     }
-    
+
+    private void countLoadedMap() {
+        final CountDownTimer counter = new CountDownTimer(
+                COUNTDOWNTIMER_PARAM_LOADED, COUNTDOWNTIMER_PARAM_LOADED) {
+
+            @Override
+            public void onTick(final long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
+                if (!loadedMap) {
+                    setInternetVisible();
+                }
+            }
+        };
+        counter.start();
+    }
+
+    private void setInternetVisible() {
+        final LinearLayout layout = (LinearLayout) findViewById(R.id.LayoutNoInternet);
+        layout.setVisibility(LinearLayout.VISIBLE);
+        final CountDownTimer counter = new CountDownTimer(COUNTDOWNTIMER_PARAM,
+                COUNTDOWNTIMER_PARAM) {
+
+            @Override
+            public void onTick(final long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
+                layout.setVisibility(LinearLayout.INVISIBLE);
+            }
+        };
+        counter.start();
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    
+
     @Override
     public boolean onMenuItemSelected(final int featureId, final MenuItem item) {
-        
-        //about - depois mudar
+
+        // about - depois mudar
         if (item.getItemId() == R.id.perfil) {
             final Intent i = new Intent(mContext, PerfilActivity.class);
-            startActivity(i); 
+            startActivity(i);
             finish();
             return true;
         }
-        
+
         if (item.getItemId() == R.id.about2) {
             final Intent i = new Intent(mContext, About.class);
             startActivity(i);
@@ -156,68 +203,72 @@ public class Map extends Activity implements LocationListener {
 
     private void initilizeMap(Location location, boolean exibirBotoes) {
         try {
-            
+
             if (googleMap == null) {
 
                 if (exibirBotoes) {
 
-                    googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-                } else {                 
-                    
-                    googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapGrupo)).getMap();
-                    
-                   
-             
-                  //Intent it2 = getIntent();
+                    googleMap = ((MapFragment) getFragmentManager()
+                            .findFragmentById(R.id.map)).getMap();
+                } else {
 
-                    /*ArrayList<String> usuariosParse = it2
-                            .getStringArrayListExtra("NOMES");
+                    googleMap = ((MapFragment) getFragmentManager()
+                            .findFragmentById(R.id.mapGrupo)).getMap();
 
-                    ArrayList<String> latParse = it2
-                            .getStringArrayListExtra("LATITUDE");
+                    // Intent it2 = getIntent();
 
-                    ArrayList<String> longParse = it2
-                            .getStringArrayListExtra("LONGITUDE");
+                    /*
+                     * ArrayList<String> usuariosParse = it2
+                     * .getStringArrayListExtra("NOMES");
+                     * 
+                     * ArrayList<String> latParse = it2
+                     * .getStringArrayListExtra("LATITUDE");
+                     * 
+                     * ArrayList<String> longParse = it2
+                     * .getStringArrayListExtra("LONGITUDE");
+                     * 
+                     * double latitude, longitude; int indice = 0;
+                     * 
+                     * for (String nome : usuariosParse) { String userName =
+                     * mudaCaractere(nome, "_", " ");
+                     * 
+                     * if (indice < latParse.size()) {
+                     * 
+                     * longitude = Double.parseDouble(longParse .get(indice));
+                     * latitude = Double.parseDouble(latParse.get(indice));
+                     * 
+                     * marcaUsuario(userName, latitude, longitude); indice++; }
+                     * }
+                     */
 
-                    double latitude, longitude;
-                    int indice = 0;
-
-                    for (String nome : usuariosParse) {
-                        String userName = mudaCaractere(nome, "_", " ");
-
-                        if (indice < latParse.size()) {
-
-                            longitude = Double.parseDouble(longParse
-                                    .get(indice));
-                            latitude = Double.parseDouble(latParse.get(indice));
-                            
-                            marcaUsuario(userName, latitude, longitude);
-                            indice++;
-                        }
-                    }*/
-                    
                     googleMap.setOnMapClickListener(new OnMapClickListener() {
 
                         @Override
                         public void onMapClick(LatLng latLng) {
-                      
-                            selecionarTipoPonto(latLng);
-                    
-                            /*MarkerOptions markerOptions = new MarkerOptions();
-                            markerOptions.position(latLng);
-                            markerOptions.title("Ponto de encontro");
 
-                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
-                             //googleMap.clear();
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                            googleMap.addMarker(markerOptions);                           
-                            double lat = markerOptions.getPosition().latitude;
-                            double lng = markerOptions.getPosition().longitude;*/
-                            
+                            selecionarTipoPonto(latLng);
+
+                            /*
+                             * MarkerOptions markerOptions = new
+                             * MarkerOptions(); markerOptions.position(latLng);
+                             * markerOptions.title("Ponto de encontro");
+                             * 
+                             * markerOptions.icon(BitmapDescriptorFactory.
+                             * fromResource(R.drawable.marker));
+                             * //googleMap.clear();
+                             * googleMap.animateCamera(CameraUpdateFactory
+                             * .newLatLng(latLng));
+                             * googleMap.addMarker(markerOptions); double lat =
+                             * markerOptions.getPosition().latitude; double lng
+                             * = markerOptions.getPosition().longitude;
+                             */
+
                         }
                     });
+                    
+                    
                 }
-                
+
                 googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 googleMap.setMyLocationEnabled(true);
 
@@ -225,76 +276,84 @@ public class Map extends Activity implements LocationListener {
                 double lng = location.getLongitude();
                 LatLng coordinate = new LatLng(lat, lng);
                 
-                Log.d("ponto", "lat: " + lat + " lng: " + lng);
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 14));
+                googleMap.setOnMapLoadedCallback(this);
+
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                        coordinate, 14));
             }
-            
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    public void selecionarTipoPonto(final LatLng latLng){
+
+    public void selecionarTipoPonto(final LatLng latLng) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Defina o nome e o tipo");
-        
+
         final EditText nomePonto = new EditText(this);
         builder.setView(nomePonto);
-        
-        builder.setSingleChoiceItems(tiposDePonto, -1, new DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dialog, int item) {
-            
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(latLng);
-            double lat, lng;
-       
-            switch(item)
-            {
-                case 0:
-                    
-                    if (TextUtils.isEmpty(nomePonto.getText().toString())) {
-                        markerOptions.title("Ponto de encontro");
-                    } else {
-                        markerOptions.title(nomePonto.getText().toString());
+
+        builder.setSingleChoiceItems(tiposDePonto, -1,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+
+                        MarkerOptions markerOptions = new MarkerOptions();
+                        markerOptions.position(latLng);
+                        double lat, lng;
+
+                        switch (item) {
+                        case 0:
+
+                            if (TextUtils.isEmpty(nomePonto.getText()
+                                    .toString())) {
+                                markerOptions.title("Ponto de encontro");
+                            } else {
+                                markerOptions.title(nomePonto.getText()
+                                        .toString());
+                            }
+
+                            markerOptions.icon(BitmapDescriptorFactory
+                                    .fromResource(R.drawable.marker));
+                            googleMap.animateCamera(CameraUpdateFactory
+                                    .newLatLng(latLng));
+                            googleMap.addMarker(markerOptions);
+                            lat = markerOptions.getPosition().latitude;
+                            lng = markerOptions.getPosition().longitude;
+                            break;
+
+                        case 1:
+                            if (TextUtils.isEmpty(nomePonto.getText()
+                                    .toString())) {
+                                markerOptions.title("Local especifico");
+                            } else {
+                                markerOptions.title(nomePonto.getText()
+                                        .toString());
+                            }
+                            googleMap.animateCamera(CameraUpdateFactory
+                                    .newLatLng(latLng));
+                            googleMap.addMarker(markerOptions);
+                            lat = markerOptions.getPosition().latitude;
+                            lng = markerOptions.getPosition().longitude;
+                            break;
+                        }
+                        tipoDePontoDialog.dismiss();
                     }
-                    
-                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                    googleMap.addMarker(markerOptions);
-                    lat = markerOptions.getPosition().latitude;
-                    lng = markerOptions.getPosition().longitude;
-                    break;
-                    
-                case 1:
-                    if (TextUtils.isEmpty(nomePonto.getText().toString())) {
-                        markerOptions.title("Local especifico");
-                    } else {
-                        markerOptions.title(nomePonto.getText().toString());
-                    }
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                    googleMap.addMarker(markerOptions);
-                    lat = markerOptions.getPosition().latitude;
-                    lng = markerOptions.getPosition().longitude;
-                    break;                
-            }
-            tipoDePontoDialog.dismiss();    
-            }
-        });
-        
+                });
+
         tipoDePontoDialog = builder.create();
         tipoDePontoDialog.show();
     }
-    
-    public String mudaCaractere(String str, String antigo, String novo){
+
+    public String mudaCaractere(String str, String antigo, String novo) {
         str = str.replace(antigo, novo);
         return str;
     }
 
     private void marcaUsuario(String nome, double latitude, double longitude) {
-        
+
         LatLng coordinate = new LatLng(latitude, longitude);
-               
+
         startPerc = googleMap.addMarker(new MarkerOptions()
                 .title(nome)
                 .position(coordinate)
@@ -305,7 +364,7 @@ public class Map extends Activity implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         if (startPerc != null) {
-            //startPerc.remove();
+            // startPerc.remove();
         }
     }
 
@@ -339,10 +398,15 @@ public class Map extends Activity implements LocationListener {
         super.onPause();
         locationManager.removeUpdates(this);
     }
-    
+
     @Override
     public void onBackPressed() {
         this.finish();
+    }
+
+    @Override
+    public void onMapLoaded() {
+        loadedMap = true;
     }
 
 }
