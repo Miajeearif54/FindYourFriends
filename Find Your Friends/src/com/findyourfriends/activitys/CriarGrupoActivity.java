@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class CriarGrupoActivity extends Activity {
+    
+    private String urlBD = "http://150.165.15.89:10008";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +59,9 @@ public class CriarGrupoActivity extends Activity {
             String nomeDoGrupo = params[0];
             String senhaDoGrupo = params[1];
             
-            Log.d("renan", "dono: " + Session.getInstancia().getDono());
+            nomeDoGrupo = mudaCaractere(nomeDoGrupo, " ", "_");
             
-            String url = "http://23.227.167.93:8081/findYouFriends/grupo/saveGroup?"
+            String url = urlBD + "/findYouFriends/grupo/saveGroup?"
                     + "nome="     + nomeDoGrupo
                     + "&dono="    + Session.getInstancia().getDono()
                     + "&duracao=" + "0"
@@ -74,12 +76,20 @@ public class CriarGrupoActivity extends Activity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             
+            
             Intent i = new Intent(getApplicationContext(), MeusGruposActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(i);
-            
             dialog.dismiss();
+            finish();
+            
+            
         }
+    }
+    
+    public String mudaCaractere(String str, String antigo, String novo) {
+        str = str.replace(antigo, novo);
+        return str;
     }
 
 }

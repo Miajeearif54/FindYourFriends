@@ -23,6 +23,7 @@ public class MeusGruposActivity extends Activity{
 	private Context mContext;
 	private static final Object USUARIO = Session.getInstancia().getDono();
 	private ImageButton editar, grupos;
+	private String urlBD = "http://150.165.15.89:10008";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +80,7 @@ public class MeusGruposActivity extends Activity{
         }
 
         private List<Integer> getJSON(String login) {
-            String url = "http://23.227.167.93:8081/findYouFriends/usuario/getCurrentLocation?login="  + login;
+            String url = urlBD + "/findYouFriends/usuario/getCurrentLocation?login="  + login;
             JSONParse parser = new JSONParse(url);
             return parser.getGruposUsuarios();
         }
@@ -111,6 +112,7 @@ public class MeusGruposActivity extends Activity{
             for (Grupo grupo : result) {
                 for (Integer idGrupo : idGrupos) {
                     if (grupo.getId() == idGrupo && grupo.isAtivo()){
+                        grupo.setNome(mudaCaractere(grupo.getNome(), "_", " "));
                         gruposDoUsuario.add(grupo);
                         break;
                     }
@@ -150,8 +152,13 @@ public class MeusGruposActivity extends Activity{
         }
 
         private List<Grupo> getJSON() {
-            JSONParse parser = new JSONParse("http://23.227.167.93:8081/findYouFriends/grupo/listGroups");
+            JSONParse parser = new JSONParse(urlBD + "/findYouFriends/grupo/listGroups");
             return parser.getGruposBD();
         }
     }
+	
+	   public String mudaCaractere(String str, String antigo, String novo) {
+	        str = str.replace(antigo, novo);
+	        return str;
+	    }
 }

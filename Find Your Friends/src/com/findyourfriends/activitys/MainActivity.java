@@ -83,6 +83,8 @@ public class MainActivity extends Activity implements OnClickListener,
     public static SharedPreferences.Editor editor;
     public static boolean logado, sair;
     private String fullPath;
+    
+    private String urlBD = "http://150.165.15.89:10008";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +98,7 @@ public class MainActivity extends Activity implements OnClickListener,
         editor = status.edit();
         
         logado = status.getBoolean("logado", false);
-        
-        
-        
+            
         if (logado){
             if(haveNetworkConnection()){
                 Intent in = new Intent(mContext, Map.class);
@@ -107,9 +107,7 @@ public class MainActivity extends Activity implements OnClickListener,
                 finish();
             }
         }
-        
-        
-               
+                 
         loadView();
         verificaMemoria();
 
@@ -128,15 +126,15 @@ public class MainActivity extends Activity implements OnClickListener,
             @Override
             public void onClick(View v) {
                 if (haveNetworkConnection()) {
-                   /* new ListUsers().execute(email);
+                   new ListUsers().execute(email);
 
                     Session.delInstancia();
-                    Session.getInstancia().setDono(email);*/ // login.getText().toString()
+                    Session.getInstancia().setDono(email); // login.getText().toString()
 
-                    Intent i = new Intent(mContext, Map.class);
+                    /*Intent i = new Intent(mContext, Map.class);
                     i.putExtra("mostrar_botoes", true);
                     startActivity(i);
-                    finish();
+                    finish();*/
                 } else {
                     confirmacaoDeRede();
                 }
@@ -466,7 +464,6 @@ public class MainActivity extends Activity implements OnClickListener,
             mGoogleApiClient.connect();
             updateUI(false);
             mSignInClicked = false;
-            Log.d("logout", "SAIR if"); 
         } 
     }
 
@@ -502,7 +499,7 @@ public class MainActivity extends Activity implements OnClickListener,
         @Override
         protected Boolean doInBackground(String... params) {
             login = params[0];
-            String url = "http://23.227.167.93:8081/findYouFriends/usuario/getCurrentLocation?login="
+            String url = urlBD + "/findYouFriends/usuario/getCurrentLocation?login="
                     + login;
             return new JSONParse(url).isNull();
         }
@@ -527,8 +524,8 @@ public class MainActivity extends Activity implements OnClickListener,
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(MainActivity.this, "Cadastrando",
-                    "Você esta sendo cadastrado");
+            /*dialog = ProgressDialog.show(MainActivity.this, "Cadastrando",
+                    "Você esta sendo cadastrado");*/
         }
 
         @Override
@@ -539,7 +536,7 @@ public class MainActivity extends Activity implements OnClickListener,
             String nome = mudaCaractere(personName, " ", "_");
             Log.d("renan", nome);
 
-            String url = "http://23.227.167.93:8081/findYouFriends/usuario/saveUser?"
+            String url = urlBD + "/findYouFriends/usuario/saveUser?"
                     + "login="
                     + login
                     + "&latitude="
@@ -556,7 +553,12 @@ public class MainActivity extends Activity implements OnClickListener,
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             new CapturaID().execute(login);
-            dialog.dismiss();
+            //dialog.dismiss();
+            
+            Intent i = new Intent(mContext, Map.class);
+            i.putExtra("mostrar_botoes", true);
+            startActivity(i);
+            finish();
         }
     }
 
@@ -567,14 +569,14 @@ public class MainActivity extends Activity implements OnClickListener,
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(MainActivity.this, "Cadastrando",
-                    "Voc� esta sendo cadastrado");
+            /*dialog = ProgressDialog.show(MainActivity.this, "Cadastrando",
+                    "Você esta sendo cadastrado");*/
         }
 
         @Override
         protected Integer doInBackground(String... params) {
 
-            String url = "http://150.165.15.89:10008/findYouFriends//usuario/getCurrentLocation?login="
+            String url = urlBD + "/findYouFriends//usuario/getCurrentLocation?login="
                     + params[0];
             return new JSONParse(url).getIdUsuario();
         }
@@ -585,7 +587,12 @@ public class MainActivity extends Activity implements OnClickListener,
 
             Session.getInstancia().setIdUser(result);
 
-            dialog.dismiss();
+            //dialog.dismiss();
+            
+            Intent i = new Intent(mContext, Map.class);
+            i.putExtra("mostrar_botoes", true);
+            startActivity(i);
+            finish();
         }
 
     }

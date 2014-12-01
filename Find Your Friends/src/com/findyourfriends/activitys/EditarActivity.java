@@ -27,6 +27,7 @@ public class EditarActivity extends Activity{
 	private Button criarGrupo;
 	private ImageButton grupos, meusGrupos;
 	private static final Object DONO= Session.getInstancia().getDono();
+	private String urlBD = "http://150.165.15.89:10008";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +116,7 @@ private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
         }
 
         private List<Grupo> getJSON() {
-            JSONParse parser = new JSONParse("http://23.227.167.93:8081/findYouFriends/grupo/listGroups");
+            JSONParse parser = new JSONParse(urlBD + "/findYouFriends/grupo/listGroups");
             return parser.getGruposBD();
         }
     }
@@ -157,7 +158,7 @@ private class RemoveGrupo extends AsyncTask<Integer, Void, Void> {
         @Override
         protected Void doInBackground(Integer... params) {
             idGrupo = params[0];
-            new JSONParse("http://23.227.167.93:8081/findYouFriends/grupo/updateStatus?idGrupo=" + idGrupo +"&status=false");
+            new JSONParse(urlBD + "/findYouFriends/grupo/updateStatus?idGrupo=" + idGrupo +"&status=false");
             return null;
         }
 

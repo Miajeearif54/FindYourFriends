@@ -26,6 +26,7 @@ public class GrupoActivity extends Activity{
     private String nameGrupo;
     private GPSManager gpsManager;
     private List<Usuario> usuariosDoGrupo;
+    private String urlBD = "http://150.165.15.89:10008";
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +99,7 @@ public class GrupoActivity extends Activity{
         }
 
         private List<Usuario> getJSON() {
-            JSONParse parser = new JSONParse("http://23.227.167.93:8081/findYouFriends/usuario/listUsers");
+            JSONParse parser = new JSONParse(urlBD + "/findYouFriends/usuario/listUsers");
             return parser.getUsuariosBD();
         }
     }
@@ -117,7 +118,7 @@ public class GrupoActivity extends Activity{
             while (gpsManager.isCurrentPositionNull()) {
             }
             
-            new JSONParse("http://23.227.167.93:8081/findYouFriends/usuario/updateLocation?"
+            new JSONParse(urlBD + "/findYouFriends/usuario/updateLocation?"
                         + "id=" + Session.getInstancia().getIdUser()
                         + "&latitude=" + gpsManager.getLatitude()
                         + "&longitude=" + gpsManager.getLongitude());

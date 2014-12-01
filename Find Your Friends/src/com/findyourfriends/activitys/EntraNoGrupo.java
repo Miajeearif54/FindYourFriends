@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import com.les.findyourfriends.R;
 
 public class EntraNoGrupo extends Activity {
+    private String urlBD = "http://150.165.15.89:10008";
     private Integer idGrupo;
 
     @Override
@@ -63,7 +65,8 @@ private class EntraNoGrupoAsync extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... params) {
-            new JSONParse("http://23.227.167.93:8081/findYouFriends/grupo/addUser?idGrupo="+ idGrupo+"&idUsuario="+ Session.getInstancia().getIdUser());
+            new JSONParse(urlBD + "/findYouFriends/grupo/addUser?idGrupo="+ idGrupo+"&idUsuario="+ Session.getInstancia().getIdUser());
+            Log.d("id", "id user: " + Session.getInstancia().getIdUser());
             return null;
         }
 
@@ -74,14 +77,13 @@ private class EntraNoGrupoAsync extends AsyncTask<Void, Void, Void> {
             param.putInt("KEY_ID",idGrupo);
             
             Intent i = new Intent(getApplicationContext(), GrupoActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            //i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             i.putExtras(param);
             startActivity(i);
             
             dialog.dismiss();
+            finish();
         }
     }
-    
-   
 
 }

@@ -21,6 +21,7 @@ import android.widget.TextView;
 public class ViewGroupActivity extends Activity{
 	private Context mContext;
 	private ImageButton editar, meusGrupos;
+	private String urlBD = "http://150.165.15.89:10008";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +121,7 @@ public class ViewGroupActivity extends Activity{
         }
 
         private List<Grupo> getJSON() {
-            JSONParse parser = new JSONParse("http://23.227.167.93:8081/findYouFriends/grupo/listGroups");
+            JSONParse parser = new JSONParse(urlBD + "/findYouFriends/grupo/listGroups");
             return parser.getGruposBD();
         }
     }

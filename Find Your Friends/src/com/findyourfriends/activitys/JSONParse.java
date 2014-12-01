@@ -126,6 +126,9 @@ public class JSONParse {
     
     public Integer getIdUsuario(){
         try {
+            /*if (jsonString == null) {
+                return -1;
+            }*/
             JSONObject idUser = new JSONObject(jsonString);
             return convert(idUser.get("id"), Integer.class);
             

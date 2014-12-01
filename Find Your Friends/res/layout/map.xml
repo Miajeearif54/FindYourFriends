@@ -27,25 +27,26 @@
         android:gravity="center"
         android:layout_alignParentTop="true"
         android:orientation="horizontal"
-        android:visibility="visible" >
+        android:visibility="visible"
+        android:weightSum="3" >
 
         <ImageButton
             android:id="@+id/grupos"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@drawable/selector_grupos" />
 
         <ImageButton
             android:id="@+id/meusGrupos"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@drawable/selector_meus_grupos" />
 
         <ImageButton
             android:id="@+id/editar"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@drawable/selector_edit" />
