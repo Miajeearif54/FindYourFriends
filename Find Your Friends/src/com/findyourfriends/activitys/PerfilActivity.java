@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 
@@ -31,6 +32,7 @@ public class PerfilActivity extends Activity{
     private Context mContext;
     private Button btnSignOut, btnRevokeAccess;
     private ImageView imagemPerfil;
+    private TextView userName, userEmail;
     
     private GoogleApiClient mGoogleApiClient;
     
@@ -39,15 +41,26 @@ public class PerfilActivity extends Activity{
         setContentView(R.layout.perfil);
 
         mContext = getApplicationContext();
+        
+        //mGoogleApiClient = MainActivity.mGoogleApiClient;
               
         btnSignOut = (Button) findViewById(R.id.btn_sign_out);
         btnRevokeAccess = (Button) findViewById(R.id.btn_revoke_access);
         imagemPerfil = (ImageView) findViewById(R.id.imgProfilePic);
+        userName = (TextView) findViewById(R.id.txtName);
+        userEmail = (TextView) findViewById(R.id.txtEmail);
+        
+        //pega a string "nome/email" caso nao encontrado "NOME/EMAIL"
+        String nome = MainActivity.status.getString("nome", "NOME");
+        String email = MainActivity.status.getString("email", "EMAIL");
+        
+        userName.setText(nome);
+        userEmail.setText(email);
+        
         if (hasExternalStoragePublicPicture()){
             try {
                 readImagem();
             } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -65,23 +78,21 @@ public class PerfilActivity extends Activity{
                 revokeGplusAccess();
             }
         });
-        
-
     }
     
     
     private void signOutFromGplus() {
-        if (mGoogleApiClient.isConnected()) {
-            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-            mGoogleApiClient.disconnect();
-            mGoogleApiClient.connect();
-            MainActivity.editor.putBoolean("logado", false);
-            MainActivity.editor.commit();
-            
-            Intent in = new Intent(mContext, MainActivity.class);
-            startActivity(in);
-            finish();
-        }
+        Log.d("logout", "clicado logout");
+        
+        MainActivity.editor.clear();
+        MainActivity.editor.putBoolean("logado", false);
+        MainActivity.editor.putBoolean("sair", true);
+        MainActivity.editor.commit();
+
+        Intent in = new Intent(this, MainActivity.class);
+
+        startActivity(in);
+        finish();
     }
 
     private void revokeGplusAccess() {
@@ -100,32 +111,35 @@ public class PerfilActivity extends Activity{
     }
     
     void deleteExternalStoragePublicPicture() {
-        // Create a path where we will place our picture in the user's
-        // public pictures directory and delete the file.  If external
-        // storage is not currently mounted this will fail.
         File path = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DCIM);
+                Environment.DIRECTORY_DCIM);       
         File file = new File(path, "ImagemPerfil.jpg");
         file.delete();
     }
 
     boolean hasExternalStoragePublicPicture() {
-        // Create a path where we will place our picture in the user's
-        // public pictures directory and check if the file exists.  If
-        // external storage is not currently mounted this will think the
-        // picture doesn't exist.
-        File path = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DCIM);
+        //TODO        
+        String path = Environment.getExternalStorageDirectory()
+                .getAbsolutePath()+ File.separator + ".FindYourFriends" + File.separator;        
         File file = new File(path, "ImagemPerfil.jpg");
         return file.exists();
     }
     
     public void readImagem() throws FileNotFoundException{
-        File path = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DCIM);
+        String path  = Environment.getExternalStorageDirectory()
+                .getAbsolutePath()+ File.separator + ".FindYourFriends" + File.separator;
         File file = new File(path, "ImagemPerfil.jpg");
+        
         InputStream is = new FileInputStream(file);
         Bitmap bitmapPerfil = BitmapFactory.decodeStream(is);
         imagemPerfil.setImageBitmap(bitmapPerfil);
+    }
+    
+    @Override
+    public void onBackPressed() {
+        Intent in = new Intent(mContext, Map.class);
+        in.putExtra("mostrar_botoes", true);
+        startActivity(in);
+        finish();
     }
 }

@@ -59,7 +59,7 @@ public class MainActivity extends Activity implements OnClickListener,
     private static final int RC_SIGN_IN = 0;
     private static final String TAG = "LoginActivity";
     private static final int PROFILE_PIC_SIZE = 350;
-    private GoogleApiClient mGoogleApiClient;
+    public static GoogleApiClient mGoogleApiClient;
 
     /**
      * A flag indicating that a PendingIntent is in progress and prevents us
@@ -81,7 +81,8 @@ public class MainActivity extends Activity implements OnClickListener,
     public static final String LOGIN = "StatusLogin";
     public static SharedPreferences status;
     public static SharedPreferences.Editor editor;
-    public static boolean logado;
+    public static boolean logado, sair;
+    private String fullPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +93,11 @@ public class MainActivity extends Activity implements OnClickListener,
         // testar conexao
         haveNetworkConnection();
         status = getSharedPreferences(LOGIN, 0); 
-        logado = status.getBoolean("logado", false);    
+        editor = status.edit();
+        
+        logado = status.getBoolean("logado", false);
+        
+        
         
         if (logado){
             if(haveNetworkConnection()){
@@ -102,6 +107,8 @@ public class MainActivity extends Activity implements OnClickListener,
                 finish();
             }
         }
+        
+        
                
         loadView();
         verificaMemoria();
@@ -142,6 +149,8 @@ public class MainActivity extends Activity implements OnClickListener,
         btnRevokeAccess.setVisibility(View.GONE);
         llProfileLayout.setVisibility(View.GONE);
         continuar.setVisibility(View.GONE);
+        
+       
     }
     
     private void loadView(){
@@ -209,6 +218,7 @@ public class MainActivity extends Activity implements OnClickListener,
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
+
     }
 
     protected void onStop() {
@@ -274,13 +284,20 @@ public class MainActivity extends Activity implements OnClickListener,
 
     @Override
     public void onConnected(Bundle arg0) {
+        sair = status.getBoolean("sair", false);
+        
+        if (sair) {
+            signOutFromGplus();
+            editor.putBoolean("sair", false);
+            editor.commit();
+        } else {
         
         // Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 
         getProfileInformation();
         
         
-        // TODO
+       
         /*Intent it = getIntent();
         boolean perfil = it.getBooleanExtra("perfil", false);
         if (!perfil || mSignInClicked) {
@@ -297,6 +314,8 @@ public class MainActivity extends Activity implements OnClickListener,
         mSignInClicked = false;*/
         // Update the UI after signin
         updateUI(true);
+        }
+        
     }
 
     @Override
@@ -307,18 +326,18 @@ public class MainActivity extends Activity implements OnClickListener,
     }
 
     private void updateUI(boolean isSignedIn) {
+        //TODO        
         if (isSignedIn) {
             btnSignIn.setVisibility(View.GONE);
             btnSignOut.setVisibility(View.VISIBLE);
             btnRevokeAccess.setVisibility(View.VISIBLE);
             llProfileLayout.setVisibility(View.VISIBLE);
             continuar.setVisibility(View.VISIBLE);
-            
-            Log.d("login", "está logado");
            
-            editor = status.edit();
+            editor.putString("nome", personName);
+            editor.putString("email", email);
+            
             editor.putBoolean("logado", true);
-            // Commit the edits!
             editor.commit();
         
             
@@ -328,6 +347,12 @@ public class MainActivity extends Activity implements OnClickListener,
             btnRevokeAccess.setVisibility(View.GONE);
             llProfileLayout.setVisibility(View.GONE);
             continuar.setVisibility(View.GONE);
+            
+            editor.putString("nome", "NOM");
+            editor.putString("email", "EMAIL");
+            
+            editor.putBoolean("logado", false);
+            editor.commit();
 
         }
     }
@@ -389,9 +414,6 @@ public class MainActivity extends Activity implements OnClickListener,
                 txtName.setText(personName);
                 txtEmail.setText(email);
 
-                // by default the profile url gives 50x50 px image only
-                // we can replace the value with whatever dimension we want by
-                // replacing sz=X
                 personPhotoUrl = personPhotoUrl.substring(0,
                         personPhotoUrl.length() - 2)
                         + PROFILE_PIC_SIZE;
@@ -437,13 +459,15 @@ public class MainActivity extends Activity implements OnClickListener,
     }
 
     private void signOutFromGplus() {
+        //TODO
         if (mGoogleApiClient.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
             mGoogleApiClient.disconnect();
             mGoogleApiClient.connect();
             updateUI(false);
-            
-        }
+            mSignInClicked = false;
+            Log.d("logout", "SAIR if"); 
+        } 
     }
 
     private void revokeGplusAccess() {
@@ -544,7 +568,7 @@ public class MainActivity extends Activity implements OnClickListener,
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(MainActivity.this, "Cadastrando",
-                    "VocÃª esta sendo cadastrado");
+                    "Vocï¿½ esta sendo cadastrado");
         }
 
         @Override
@@ -571,25 +595,79 @@ public class MainActivity extends Activity implements OnClickListener,
         return str;
     }
     
+    
     @Override
     public void onBackPressed() {
-        finish();
-       /* //
-        if (this.btnSignIn.isShown()) {
-            Log.d("renan", "matar app");
-            //android.os.Process.killProcess(android.os.Process.myPid());
-            //new Intent(mContext, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            onDestroy();
-        
-        } else {
-            Log.d("renan", "finish");
-            this.finish();
-        }*/
+       finish();
     }
     
     
+    //TODO
+    //----------------------- Criando Imagem -----------------------
+
+    private void createPath() {
+        final String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            fullPath = Environment.getExternalStorageDirectory()
+                    .getAbsolutePath()
+                    + File.separator
+                    + ".FindYourFriends"
+                    + File.separator;
+        } else {
+            fullPath = getFilesDir() + File.separator + ".FindYourFriends"
+                    + File.separator;
+        }
+
+        final File dir = new File(fullPath);
+        if (!dir.exists() && !dir.mkdirs()) {
+            Log.e("erro dirs", "create dirs erro!");
+        }
+    }
     
-    public void createExternalStoragePrivatePicture() {
+    void createExternalStoragePublicPicture(String param) {
+
+        createPath();
+        //File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        File file = new File(fullPath, "ImagemPerfil.jpg");
+
+        try {
+            //path.mkdirs();
+
+            URL url = new URL(param);
+            InputStream is = new BufferedInputStream(url.openStream());           
+            //InputStream is = getResources().openRawResource(R.drawable.renan_perfil);
+            OutputStream os = new FileOutputStream(file);
+            
+            byte[] buf = new byte[1024];
+            int n = 0;
+            while (-1!=(n=is.read(buf)))
+            {
+            os.write(buf, 0, n);
+            }
+            
+            //byte[] data = new byte[is.available()];
+            //is.read(data);
+            //os.write(data);
+            is.close();
+            os.close();
+
+            // Tell the media scanner about the new file so that it is
+            // immediately available to the user.
+            MediaScannerConnection.scanFile(this,
+                    new String[] { file.toString() }, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                public void onScanCompleted(String path, Uri uri) {
+                    Log.i("ExternalStorage", "Scanned " + path + ":");
+                    Log.i("ExternalStorage", "-> uri=" + uri);
+                }
+            });
+        } catch (IOException e) {
+            Log.w("ExternalStorage", "Error writing " + file, e);
+        }
+    }  
+    
+    //------------------------- PRIVATE PICTURE-----------------------
+    /*public void createExternalStoragePrivatePicture() {
         // Create a path where we will place our picture in our own private
         // pictures directory.  Note that we don't really need to place a
         // picture in DIRECTORY_PICTURES, since the media scanner will see
@@ -653,62 +731,7 @@ public class MainActivity extends Activity implements OnClickListener,
             return file.exists();
         }
         return false;
-    }
-    
-    void createExternalStoragePublicPicture(String param) {
-        // Create a path where we will place our picture in the user's
-        // public pictures directory.  Note that you should be careful about
-        // what you place here, since the user often manages these files.  For
-        // pictures and other media owned by the application, consider
-        // Context.getExternalMediaDir().
-        File path = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DCIM);
-        File file = new File(path, "ImagemPerfil.jpg");
-
-        try {
-            // Make sure the Pictures directory exists.
-            path.mkdirs();
-
-            // Very simple code to copy a picture from the application's
-            // resource into the external file.  Note that this code does
-            // no error checking, and assumes the picture is small (does not
-            // try to copy it in chunks).  Note that if external storage is
-            // not currently mounted this will silently fail.
-            URL url = new URL(param);
-            InputStream is = new BufferedInputStream(url.openStream());
-            
-            //InputStream is = getResources().openRawResource(R.drawable.renan_perfil);
-            OutputStream os = new FileOutputStream(file);
-            
-            byte[] buf = new byte[1024];
-            int n = 0;
-            while (-1!=(n=is.read(buf)))
-            {
-            os.write(buf, 0, n);
-            }
-            
-            //byte[] data = new byte[is.available()];
-            //is.read(data);
-            //os.write(data);
-            is.close();
-            os.close();
-
-            // Tell the media scanner about the new file so that it is
-            // immediately available to the user.
-            MediaScannerConnection.scanFile(this,
-                    new String[] { file.toString() }, null,
-                    new MediaScannerConnection.OnScanCompletedListener() {
-                public void onScanCompleted(String path, Uri uri) {
-                    Log.i("ExternalStorage", "Scanned " + path + ":");
-                    Log.i("ExternalStorage", "-> uri=" + uri);
-                }
-            });
-        } catch (IOException e) {
-            // Unable to create file, likely because external storage is
-            // not currently mounted.
-            Log.w("ExternalStorage", "Error writing " + file, e);
-        }
-    }
+    }*/
     
     
 }

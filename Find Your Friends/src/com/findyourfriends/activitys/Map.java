@@ -70,14 +70,12 @@ public class Map extends Activity implements LocationListener {
         Location location = locationManager.getLastKnownLocation(provider);
 
         Intent it = getIntent();
-        //boolean exibirBotoes = it.getBooleanExtra("mostrar_botoes", false);
-        boolean exibirBotoes = false;
+        boolean exibirBotoes = it.getBooleanExtra("mostrar_botoes", false);
+        //boolean exibirBotoes = false;
 
         if (exibirBotoes) {
             setContentView(R.layout.map);
-
             initilizeMap(location, exibirBotoes);
-
             if (location != null) {
                 onLocationChanged(location);
             }
@@ -134,8 +132,8 @@ public class Map extends Activity implements LocationListener {
         //about - depois mudar
         if (item.getItemId() == R.id.perfil) {
             final Intent i = new Intent(mContext, PerfilActivity.class);
-            //i.putExtra("perfil", true);
             startActivity(i); 
+            finish();
             return true;
         }
         
@@ -164,13 +162,11 @@ public class Map extends Activity implements LocationListener {
                 if (exibirBotoes) {
 
                     googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-                } else {
-                    
-                    Log.d("ponto", "cancer");
+                } else {                 
                     
                     googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapGrupo)).getMap();
                     
-                    
+                   
              
                   //Intent it2 = getIntent();
 
@@ -204,11 +200,9 @@ public class Map extends Activity implements LocationListener {
 
                         @Override
                         public void onMapClick(LatLng latLng) {
-                            
-                            
+                      
                             selecionarTipoPonto(latLng);
-                            
-                            
+                    
                             /*MarkerOptions markerOptions = new MarkerOptions();
                             markerOptions.position(latLng);
                             markerOptions.title("Ponto de encontro");
@@ -216,24 +210,23 @@ public class Map extends Activity implements LocationListener {
                             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
                              //googleMap.clear();
                             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                            googleMap.addMarker(markerOptions);
-                            
+                            googleMap.addMarker(markerOptions);                           
                             double lat = markerOptions.getPosition().latitude;
                             double lng = markerOptions.getPosition().longitude;*/
                             
                         }
                     });
-                    
-                    googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                    googleMap.setMyLocationEnabled(true);
-
-                    double lat = location.getLatitude();
-                    double lng = location.getLongitude();
-                    LatLng coordinate = new LatLng(lat, lng);
-                    
-                    Log.d("ponto", "lat: " + lat + " lng: " + lng);
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 14));
                 }
+                
+                googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                googleMap.setMyLocationEnabled(true);
+
+                double lat = location.getLatitude();
+                double lng = location.getLongitude();
+                LatLng coordinate = new LatLng(lat, lng);
+                
+                Log.d("ponto", "lat: " + lat + " lng: " + lng);
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 14));
             }
             
             
