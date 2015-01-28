@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.les.findyourfriends.R;
 
+import com.facebook.AppEventsLogger;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
@@ -672,6 +673,23 @@ public class MainActivity extends Activity implements OnClickListener,
             Log.w("ExternalStorage", "Error writing " + file, e);
         }
     }  
+    
+    // Para controse de uso atraves do FB
+    @Override
+    protected void onResume() {
+      super.onResume();
+
+      // Logs 'install' and 'app activate' App Events.
+      AppEventsLogger.activateApp(this);
+    }
+    
+    @Override
+    protected void onPause() {
+      super.onPause();
+
+      // Logs 'app deactivate' App Event.
+      AppEventsLogger.deactivateApp(this);
+    }
     
     //------------------------- PRIVATE PICTURE-----------------------
     /*public void createExternalStoragePrivatePicture() {

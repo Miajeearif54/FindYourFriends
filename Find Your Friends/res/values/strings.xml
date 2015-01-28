@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <string name="app_name">Find Your Friends</string>
     <string name="action_settings">Settings</string>
@@ -29,6 +29,8 @@
     <string name="versao">Version 1.0</string>
     
     <string name="perfil">Profile</string>
+    
+    <string name="facebook_app_id">648029808652580</string>
     
     <!--  menssagens dialog -->
     <string name="semConexao">No connection </string>
