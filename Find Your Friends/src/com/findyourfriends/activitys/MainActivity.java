@@ -26,6 +26,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,9 +54,13 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
-public class MainActivity extends Activity implements OnClickListener,
+public class MainActivity extends FragmentActivity implements OnClickListener,
         ConnectionCallbacks, OnConnectionFailedListener {
 
+    //mudei de extends Activity pra Fragment Activity
+    //mainFragmant do login do FB
+    private MainFragment mainFragment;
+    
     private String email = "", personName;
 
     private static final int RC_SIGN_IN = 0;
@@ -92,6 +98,8 @@ public class MainActivity extends Activity implements OnClickListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = getApplicationContext();
+        
+        
 
         // testar conexao
         haveNetworkConnection();
@@ -149,6 +157,19 @@ public class MainActivity extends Activity implements OnClickListener,
         llProfileLayout.setVisibility(View.GONE);
         continuar.setVisibility(View.GONE);
         
+      //botao do FB
+        if (savedInstanceState == null) {
+            // Add the fragment on initial activity setup
+            mainFragment = new MainFragment();
+            getSupportFragmentManager()
+            .beginTransaction()
+            .add(android.R.id.content, mainFragment)
+            .commit();
+        } else {
+            // Or set the fragment from restored state info
+            mainFragment = (MainFragment) getSupportFragmentManager()
+            .findFragmentById(android.R.id.content);
+        }
        
     }
     
