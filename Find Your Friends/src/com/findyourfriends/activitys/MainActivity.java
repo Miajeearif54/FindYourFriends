@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -31,7 +32,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,7 +60,7 @@ import com.google.android.gms.plus.model.people.Person;
 /**
  * The Class MainActivity.
  */
-public class MainActivity extends FragmentActivity implements OnClickListener,
+public class MainActivity extends Activity implements OnClickListener,
         ConnectionCallbacks, OnConnectionFailedListener {
 
     // mudei de extends Activity pra Fragment Activity
@@ -153,6 +153,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = getApplicationContext();
+        
+        loadView();
+
+        // Initializing google plus api client
+        
 
         // testar conexao
         haveNetworkConnection();
@@ -160,8 +165,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         editor = status.edit();
 
         logado = status.getBoolean("logado", false);
-
+        
         if (logado) {
+            email = MainActivity.getStatus().getString("email", "EMAIL");
+            Session.delInstancia();
+            Session.getInstancia().setDono(email);
             if (haveNetworkConnection()) {
                 Intent in = new Intent(mContext, Map.class);
                 in.putExtra("mostrar_botoes", true);
@@ -169,29 +177,27 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
                 finish();
             }
         }
+        
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+        .addConnectionCallbacks(this)
+        .addOnConnectionFailedListener(this).addApi(Plus.API)
+        .addScope(Plus.SCOPE_PLUS_LOGIN).build();
 
-        loadView();
+        
         verificaMemoria();
 
         btnSignIn.setOnClickListener(this);
         btnSignOut.setOnClickListener(this);
         btnRevokeAccess.setOnClickListener(this);
 
-        // Initializing google plus api client
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this).addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN).build();
 
         continuar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 if (haveNetworkConnection()) {
-                    new ListUsers().execute(email);
-
                     Session.delInstancia();
                     Session.getInstancia().setDono(email);
-
+                    new ListUsers().execute(email);                    
                 } else {
                     confirmacaoDeRede();
                 }
@@ -204,18 +210,18 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         btnRevokeAccess.setVisibility(View.GONE);
         llProfileLayout.setVisibility(View.GONE);
         continuar.setVisibility(View.GONE);
-
-        // botao do FB
-        if (savedInstanceState == null) {
-            // Add the fragment on initial activity setup
-            mainFragment = new MainFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .add(android.R.id.content, mainFragment).commit();
-        } else {
-            // Or set the fragment from restored state info
-            mainFragment = (MainFragment) getSupportFragmentManager()
-                    .findFragmentById(android.R.id.content);
-        }
+//
+//        // botao do FB
+//        if (savedInstanceState == null) {
+//            // Add the fragment on initial activity setup
+//            mainFragment = new MainFragment();
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(android.R.id.content, mainFragment).commit();
+//        } else {
+//            // Or set the fragment from restored state info
+//            mainFragment = (MainFragment) getSupportFragmentManager()
+//                    .findFragmentById(android.R.id.content);
+//        }
 
     }
     
@@ -587,8 +593,10 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
      * Gets the profile information.
      */
     private void getProfileInformation() {
+        
         try {
             if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+                Log.d("werton", "passei aqui");
                 Person currentPerson = Plus.PeopleApi
                         .getCurrentPerson(mGoogleApiClient);
                 // String personName = currentPerson.getDisplayName();
@@ -737,7 +745,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
             String url = urlBD
                     + "/findYouFriends/usuario/getCurrentLocation?login="
                     + login;
-            return new JSONParse(url).isNull();
+            boolean usuarioCadastrado = new JSONParse(url).isNull();
+            Log.d("werton", "cadastrado = " + !usuarioCadastrado);
+            return usuarioCadastrado;
         }
 
         /*
@@ -776,10 +786,10 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            /*
-             * dialog = ProgressDialog.show(MainActivity.this, "Cadastrando",
-             * "Você esta sendo cadastrado");
-             */
+            
+              dialog = ProgressDialog.show(MainActivity.this, "Cadastrando",
+             "Você esta sendo cadastrado");
+             
         }
 
         /*
@@ -793,13 +803,13 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
             login = params[0];
 
             String nome = mudaCaractere(personName, " ", "_");
-            Log.d("renan", nome);
-
             String url = urlBD + "/findYouFriends/usuario/saveUser?" + "login="
                     + login + "&latitude=" + "0" + "&longitude=" + "0"
                     + "&nome=" + nome;
 
             new JSONParse(url);
+            
+            
 
             return null;
         }
@@ -813,7 +823,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         protected void onPostExecute(final Void result) {
             super.onPostExecute(result);
             new CapturaID().execute(login);
-            // dialog.dismiss();
+            dialog.dismiss();
 
             Intent i = new Intent(mContext, Map.class);
             i.putExtra("mostrar_botoes", true);
@@ -851,9 +861,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
          */
         @Override
         protected Integer doInBackground(final String... params) {
+            
+            Log.d("werton", "params = " + params[0]);
 
             String url = urlBD
-                    + "/findYouFriends//usuario/getCurrentLocation?login="
+                    + "/findYouFriends/usuario/getCurrentLocation?login="
                     + params[0];
             return new JSONParse(url).getIdUsuario();
         }
