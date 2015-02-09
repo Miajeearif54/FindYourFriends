@@ -17,7 +17,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -28,7 +27,7 @@ import com.les.findyourfriends.R;
 /**
  * The Class GrupoActivity.
  */
-public class GrupoActivity extends Activity{
+public class GrupoActivity extends Activity {
     
     /** The m context. */
     private Context mContext;

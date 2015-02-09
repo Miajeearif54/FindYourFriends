@@ -12,7 +12,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +33,7 @@ public class EntraNoGrupo extends Activity {
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entrar_grupo);
         
@@ -51,10 +50,11 @@ public class EntraNoGrupo extends Activity {
         Button entrar = (Button) findViewById(R.id.entrar);
         entrar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                String senha = ((EditText) findViewById(R.id.edSenha_entrar)).getText().toString();
+            public void onClick(final View v) {
+                EditText edEntrar = (EditText) findViewById(R.id.edSenha_entrar);
+                String senha = edEntrar.getText().toString();
                 
-                if(senhaGrupo.equals(senha)){     
+                if (senhaGrupo.equals(senha)) {     
                     new EntraNoGrupoAsync().execute();
                 }
                                 
@@ -63,7 +63,7 @@ public class EntraNoGrupo extends Activity {
         Button voltar = (Button) findViewById(R.id.cancelarEntrarGrupo);
         voltar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 onBackPressed();
             } });
         
@@ -84,16 +84,19 @@ private class EntraNoGrupoAsync extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(EntraNoGrupo.this, "Aguarde", "Adicionando você ao grupo.");
+            dialog = ProgressDialog.show(EntraNoGrupo.this,
+                    "Aguarde",
+                    "Adicionando você ao grupo.");
         }
 
         /* (non-Javadoc)
          * @see android.os.AsyncTask#doInBackground(Params[])
          */
         @Override
-        protected Void doInBackground(Void... params) {
-            new JSONParse(urlBD + "/findYouFriends/grupo/addUser?idGrupo="+ idGrupo+"&idUsuario="+ Session.getInstancia().getIdUser());
-            Log.d("id", "id user: " + Session.getInstancia().getIdUser());
+        protected Void doInBackground(final Void... params) {
+            new JSONParse(urlBD
+                    + "/findYouFriends/grupo/addUser?idGrupo=" + idGrupo
+                    + "&idUsuario=" + Session.getInstancia().getIdUser());
             return null;
         }
 
@@ -101,10 +104,10 @@ private class EntraNoGrupoAsync extends AsyncTask<Void, Void, Void> {
          * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
          */
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(final Void result) {
             super.onPostExecute(result);
             Bundle param = new Bundle();
-            param.putInt("KEY_ID",idGrupo);
+            param.putInt("KEY_ID", idGrupo);
             
             Intent i = new Intent(getApplicationContext(), GrupoActivity.class);
             //i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);

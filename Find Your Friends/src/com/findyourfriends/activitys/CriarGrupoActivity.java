@@ -14,7 +14,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,27 +30,27 @@ public class CriarGrupoActivity extends Activity {
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.criar_grupo);
         
         Button salvar = (Button) findViewById(R.id.salvar);
         salvar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 EditText nome = (EditText) findViewById(R.id.edNomeGrupo);
                 EditText senha = (EditText) findViewById(R.id.edSenha);
                 
                 String nomeS = nome.getText().toString();
                 String senhaS = senha.getText().toString();
                 
-                new cadastraGrupo().execute(nomeS, senhaS);
+                new CadastraGrupo().execute(nomeS, senhaS);
             } });
         
         Button voltar = (Button) findViewById(R.id.cancelar);
         voltar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 onBackPressed();
             } });
         
@@ -61,7 +60,7 @@ public class CriarGrupoActivity extends Activity {
     /**
      * The Class cadastraGrupo.
      */
-    private class cadastraGrupo extends AsyncTask<String, Void, Void> {
+    private class CadastraGrupo extends AsyncTask<String, Void, Void> {
         
         /** The dialog. */
         private ProgressDialog dialog;
@@ -72,14 +71,17 @@ public class CriarGrupoActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(CriarGrupoActivity.this, "Criando Grupo", "Aguarde, o sistema está cadastrando o grupo.");
+            
+            dialog = ProgressDialog.show(CriarGrupoActivity.this,
+                    "Criando Grupo",
+                    "Aguarde," + "o sistema está cadastrando o grupo.");
         }
 
         /* (non-Javadoc)
          * @see android.os.AsyncTask#doInBackground(Params[])
          */
         @Override
-        protected Void doInBackground(String... params) {
+        protected Void doInBackground(final String... params) {
             String nomeDoGrupo = params[0];
             String senhaDoGrupo = params[1];
             
@@ -100,11 +102,12 @@ public class CriarGrupoActivity extends Activity {
          * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
          */
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(final Void result) {
             super.onPostExecute(result);
             
             
-            Intent i = new Intent(getApplicationContext(), MeusGruposActivity.class);
+            Intent i = new Intent(getApplicationContext(),
+                    MeusGruposActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(i);
             dialog.dismiss();
@@ -122,9 +125,9 @@ public class CriarGrupoActivity extends Activity {
      * @param novo the novo
      * @return the string
      */
-    public String mudaCaractere(String str, String antigo, String novo) {
-        str = str.replace(antigo, novo);
-        return str;
+    public final String mudaCaractere(final String str, final String antigo,
+            final String novo) {
+        return str.replace(antigo, novo);
     }
 
 }

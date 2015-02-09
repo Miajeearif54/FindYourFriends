@@ -27,35 +27,36 @@ public class GPSManager implements
 
     /** The m location manager. */
     private LocationManager mLocationManager;
-    
+
     /** The provider. */
     private String provider;
-    
+
     /** The longitude. */
     private double latitude, longitude;
-    
+
     /** The context. */
     private Context context;
-    
+
     /** The location listener. */
     private LocationListener locationListener;
 
     /** The m location listener play services. */
     private com.google.android.gms.location.LocationListener mLocationListenerPlayServices;
-    
+
     /** The m location client. */
     private LocationClient mLocationClient;
-    
+
     /** The m location request. */
     private LocationRequest mLocationRequest;
 
     /**
      * Instantiates a new GPS manager.
-     *
-     * @param context the context
+     * 
+     * @param contx
+     *            the context
      */
-    public GPSManager(Context context) {
-        this.context = context;
+    public GPSManager(final Context contx) {
+        this.context = contx;
 
         this.mLocationClient = new LocationClient(this.context, this, this);
         this.mLocationListenerPlayServices = new MyLocationListenerPlayServices();
@@ -67,9 +68,7 @@ public class GPSManager implements
 
         this.mLocationRequest = LocationRequest.create();
         this.mLocationRequest
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY); // Use
-                                                                      // high
-                                                                      // accuracy
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         this.mLocationRequest.setInterval(300000);
         this.mLocationRequest.setFastestInterval(60000);
 
@@ -78,25 +77,27 @@ public class GPSManager implements
     /**
      * Search provider.
      */
-    public void searchProvider() {
+    public final void searchProvider() {
         provider = LocationManager.GPS_PROVIDER;
     }
 
     /**
      * Update current position.
      */
-    public void updateCurrentPosition() {
+    public final void updateCurrentPosition() {
         if (provider != null && provider.equals(LocationManager.GPS_PROVIDER)) {
-            mLocationManager.requestLocationUpdates(provider, 10, 0, locationListener);
+            mLocationManager.requestLocationUpdates(provider, 10, 0,
+                    locationListener);
         }
     }
 
     /**
      * Stop updates.
-     *
-     * @param clearData the clear data
+     * 
+     * @param clearData
+     *            the clear data
      */
-    public void stopUpdates(boolean clearData) {
+    public final void stopUpdates(final boolean clearData) {
         mLocationManager.removeUpdates(locationListener);
         if (isConnected()) {
             mLocationClient
@@ -110,90 +111,93 @@ public class GPSManager implements
 
     /**
      * Gets the latitude.
-     *
+     * 
      * @return the latitude
      */
-    public double getLatitude() {
+    public final double getLatitude() {
         return latitude;
     }
 
     /**
      * Gets the longitude.
-     *
+     * 
      * @return the longitude
      */
-    public double getLongitude() {
+    public final double getLongitude() {
         return longitude;
     }
 
     /**
      * Gets the provider.
-     *
+     * 
      * @return the provider
      */
-    public String getProvider() {
+    public final String getProvider() {
         return provider;
     }
 
     /**
      * Sets the latitude.
-     *
-     * @param latitude the new latitude
+     * 
+     * @param lat
+     *            the new latitude
      */
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public final void setLatitude(final double lat) {
+        latitude = lat;
     }
 
     /**
      * Sets the longitude.
-     *
-     * @param longitude the new longitude
+     * 
+     * @param lng
+     *            the new longitude
      */
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public final void setLongitude(final double lng) {
+        longitude = lng;
     }
 
     /**
      * Checks if is GPS enable.
-     *
+     * 
      * @return true, if is GPS enable
      */
-    public boolean isGPSEnable() {
-        return (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER));
+    public final boolean isGPSEnable() {
+        return (mLocationManager
+                .isProviderEnabled(LocationManager.GPS_PROVIDER));
     }
 
     /**
      * Checks if is network enable.
-     *
+     * 
      * @return true, if is network enable
      */
-    public boolean isNetworkEnable() {
+    public final boolean isNetworkEnable() {
         return (mLocationManager
-                .isProviderEnabled(LocationManager.NETWORK_PROVIDER)) ;
+                .isProviderEnabled(LocationManager.NETWORK_PROVIDER));
     }
 
     /**
      * Checks if is current position null.
-     *
+     * 
      * @return true, if is current position null
      */
-    public boolean isCurrentPositionNull() {
+    public final boolean isCurrentPositionNull() {
         return (latitude == 0.0 && longitude == 0.0);
     }
 
     /**
      * Checks if is connected.
-     *
+     * 
      * @return true, if is connected
      */
-    public boolean isConnected() {
+    public final boolean isConnected() {
         return mLocationClient.isConnected();
     }
 
     /**
      * Disconnect play services.
      */
-    public void disconnectPlayServices() {
+    public final void disconnectPlayServices() {
         if (isConnected()) {
             mLocationClient.disconnect();
         }
@@ -204,34 +208,50 @@ public class GPSManager implements
      */
     private class LocationListenerLocal implements LocationListener {
 
-        /* (non-Javadoc)
-         * @see android.location.LocationListener#onLocationChanged(android.location.Location)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * android.location.LocationListener#onLocationChanged(android.location
+         * .Location)
          */
         @Override
-        public void onLocationChanged(Location newLocation) {
+        public void onLocationChanged(final Location newLocation) {
             latitude = newLocation.getLatitude();
             longitude = newLocation.getLongitude();
         }
 
-        /* (non-Javadoc)
-         * @see android.location.LocationListener#onProviderDisabled(java.lang.String)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * android.location.LocationListener#onProviderDisabled(java.lang.String
+         * )
          */
         @Override
-        public void onProviderDisabled(String arg0) {
+        public void onProviderDisabled(final String arg0) {
         }
 
-        /* (non-Javadoc)
-         * @see android.location.LocationListener#onProviderEnabled(java.lang.String)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * android.location.LocationListener#onProviderEnabled(java.lang.String)
          */
         @Override
-        public void onProviderEnabled(String arg0) {
+        public void onProviderEnabled(final String arg0) {
         }
 
-        /* (non-Javadoc)
-         * @see android.location.LocationListener#onStatusChanged(java.lang.String, int, android.os.Bundle)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * android.location.LocationListener#onStatusChanged(java.lang.String,
+         * int, android.os.Bundle)
          */
         @Override
-        public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+        public void onStatusChanged(final String arg0, final int arg1,
+                final Bundle arg2) {
         }
 
     }
@@ -242,39 +262,54 @@ public class GPSManager implements
     private class MyLocationListenerPlayServices implements
             com.google.android.gms.location.LocationListener {
 
-        /* (non-Javadoc)
-         * @see com.google.android.gms.location.LocationListener#onLocationChanged(android.location.Location)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * com.google.android.gms.location.LocationListener#onLocationChanged
+         * (android.location.Location)
          */
         @Override
-        public void onLocationChanged(Location location) {
+        public void onLocationChanged(final Location location) {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
         }
 
     }
 
-    /* (non-Javadoc)
-     * @see com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener#onConnectionFailed(com.google.android.gms.common.ConnectionResult)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.google.android.gms.common.GooglePlayServicesClient.
+     * OnConnectionFailedListener
+     * #onConnectionFailed(com.google.android.gms.common.ConnectionResult)
      */
     @Override
-    public void onConnectionFailed(ConnectionResult result) {
+    public final void onConnectionFailed(final ConnectionResult result) {
         provider = LocationManager.GPS_PROVIDER;
     }
 
-    /* (non-Javadoc)
-     * @see com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks#onConnected(android.os.Bundle)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks
+     * #onConnected(android.os.Bundle)
      */
     @Override
-    public void onConnected(Bundle connectionHint) {
+    public void onConnected(final Bundle connectionHint) {
     }
 
-    /* (non-Javadoc)
-     * @see com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks#onDisconnected()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks
+     * #onDisconnected()
      */
     @Override
-    public void onDisconnected() {
+    public final void onDisconnected() {
         provider = LocationManager.GPS_PROVIDER;
     }
 
-  
 }
