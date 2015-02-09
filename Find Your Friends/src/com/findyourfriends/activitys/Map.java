@@ -1,6 +1,11 @@
-package com.findyourfriends.activitys;
+/*
+ * Universidade Federal de Campina Grande (UFCG).
+ * Disciplina: Projeto I
+ * Desenvolvedores: Carla Sukeyosi, Diego Ernesto
+ *                  Renan Pinto, Talita Lobo e Werton Guimarães.
+ */
 
-import java.util.ArrayList;
+package com.findyourfriends.activitys;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,14 +20,12 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -215,32 +218,6 @@ public class Map extends Activity implements LocationListener,
                     googleMap = ((MapFragment) getFragmentManager()
                             .findFragmentById(R.id.mapGrupo)).getMap();
 
-                    // Intent it2 = getIntent();
-
-                    /*
-                     * ArrayList<String> usuariosParse = it2
-                     * .getStringArrayListExtra("NOMES");
-                     * 
-                     * ArrayList<String> latParse = it2
-                     * .getStringArrayListExtra("LATITUDE");
-                     * 
-                     * ArrayList<String> longParse = it2
-                     * .getStringArrayListExtra("LONGITUDE");
-                     * 
-                     * double latitude, longitude; int indice = 0;
-                     * 
-                     * for (String nome : usuariosParse) { String userName =
-                     * mudaCaractere(nome, "_", " ");
-                     * 
-                     * if (indice < latParse.size()) {
-                     * 
-                     * longitude = Double.parseDouble(longParse .get(indice));
-                     * latitude = Double.parseDouble(latParse.get(indice));
-                     * 
-                     * marcaUsuario(userName, latitude, longitude); indice++; }
-                     * }
-                     */
-
                     googleMap.setOnMapClickListener(new OnMapClickListener() {
 
                         @Override
@@ -248,25 +225,8 @@ public class Map extends Activity implements LocationListener,
 
                             selecionarTipoPonto(latLng);
 
-                            /*
-                             * MarkerOptions markerOptions = new
-                             * MarkerOptions(); markerOptions.position(latLng);
-                             * markerOptions.title("Ponto de encontro");
-                             * 
-                             * markerOptions.icon(BitmapDescriptorFactory.
-                             * fromResource(R.drawable.marker));
-                             * //googleMap.clear();
-                             * googleMap.animateCamera(CameraUpdateFactory
-                             * .newLatLng(latLng));
-                             * googleMap.addMarker(markerOptions); double lat =
-                             * markerOptions.getPosition().latitude; double lng
-                             * = markerOptions.getPosition().longitude;
-                             */
-
                         }
                     });
-                    
-                    
                 }
 
                 googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);

@@ -1,3 +1,10 @@
+/*
+ * Universidade Federal de Campina Grande (UFCG).
+ * Disciplina: Projeto I
+ * Desenvolvedores: Carla Sukeyosi, Diego Ernesto
+ *                  Renan Pinto, Talita Lobo e Werton Guimarães.
+ */
+
 package com.findyourfriends.activitys;
 
 import java.io.BufferedInputStream;
