@@ -26,12 +26,26 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * The Class MeusGruposActivity.
+ */
 public class MeusGruposActivity extends Activity{
+	
+	/** The m context. */
 	private Context mContext;
+	
+	/** The Constant USUARIO. */
 	private static final Object USUARIO = Session.getInstancia().getDono();
+	
+	/** The grupos. */
 	private ImageButton editar, grupos;
+	
+	/** The url bd. */
 	private String urlBD = "http://150.165.15.89:10008";
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,21 +76,34 @@ public class MeusGruposActivity extends Activity{
 		
 	}
 	
+	/**
+	 * The Class CapturaJSON.
+	 */
 	private class CapturaJSON extends AsyncTask<Void, Void, List<Integer>> {
         
+        /** The dialog. */
         private ProgressDialog dialog;
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPreExecute()
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(MeusGruposActivity.this, "Aguarde", "Estamos conferindo seus grupos ...");
         }
         
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
         @Override
         protected List<Integer> doInBackground(Void... params) {
             return getJSON(Session.getInstancia().getDono());
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
         @Override
         protected void onPostExecute(List<Integer> result) {
             super.onPostExecute(result);
@@ -86,6 +113,12 @@ public class MeusGruposActivity extends Activity{
             dialog.dismiss();
         }
 
+        /**
+         * Gets the json.
+         *
+         * @param login the login
+         * @return the json
+         */
         private List<Integer> getJSON(String login) {
             String url = urlBD + "/findYouFriends/usuario/getCurrentLocation?login="  + login;
             JSONParse parser = new JSONParse(url);
@@ -93,23 +126,41 @@ public class MeusGruposActivity extends Activity{
         }
     }
 	
+	/**
+	 * The Class RecuperaGruposDoUsuario.
+	 */
 	private class RecuperaGruposDoUsuario extends AsyncTask<List<Integer>, Void, List<Grupo>> {
+        
+        /** The dialog. */
         private ProgressDialog dialog;
+        
+        /** The id grupos. */
         private List<Integer> idGrupos;
+        
+        /** The grupos do usuario. */
         private List<Grupo> gruposDoUsuario;
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPreExecute()
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(MeusGruposActivity.this, "Aguarde", "Gerando lista de grupos.");
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
         @Override
         protected List<Grupo> doInBackground(List<Integer>... params) {
             idGrupos = params[0];
             return getJSON();
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
         @Override
         protected void onPostExecute(List<Grupo> result) {
             super.onPostExecute(result);
@@ -158,13 +209,26 @@ public class MeusGruposActivity extends Activity{
             dialog.dismiss();
         }
 
+        /**
+         * Gets the json.
+         *
+         * @return the json
+         */
         private List<Grupo> getJSON() {
             JSONParse parser = new JSONParse(urlBD + "/findYouFriends/grupo/listGroups");
             return parser.getGruposBD();
         }
     }
 	
-	   public String mudaCaractere(String str, String antigo, String novo) {
+	   /**
+   	 * Muda caractere.
+   	 *
+   	 * @param str the str
+   	 * @param antigo the antigo
+   	 * @param novo the novo
+   	 * @return the string
+   	 */
+   	public String mudaCaractere(String str, String antigo, String novo) {
 	        str = str.replace(antigo, novo);
 	        return str;
 	    }

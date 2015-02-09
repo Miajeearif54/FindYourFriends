@@ -19,10 +19,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+/**
+ * The Class CriarGrupoActivity.
+ */
 public class CriarGrupoActivity extends Activity {
     
+    /** The url bd. */
     private String urlBD = "http://150.165.15.89:10008";
 
+    /* (non-Javadoc)
+     * @see android.app.Activity#onCreate(android.os.Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,16 +58,26 @@ public class CriarGrupoActivity extends Activity {
         
     }
     
+    /**
+     * The Class cadastraGrupo.
+     */
     private class cadastraGrupo extends AsyncTask<String, Void, Void> {
         
+        /** The dialog. */
         private ProgressDialog dialog;
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPreExecute()
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(CriarGrupoActivity.this, "Criando Grupo", "Aguarde, o sistema está cadastrando o grupo.");
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
         @Override
         protected Void doInBackground(String... params) {
             String nomeDoGrupo = params[0];
@@ -79,6 +96,9 @@ public class CriarGrupoActivity extends Activity {
             return null;
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
@@ -94,6 +114,14 @@ public class CriarGrupoActivity extends Activity {
         }
     }
     
+    /**
+     * Muda caractere.
+     *
+     * @param str the str
+     * @param antigo the antigo
+     * @param novo the novo
+     * @return the string
+     */
     public String mudaCaractere(String str, String antigo, String novo) {
         str = str.replace(antigo, novo);
         return str;

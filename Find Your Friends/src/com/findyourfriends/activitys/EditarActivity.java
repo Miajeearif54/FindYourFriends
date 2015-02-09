@@ -29,13 +29,29 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * The Class EditarActivity.
+ */
 public class EditarActivity extends Activity{
+	
+	/** The m context. */
 	private Context mContext;
+	
+	/** The criar grupo. */
 	private Button criarGrupo;
+	
+	/** The meus grupos. */
 	private ImageButton grupos, meusGrupos;
+	
+	/** The Constant DONO. */
 	private static final Object DONO= Session.getInstancia().getDono();
+	
+	/** The url bd. */
 	private String urlBD = "http://150.165.15.89:10008";
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -76,21 +92,34 @@ public class EditarActivity extends Activity{
         
     }
     
+/**
+ * The Class CapturaJSON.
+ */
 private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
         
+        /** The dialog. */
         private ProgressDialog dialog;
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPreExecute()
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(EditarActivity.this, "Aguarde", "Gerando lista de seus grupos.");
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
         @Override
         protected List<Grupo> doInBackground(Void... params) {
             return getJSON();
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
         @Override
         protected void onPostExecute(List<Grupo> result) {
             super.onPostExecute(result);
@@ -122,12 +151,24 @@ private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
             dialog.dismiss();
         }
 
+        /**
+         * Gets the json.
+         *
+         * @return the json
+         */
         private List<Grupo> getJSON() {
             JSONParse parser = new JSONParse(urlBD + "/findYouFriends/grupo/listGroups");
             return parser.getGruposBD();
         }
     }
 
+    /**
+     * Open alert.
+     *
+     * @param title the title
+     * @param msg the msg
+     * @param idGrupo the id grupo
+     */
     private void openAlert(String title, String msg, final Integer idGrupo) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(title);
@@ -151,17 +192,29 @@ private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
         alertDialog.show();
     }
     
+/**
+ * The Class RemoveGrupo.
+ */
 private class RemoveGrupo extends AsyncTask<Integer, Void, Void> {
         
+        /** The dialog. */
         private ProgressDialog dialog;
+        
+        /** The id grupo. */
         private Integer idGrupo;
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPreExecute()
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(EditarActivity.this, "Aguarde", "Removendo o grupo");
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
         @Override
         protected Void doInBackground(Integer... params) {
             idGrupo = params[0];
@@ -169,6 +222,9 @@ private class RemoveGrupo extends AsyncTask<Integer, Void, Void> {
             return null;
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);

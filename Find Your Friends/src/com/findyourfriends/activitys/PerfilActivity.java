@@ -31,18 +31,32 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-
+/**
+ * The Class PerfilActivity.
+ */
 public class PerfilActivity extends Activity{
+    
+    /** The Constant TAG. */
     private static final String TAG = "PerfilActivity";
     
+    /** The m context. */
     private Context mContext;
+    
+    /** The btn revoke access. */
     private Button btnSignOut, btnRevokeAccess;
+    
+    /** The imagem perfil. */
     private ImageView imagemPerfil;
+    
+    /** The user email. */
     private TextView userName, userEmail;
     
+    /** The m google api client. */
     private GoogleApiClient mGoogleApiClient;
     
+    /* (non-Javadoc)
+     * @see android.app.Activity#onCreate(android.os.Bundle)
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.perfil);
@@ -88,6 +102,9 @@ public class PerfilActivity extends Activity{
     }
     
     
+    /**
+     * Sign out from gplus.
+     */
     private void signOutFromGplus() {
         Log.d("logout", "clicado logout");
         
@@ -102,6 +119,9 @@ public class PerfilActivity extends Activity{
         finish();
     }
 
+    /**
+     * Revoke gplus access.
+     */
     private void revokeGplusAccess() {
         if (mGoogleApiClient.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
@@ -117,6 +137,9 @@ public class PerfilActivity extends Activity{
         }
     }
     
+    /**
+     * Delete external storage public picture.
+     */
     void deleteExternalStoragePublicPicture() {
         File path = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DCIM);       
@@ -124,6 +147,11 @@ public class PerfilActivity extends Activity{
         file.delete();
     }
 
+    /**
+     * Checks for external storage public picture.
+     *
+     * @return true, if successful
+     */
     boolean hasExternalStoragePublicPicture() {
         //TODO        
         String path = Environment.getExternalStorageDirectory()
@@ -132,6 +160,11 @@ public class PerfilActivity extends Activity{
         return file.exists();
     }
     
+    /**
+     * Read imagem.
+     *
+     * @throws FileNotFoundException the file not found exception
+     */
     public void readImagem() throws FileNotFoundException{
         String path  = Environment.getExternalStorageDirectory()
                 .getAbsolutePath()+ File.separator + ".FindYourFriends" + File.separator;
@@ -142,6 +175,9 @@ public class PerfilActivity extends Activity{
         imagemPerfil.setImageBitmap(bitmapPerfil);
     }
     
+    /* (non-Javadoc)
+     * @see android.app.Activity#onBackPressed()
+     */
     @Override
     public void onBackPressed() {
         Intent in = new Intent(mContext, Map.class);

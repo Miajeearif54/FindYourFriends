@@ -19,31 +19,55 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 
+/**
+ * The Class GrupoAdapter.
+ */
 public class GrupoAdapter extends BaseAdapter {
 
+    /** The m grupos. */
     private List<Grupo> mGrupos;
+    
+    /** The m inflater. */
     private LayoutInflater mInflater;
 
+    /**
+     * Instantiates a new grupo adapter.
+     *
+     * @param context the context
+     * @param grupos the grupos
+     */
     public GrupoAdapter(Context context, List<Grupo> grupos) {
         mInflater = LayoutInflater.from(context);
         mGrupos = grupos;
     }
 
+    /* (non-Javadoc)
+     * @see android.widget.Adapter#getCount()
+     */
     @Override
     public int getCount() {
         return mGrupos.size();
     }
 
+    /* (non-Javadoc)
+     * @see android.widget.Adapter#getItem(int)
+     */
     @Override
     public Object getItem(int index) {
         return mGrupos.get(index);
     }
 
+    /* (non-Javadoc)
+     * @see android.widget.Adapter#getItemId(int)
+     */
     @Override
     public long getItemId(int index) {
         return index;
     }
 
+    /* (non-Javadoc)
+     * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
+     */
     @Override
     public View getView(int posicao, View view, ViewGroup viewGroup) {
         view = mInflater.inflate(R.layout.grupo_adapter_item, null);

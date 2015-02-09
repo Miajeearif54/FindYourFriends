@@ -61,18 +61,30 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
+/**
+ * The Class MainActivity.
+ */
 public class MainActivity extends FragmentActivity implements OnClickListener,
         ConnectionCallbacks, OnConnectionFailedListener {
 
     //mudei de extends Activity pra Fragment Activity
     //mainFragmant do login do FB
+    /** The main fragment. */
     private MainFragment mainFragment;
     
+    /** The person name. */
     private String email = "", personName;
 
+    /** The Constant RC_SIGN_IN. */
     private static final int RC_SIGN_IN = 0;
+    
+    /** The Constant TAG. */
     private static final String TAG = "LoginActivity";
+    
+    /** The Constant PROFILE_PIC_SIZE. */
     private static final int PROFILE_PIC_SIZE = 350;
+    
+    /** The m google api client. */
     public static GoogleApiClient mGoogleApiClient;
 
     /**
@@ -80,26 +92,52 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
      * from starting further intents.
      */
     private boolean mIntentInProgress;
+    
+    /** The m sign in clicked. */
     private boolean mSignInClicked;
 
+    /** The m connection result. */
     private ConnectionResult mConnectionResult;
 
+    /** The btn sign in. */
     private SignInButton btnSignIn;
+    
+    /** The continuar. */
     private Button btnSignOut, btnRevokeAccess, continuar;
+    
+    /** The img profile pic. */
     private ImageView imgProfilePic;
+    
+    /** The txt email. */
     private TextView txtName, txtEmail;
+    
+    /** The ll profile layout. */
     private LinearLayout llProfileLayout;
 
+    /** The m context. */
     private Context mContext;
     
+    /** The Constant LOGIN. */
     public static final String LOGIN = "StatusLogin";
+    
+    /** The status. */
     public static SharedPreferences status;
+    
+    /** The editor. */
     public static SharedPreferences.Editor editor;
+    
+    /** The sair. */
     public static boolean logado, sair;
+    
+    /** The full path. */
     private String fullPath;
     
+    /** The url bd. */
     private String urlBD = "http://150.165.15.89:10008";
 
+    /* (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,6 +218,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
        
     }
     
+    /**
+     * Load view.
+     */
     private void loadView(){
         continuar = (Button) findViewById(R.id.buttonContinuar);
         btnSignIn = (SignInButton) findViewById(R.id.btn_sign_in);
@@ -192,6 +233,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
     }
     
     //------------------------- VERIFICAR SDCARD-------------
+    /**
+     * Verifica memoria.
+     */
     private void verificaMemoria(){
         boolean mExternalStorageAvailable = false;
         boolean mExternalStorageWriteable = false;
@@ -209,6 +253,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
     }
     //--------------------------------------------------------------
 
+    /**
+     * Confirmacao de rede.
+     */
     @SuppressWarnings("deprecation")
     private void confirmacaoDeRede() {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -224,12 +271,18 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         alertDialog.show();
     }
 
+    /* (non-Javadoc)
+     * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.perfil, menu);
         return true;
     }
 
+    /* (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onMenuItemSelected(int, android.view.MenuItem)
+     */
     @Override
     public boolean onMenuItemSelected(final int featureId, final MenuItem item) {
         if (item.getItemId() == R.id.about) {
@@ -242,12 +295,18 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
     
 
     // ------      Inicia google    -----------------------
+    /* (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onStart()
+     */
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
 
     }
 
+    /* (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onStop()
+     */
     protected void onStop() {
         super.onStop();
         if (mGoogleApiClient.isConnected()) {
@@ -255,6 +314,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         }
     }
 
+    /* (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -273,6 +335,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener#onConnectionFailed(com.google.android.gms.common.ConnectionResult)
+     */
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         updateUI(false);
@@ -293,6 +358,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
 
     }
 
+    /* (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onActivityResult(int, int, android.content.Intent)
+     */
     @Override
     protected void onActivityResult(int requestCode, int responseCode,
             Intent intent) {
@@ -309,6 +377,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks#onConnected(android.os.Bundle)
+     */
     @Override
     public void onConnected(Bundle arg0) {
         sair = status.getBoolean("sair", false);
@@ -345,6 +416,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         
     }
 
+    /* (non-Javadoc)
+     * @see com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks#onConnectionSuspended(int)
+     */
     @Override
     public void onConnectionSuspended(int arg0) {
         mGoogleApiClient.connect();
@@ -352,6 +426,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
 
     }
 
+    /**
+     * Update ui.
+     *
+     * @param isSignedIn the is signed in
+     */
     private void updateUI(boolean isSignedIn) {
         //TODO        
         if (isSignedIn) {
@@ -384,6 +463,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         }
     }
 
+    /**
+     * Have network connection.
+     *
+     * @return true, if successful
+     */
     private boolean haveNetworkConnection() {
         boolean haveConnectedWifi = false;
         boolean haveConnectedMobile = false;
@@ -402,6 +486,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
     }
 
     // login----------------------------
+    /**
+     * Sign in with gplus.
+     */
     private void signInWithGplus() {
         if (!mGoogleApiClient.isConnecting()) {
             mSignInClicked = true;
@@ -409,6 +496,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         }
     }
 
+    /**
+     * Resolve sign in error.
+     */
     private void resolveSignInError() {
         if (mConnectionResult.hasResolution()) {
             try {
@@ -423,6 +513,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
 
     // -------------------
 
+    /**
+     * Gets the profile information.
+     *
+     * @return the profile information
+     */
     private void getProfileInformation() {
         try {
             if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
@@ -456,13 +551,26 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         }
     }
 
+    /**
+     * The Class LoadProfileImage.
+     */
     private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
+        
+        /** The bm image. */
         ImageView bmImage;
 
+        /**
+         * Instantiates a new load profile image.
+         *
+         * @param bmImage the bm image
+         */
         public LoadProfileImage(ImageView bmImage) {
             this.bmImage = bmImage;
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
         protected Bitmap doInBackground(String... urls) {
             String urldisplay = urls[0];
             Bitmap mIcon11 = null;
@@ -479,12 +587,18 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
             return mIcon11;
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
         protected void onPostExecute(Bitmap result) {
             Log.d("memoria", "carregou a foto");
             bmImage.setImageBitmap(result);         
         }
     }
 
+    /**
+     * Sign out from gplus.
+     */
     private void signOutFromGplus() {
         //TODO
         if (mGoogleApiClient.isConnected()) {
@@ -496,6 +610,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         } 
     }
 
+    /**
+     * Revoke gplus access.
+     */
     private void revokeGplusAccess() {
         if (mGoogleApiClient.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
@@ -512,11 +629,20 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         }
     }
 
+    /**
+     * The Class ListUsers.
+     */
     private class ListUsers extends AsyncTask<String, Void, Boolean> {
 
+        /** The dialog. */
         private ProgressDialog dialog;
+        
+        /** The login. */
         private String login;
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPreExecute()
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -525,6 +651,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
                     "Aguarde, o sistema está verificando a sua conta");
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
         @Override
         protected Boolean doInBackground(String... params) {
             login = params[0];
@@ -533,6 +662,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
             return new JSONParse(url).isNull();
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
@@ -545,11 +677,20 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         }
     }
 
+    /**
+     * The Class CadastrarUsuario.
+     */
     private class CadastrarUsuario extends AsyncTask<String, Void, Void> {
 
+        /** The dialog. */
         private ProgressDialog dialog;
+        
+        /** The login. */
         private String login;
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPreExecute()
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -557,6 +698,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
                     "Você esta sendo cadastrado");*/
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
         @Override
         protected Void doInBackground(String... params) {
 
@@ -578,6 +722,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
             return null;
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
@@ -591,10 +738,17 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         }
     }
 
+    /**
+     * The Class CapturaID.
+     */
     private class CapturaID extends AsyncTask<String, Void, Integer> {
 
+        /** The dialog. */
         private ProgressDialog dialog;
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPreExecute()
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -602,6 +756,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
                     "Você esta sendo cadastrado");*/
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
         @Override
         protected Integer doInBackground(String... params) {
 
@@ -610,6 +767,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
             return new JSONParse(url).getIdUsuario();
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
         @Override
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
@@ -626,12 +786,23 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
 
     }
 
+    /**
+     * Muda caractere.
+     *
+     * @param str the str
+     * @param antigo the antigo
+     * @param novo the novo
+     * @return the string
+     */
     public String mudaCaractere(String str, String antigo, String novo) {
         str = str.replace(antigo, novo);
         return str;
     }
     
     
+    /* (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onBackPressed()
+     */
     @Override
     public void onBackPressed() {
        finish();
@@ -641,6 +812,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
     //TODO
     //----------------------- Criando Imagem -----------------------
 
+    /**
+     * Creates the path.
+     */
     private void createPath() {
         final String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -660,6 +834,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         }
     }
     
+    /**
+     * Creates the external storage public picture.
+     *
+     * @param param the param
+     */
     void createExternalStoragePublicPicture(String param) {
 
         createPath();
@@ -703,6 +882,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
     }  
     
     // Para controse de uso atraves do FB
+    /* (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onResume()
+     */
     @Override
     protected void onResume() {
       super.onResume();
@@ -711,6 +893,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
       AppEventsLogger.activateApp(this);
     }
     
+    /* (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onPause()
+     */
     @Override
     protected void onPause() {
       super.onPause();

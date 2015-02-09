@@ -19,10 +19,20 @@ import android.widget.EditText;
 
 import com.les.findyourfriends.R;
 
+/**
+ * The Class EntraNoGrupo.
+ */
 public class EntraNoGrupo extends Activity {
+    
+    /** The url bd. */
     private String urlBD = "http://150.165.15.89:10008";
+    
+    /** The id grupo. */
     private Integer idGrupo;
 
+    /* (non-Javadoc)
+     * @see android.app.Activity#onCreate(android.os.Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,16 +70,26 @@ public class EntraNoGrupo extends Activity {
     }
     
     
+/**
+ * The Class EntraNoGrupoAsync.
+ */
 private class EntraNoGrupoAsync extends AsyncTask<Void, Void, Void> {
         
+        /** The dialog. */
         private ProgressDialog dialog;
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPreExecute()
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(EntraNoGrupo.this, "Aguarde", "Adicionando você ao grupo.");
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
         @Override
         protected Void doInBackground(Void... params) {
             new JSONParse(urlBD + "/findYouFriends/grupo/addUser?idGrupo="+ idGrupo+"&idUsuario="+ Session.getInstancia().getIdUser());
@@ -77,6 +97,9 @@ private class EntraNoGrupoAsync extends AsyncTask<Void, Void, Void> {
             return null;
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);

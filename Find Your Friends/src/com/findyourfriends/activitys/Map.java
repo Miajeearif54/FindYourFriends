@@ -48,23 +48,46 @@ import com.les.findyourfriends.R;
 public class Map extends Activity implements LocationListener,
         OnMapLoadedCallback {
 
+    /** The Constant COUNTDOWNTIMER_PARAM. */
     private static final int COUNTDOWNTIMER_PARAM = 5000;
+    
+    /** The Constant COUNTDOWNTIMER_PARAM_LOADED. */
     private static final int COUNTDOWNTIMER_PARAM_LOADED = 10000;
 
+    /** The m context. */
     private Context mContext;
+    
+    /** The google map. */
     private GoogleMap googleMap;
+    
+    /** The location manager. */
     private LocationManager locationManager;
+    
+    /** The provider. */
     private String provider;
+    
+    /** The start perc. */
     private Marker startPerc;
 
+    /** The tipo de ponto dialog. */
     private AlertDialog tipoDePontoDialog;
+    
+    /** The tipos de ponto. */
     private final CharSequence[] tiposDePonto = { "Ponto de encontro",
             "Local especifico" };
+    
+    /** The ponto de econtro. */
     private boolean pontoDeEcontro;
+    
+    /** The loaded map. */
     private Boolean loadedMap = false;
 
+    /** The meus grupos. */
     private ImageButton editar, grupos, meusGrupos;
 
+    /* (non-Javadoc)
+     * @see android.app.Activity#onCreate(android.os.Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,6 +156,9 @@ public class Map extends Activity implements LocationListener,
 
     }
 
+    /**
+     * Count loaded map.
+     */
     private void countLoadedMap() {
         final CountDownTimer counter = new CountDownTimer(
                 COUNTDOWNTIMER_PARAM_LOADED, COUNTDOWNTIMER_PARAM_LOADED) {
@@ -151,6 +177,9 @@ public class Map extends Activity implements LocationListener,
         counter.start();
     }
 
+    /**
+     * Sets the internet visible.
+     */
     private void setInternetVisible() {
         final LinearLayout layout = (LinearLayout) findViewById(R.id.LayoutNoInternet);
         layout.setVisibility(LinearLayout.VISIBLE);
@@ -170,12 +199,18 @@ public class Map extends Activity implements LocationListener,
 
     }
 
+    /* (non-Javadoc)
+     * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
+    /* (non-Javadoc)
+     * @see android.app.Activity#onMenuItemSelected(int, android.view.MenuItem)
+     */
     @Override
     public boolean onMenuItemSelected(final int featureId, final MenuItem item) {
 
@@ -195,6 +230,11 @@ public class Map extends Activity implements LocationListener,
         return super.onMenuItemSelected(featureId, item);
     }
 
+    /**
+     * Habilita gps.
+     *
+     * @param enabledGPS the enabled gps
+     */
     private void habilitaGPS(boolean enabledGPS) {
         if (!enabledGPS) {
             Toast.makeText(this, "GPS signal not found", Toast.LENGTH_LONG)
@@ -204,6 +244,12 @@ public class Map extends Activity implements LocationListener,
         }
     }
 
+    /**
+     * Initilize map.
+     *
+     * @param location the location
+     * @param exibirBotoes the exibir botoes
+     */
     private void initilizeMap(Location location, boolean exibirBotoes) {
         try {
 
@@ -247,6 +293,11 @@ public class Map extends Activity implements LocationListener,
         }
     }
 
+    /**
+     * Selecionar tipo ponto.
+     *
+     * @param latLng the lat lng
+     */
     public void selecionarTipoPonto(final LatLng latLng) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Defina o nome e o tipo");
@@ -305,11 +356,26 @@ public class Map extends Activity implements LocationListener,
         tipoDePontoDialog.show();
     }
 
+    /**
+     * Muda caractere.
+     *
+     * @param str the str
+     * @param antigo the antigo
+     * @param novo the novo
+     * @return the string
+     */
     public String mudaCaractere(String str, String antigo, String novo) {
         str = str.replace(antigo, novo);
         return str;
     }
 
+    /**
+     * Marca usuario.
+     *
+     * @param nome the nome
+     * @param latitude the latitude
+     * @param longitude the longitude
+     */
     private void marcaUsuario(String nome, double latitude, double longitude) {
 
         LatLng coordinate = new LatLng(latitude, longitude);
@@ -321,6 +387,9 @@ public class Map extends Activity implements LocationListener,
                         .fromResource(R.drawable.ic_launcher)).visible(true));
     }
 
+    /* (non-Javadoc)
+     * @see android.location.LocationListener#onLocationChanged(android.location.Location)
+     */
     @Override
     public void onLocationChanged(Location location) {
         if (startPerc != null) {
@@ -328,17 +397,26 @@ public class Map extends Activity implements LocationListener,
         }
     }
 
+    /* (non-Javadoc)
+     * @see android.location.LocationListener#onStatusChanged(java.lang.String, int, android.os.Bundle)
+     */
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         // TODO Auto-generated method stub
     }
 
+    /* (non-Javadoc)
+     * @see android.location.LocationListener#onProviderDisabled(java.lang.String)
+     */
     @Override
     public void onProviderDisabled(String provider) {
         Toast.makeText(this, "Enabled new provider " + provider,
                 Toast.LENGTH_SHORT).show();
     }
 
+    /* (non-Javadoc)
+     * @see android.location.LocationListener#onProviderEnabled(java.lang.String)
+     */
     @Override
     public void onProviderEnabled(String provider) {
         Toast.makeText(this, "Disabled provider " + provider,
@@ -346,6 +424,9 @@ public class Map extends Activity implements LocationListener,
     }
 
     /* Request updates at startup */
+    /* (non-Javadoc)
+     * @see android.app.Activity#onResume()
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -353,17 +434,26 @@ public class Map extends Activity implements LocationListener,
     }
 
     /* Remove the locationlistener updates when Activity is paused */
+    /* (non-Javadoc)
+     * @see android.app.Activity#onPause()
+     */
     @Override
     protected void onPause() {
         super.onPause();
         locationManager.removeUpdates(this);
     }
 
+    /* (non-Javadoc)
+     * @see android.app.Activity#onBackPressed()
+     */
     @Override
     public void onBackPressed() {
         this.finish();
     }
 
+    /* (non-Javadoc)
+     * @see com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback#onMapLoaded()
+     */
     @Override
     public void onMapLoaded() {
         loadedMap = true;

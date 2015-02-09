@@ -25,11 +25,23 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+/**
+ * The Class ViewGroupActivity.
+ */
 public class ViewGroupActivity extends Activity{
+	
+	/** The m context. */
 	private Context mContext;
+	
+	/** The meus grupos. */
 	private ImageButton editar, meusGrupos;
+	
+	/** The url bd. */
 	private String urlBD = "http://150.165.15.89:10008";
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,10 +74,20 @@ public class ViewGroupActivity extends Activity{
 		
 	}
 	
+	/**
+	 * The Class CapturaJSON.
+	 */
 	private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
+        
+        /** The dialog. */
         private ProgressDialog dialog;
+        
+        /** The grupos para mostrar. */
         private List<Grupo> gruposParaMostrar;
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPreExecute()
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -73,11 +95,17 @@ public class ViewGroupActivity extends Activity{
             dialog = ProgressDialog.show(ViewGroupActivity.this, "Aguarde", "Gerando lista de grupos.");
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
         @Override
         protected List<Grupo> doInBackground(Void... params) {
             return getJSON();
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
         @Override
         protected void onPostExecute(List<Grupo> result) {
             super.onPostExecute(result);
@@ -127,6 +155,11 @@ public class ViewGroupActivity extends Activity{
             dialog.dismiss();
         }
 
+        /**
+         * Gets the json.
+         *
+         * @return the json
+         */
         private List<Grupo> getJSON() {
             JSONParse parser = new JSONParse(urlBD + "/findYouFriends/grupo/listGroups");
             return parser.getGruposBD();

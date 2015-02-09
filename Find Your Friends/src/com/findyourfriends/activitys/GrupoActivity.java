@@ -25,16 +25,38 @@ import android.widget.ListView;
 
 import com.les.findyourfriends.R;
 
+/**
+ * The Class GrupoActivity.
+ */
 public class GrupoActivity extends Activity{
+    
+    /** The m context. */
     private Context mContext;
+    
+    /** The meus grupos. */
     private ImageButton editar, meusGrupos;
+    
+    /** The visualizar mapa. */
     private Button visualizarMapa;
+    
+    /** The id grupo. */
     private Integer idGrupo;
+    
+    /** The name grupo. */
     private String nameGrupo;
+    
+    /** The gps manager. */
     private GPSManager gpsManager;
+    
+    /** The usuarios do grupo. */
     private List<Usuario> usuariosDoGrupo;
+    
+    /** The url bd. */
     private String urlBD = "http://150.165.15.89:10008";
     
+    /* (non-Javadoc)
+     * @see android.app.Activity#onCreate(android.os.Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,21 +90,35 @@ public class GrupoActivity extends Activity{
     }
     
     
+    /**
+     * The Class CapturaJSON.
+     */
     private class CapturaJSON extends AsyncTask<Void, Void, List<Usuario>> {
+        
+        /** The dialog. */
         private ProgressDialog dialog;
         
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPreExecute()
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(GrupoActivity.this, "Aguarde", "Gerando lista de usuários nesse grupo.");
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
         @Override
         protected List<Usuario> doInBackground(Void... params) {
             return getJSON();
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
         @Override
         protected void onPostExecute(List<Usuario> result) {
             super.onPostExecute(result);
@@ -105,21 +141,37 @@ public class GrupoActivity extends Activity{
             dialog.dismiss();
         }
 
+        /**
+         * Gets the json.
+         *
+         * @return the json
+         */
         private List<Usuario> getJSON() {
             JSONParse parser = new JSONParse(urlBD + "/findYouFriends/usuario/listUsers");
             return parser.getUsuariosBD();
         }
     }
     
+    /**
+     * The Class AtualizaPosicao.
+     */
     private class AtualizaPosicao extends AsyncTask<Void, Void, Void> {
+        
+        /** The dialog. */
         private ProgressDialog dialog;
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPreExecute()
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(GrupoActivity.this, "Aguarde", "Atualizando Posição");
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
         @Override
         protected Void doInBackground(Void... params) {
             while (gpsManager.isCurrentPositionNull()) {
@@ -132,6 +184,9 @@ public class GrupoActivity extends Activity{
             return null;
         }
 
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);

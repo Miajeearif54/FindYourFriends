@@ -24,22 +24,46 @@ import org.json.JSONObject;
 import android.util.Log;
 
 
+/**
+ * The Class JSONParse.
+ */
 public class JSONParse {
     
+    /** The feed url. */
     protected URL feedUrl;
+    
+    /** The json. */
     private JSONArray json;
+    
+    /** The json string. */
     private String jsonString; 
     
+    /** The Constant DONO. */
     private static final String DONO = "dono";
+    
+    /** The Constant ATIVO. */
     private static final String ATIVO = "ativo";
+    
+    /** The Constant NOME. */
     private static final String NOME = "nome";
+    
+    /** The Constant SENHA. */
     private static final String SENHA = "senha";
+    
+    /** The Constant USUARIOS. */
     private static final String USUARIOS = "usuarios";
     
+    /** The Constant ID. */
     private static final String ID = "id";
     
+    /** The adicionou. */
     private boolean adicionou;
     
+    /**
+     * Instantiates a new JSON parse.
+     *
+     * @param feedUrl the feed url
+     */
     public JSONParse(String feedUrl) {
         adicionou = true;
         try {
@@ -51,6 +75,9 @@ public class JSONParse {
         
     }
     
+    /**
+     * Json.
+     */
     private void json() {
         try {
             jsonString = convertStreamToString(feedUrl.openConnection().getInputStream());
@@ -68,6 +95,12 @@ public class JSONParse {
         }
     }
     
+    /**
+     * Convert stream to string.
+     *
+     * @param input the input
+     * @return the string
+     */
     private String convertStreamToString(final InputStream input) {
 
         final BufferedReader reader = new BufferedReader(new InputStreamReader(input));
@@ -89,10 +122,20 @@ public class JSONParse {
         return sBuf.toString();
     }
     
+    /**
+     * Checks if is null.
+     *
+     * @return true, if is null
+     */
     public boolean isNull(){
         return (json == null);
     }
     
+    /**
+     * Gets the grupos bd.
+     *
+     * @return the grupos bd
+     */
     public List<Grupo> getGruposBD() {
         List<Grupo> grupos = new ArrayList<Grupo>();
 
@@ -112,6 +155,11 @@ public class JSONParse {
         return grupos;
     }
     
+    /**
+     * Gets the usuarios bd.
+     *
+     * @return the usuarios bd
+     */
     public List<Usuario> getUsuariosBD() {
         List<Usuario> usuarios = new ArrayList<Usuario>();
 
@@ -131,6 +179,11 @@ public class JSONParse {
         return usuarios;
     }
     
+    /**
+     * Gets the id usuario.
+     *
+     * @return the id usuario
+     */
     public Integer getIdUsuario(){
         try {
             /*if (jsonString == null) {
@@ -146,6 +199,11 @@ public class JSONParse {
         return -1;
     }
     
+    /**
+     * Gets the grupos usuarios.
+     *
+     * @return the grupos usuarios
+     */
     public List<Integer> getGruposUsuarios() {
         List<Integer> idGrupos = new ArrayList<Integer>();
         try {
@@ -172,6 +230,12 @@ public class JSONParse {
         return idGrupos;
     }
     
+    /**
+     * Gets the ids.
+     *
+     * @param ids the ids
+     * @return the ids
+     */
     public List<Integer> getIds(JSONArray ids) {
         List<Integer> idList = new ArrayList<Integer>();
         for (int i = 0; i < ids.length(); i++) {
@@ -186,6 +250,13 @@ public class JSONParse {
         return idList;
     }
     
+    /**
+     * Recupera usuarios.
+     *
+     * @param item the item
+     * @return the usuario
+     * @throws JSONException the JSON exception
+     */
     private Usuario recuperaUsuarios(JSONObject item) throws JSONException {
         return new Usuario(convert(item.get(ID), Integer.class),
                 convert(item.get("login"), String.class),
@@ -195,6 +266,13 @@ public class JSONParse {
                 getIds(convert(item.get("grupos"), JSONArray.class))); //aqui deve ser colocado a lista de usuarios (os id deles);
     }
     
+    /**
+     * Recupera grupos.
+     *
+     * @param item the item
+     * @return the grupo
+     * @throws JSONException the JSON exception
+     */
     private Grupo recuperaGrupos(JSONObject item) throws JSONException {
         String nome = convert(item.get(NOME), String.class);
         nome = mudaCaractere(nome, "_", " ");   
@@ -209,7 +287,8 @@ public class JSONParse {
     
     /**
      * O metodo Auxiliar que converte um Objeto do JSON para um tipo especificado.
-     * 
+     *
+     * @param <T> the generic type
      * @param obj - O objesto do JSON.
      * @param type - O tipo que sera o Objeto.
      * @return O objeto convertido com algum tipo.
@@ -223,6 +302,14 @@ public class JSONParse {
         return (T) obj;
     }
     
+    /**
+     * Muda caractere.
+     *
+     * @param str the str
+     * @param antigo the antigo
+     * @param novo the novo
+     * @return the string
+     */
     public String mudaCaractere(String str, String antigo, String novo){
         str = str.replace(antigo, novo);
         return str;
