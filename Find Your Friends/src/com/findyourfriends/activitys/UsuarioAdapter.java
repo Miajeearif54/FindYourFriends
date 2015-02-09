@@ -12,13 +12,11 @@ import java.util.List;
 import com.les.findyourfriends.R;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 
 /**
  * The Class UsuarioAdapter.
@@ -27,72 +25,85 @@ public class UsuarioAdapter extends BaseAdapter {
 
     /** The m usuario. */
     private List<Usuario> mUsuario;
-    
+
     /** The m inflater. */
     private LayoutInflater mInflater;
 
     /**
      * Instantiates a new usuario adapter.
-     *
-     * @param context the context
-     * @param usuario the usuario
+     * 
+     * @param context
+     *            the context
+     * @param usuario
+     *            the usuario
      */
-    public UsuarioAdapter(Context context, List<Usuario> usuario) {
+    public UsuarioAdapter(final Context context, final List<Usuario> usuario) {
         mInflater = LayoutInflater.from(context);
         mUsuario = usuario;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see android.widget.Adapter#getCount()
      */
     @Override
-    public int getCount() {
+    public final int getCount() {
         return mUsuario.size();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see android.widget.Adapter#getItem(int)
      */
     @Override
-    public Object getItem(int index) {
+    public final Object getItem(final int index) {
         return mUsuario.get(index);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see android.widget.Adapter#getItemId(int)
      */
     @Override
-    public long getItemId(int index) {
+    public final long getItemId(final int index) {
         return index;
     }
 
-    /* (non-Javadoc)
-     * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.widget.Adapter#getView(int, android.view.View,
+     * android.view.ViewGroup)
      */
     @Override
-    public View getView(int posicao, View view, ViewGroup viewGroup) {
-        view = mInflater.inflate(R.layout.usuario_adapter_item, null);
+    public final View getView(final int posicao, final View view,
+            final ViewGroup viewGroup) {
         Usuario usuario = mUsuario.get(posicao);
-        
+
         String nome = mudaCaractere(usuario.getNome(), "_", " ");
-        
-        
+
         TextView tvNome = (TextView) view.findViewById(R.id.nomeUsuario);
         tvNome.setText(nome);
-        
-        return view;
+
+        return mInflater.inflate(R.layout.usuario_adapter_item, null);
     }
-    
+
     /**
      * Muda caractere.
-     *
-     * @param str the str
-     * @param antigo the antigo
-     * @param novo the novo
+     * 
+     * @param str
+     *            the str
+     * @param antigo
+     *            the antigo
+     * @param novo
+     *            the novo
      * @return the string
      */
-    public String mudaCaractere(String str, String antigo, String novo){
-        str = str.replace(antigo, novo);
-        return str;
+    public final String mudaCaractere(final String str, final String antigo,
+            final String novo) {
+        return str.replace(antigo, novo);
     }
 }

@@ -42,17 +42,17 @@ public class Session {
     /**
      * Del instancia.
      */
-    public static void delInstancia(){
+    public static void delInstancia() {
         instancia = null;
     }
     
     /**
      * Sets the dono.
      *
-     * @param dono the new dono
+     * @param donoParam the new dono
      */
-    public void setDono(String dono) {
-        this.dono = dono;
+    public final void setDono(final String donoParam) {
+        dono = donoParam;
     }
     
     /**
@@ -60,17 +60,17 @@ public class Session {
      *
      * @return the id user
      */
-    public Integer getIdUser() {
+    public final Integer getIdUser() {
         return idUser;
     }
     
     /**
      * Sets the id user.
      *
-     * @param idUser the new id user
+     * @param idUserParam the new id user
      */
-    public void setIdUser(Integer idUser) {
-        this.idUser = idUser;
+    public final void setIdUser(final Integer idUserParam) {
+        idUser = idUserParam;
     }
     
     
@@ -79,7 +79,7 @@ public class Session {
      *
      * @return the dono
      */
-    public String getDono() {
+    public final String getDono() {
         return dono;
     }
     

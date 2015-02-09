@@ -28,146 +28,149 @@ import android.widget.TextView;
 /**
  * The Class ViewGroupActivity.
  */
-public class ViewGroupActivity extends Activity{
-	
-	/** The m context. */
-	private Context mContext;
-	
-	/** The meus grupos. */
-	private ImageButton editar, meusGrupos;
-	
-	/** The url bd. */
-	private String urlBD = "http://150.165.15.89:10008";
-	
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onCreate(android.os.Bundle)
-	 */
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.view_groups);
-		mContext = getApplicationContext();
-              
-        meusGrupos = (ImageButton) findViewById(R.id.meusGrupos);        
-        meusGrupos.setOnClickListener(new View.OnClickListener() {	
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(mContext, MeusGruposActivity.class);
-				i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-				startActivity(i);
-			}
-		});
-        
+public class ViewGroupActivity extends Activity {
+
+    /** The m context. */
+    private Context mContext;
+
+    /** The meus grupos. */
+    private ImageButton editar, meusGrupos;
+
+    /** The url bd. */
+    private String urlBD = "http://150.165.15.89:10008";
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.app.Activity#onCreate(android.os.Bundle)
+     */
+    @Override
+    protected final void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.view_groups);
+        mContext = getApplicationContext();
+
+        meusGrupos = (ImageButton) findViewById(R.id.meusGrupos);
+        meusGrupos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                Intent i = new Intent(mContext, MeusGruposActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(i);
+            }
+        });
+
         editar = (ImageButton) findViewById(R.id.editar);
-        editar.setOnClickListener(new View.OnClickListener() {	
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(mContext, EditarActivity.class);
-				i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-				startActivity(i);
-			}
-		});
-        
+        editar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                Intent i = new Intent(mContext, EditarActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(i);
+            }
+        });
+
         new CapturaJSON().execute();
-        
-        
-		
-	}
-	
-	/**
-	 * The Class CapturaJSON.
-	 */
-	private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
-        
+
+    }
+
+    /**
+     * The Class CapturaJSON.
+     */
+    private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
+
         /** The dialog. */
         private ProgressDialog dialog;
-        
+
         /** The grupos para mostrar. */
         private List<Grupo> gruposParaMostrar;
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see android.os.AsyncTask#onPreExecute()
          */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            
-            dialog = ProgressDialog.show(ViewGroupActivity.this, "Aguarde", "Gerando lista de grupos.");
+
+            dialog = ProgressDialog.show(ViewGroupActivity.this, "Aguarde",
+                    "Gerando lista de grupos.");
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see android.os.AsyncTask#doInBackground(Params[])
          */
         @Override
-        protected List<Grupo> doInBackground(Void... params) {
+        protected List<Grupo> doInBackground(final Void... params) {
             return getJSON();
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
          */
         @Override
-        protected void onPostExecute(List<Grupo> result) {
+        protected void onPostExecute(final List<Grupo> result) {
             super.onPostExecute(result);
-            
-           gruposParaMostrar = new ArrayList<Grupo>();
-            
+
+            gruposParaMostrar = new ArrayList<Grupo>();
+
             for (Grupo grupo : result) {
-                if(grupo.isAtivo()){
+                if (grupo.isAtivo()) {
                     gruposParaMostrar.add(grupo);
                 }
             }
-            
+
             ListView list = (ListView) findViewById(R.id.listGroups);
-            GrupoAdapter adapter = new GrupoAdapter(getApplicationContext(), gruposParaMostrar);
+            GrupoAdapter adapter = new GrupoAdapter(getApplicationContext(),
+                    gruposParaMostrar);
             list.setAdapter(adapter);
-            
+
             list.setOnItemClickListener(new OnItemClickListener() {
-                
+
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                        int position, long id) {
+                public void onItemClick(final AdapterView<?> parent,
+                        final View view, final int position, final long id) {
                     // getting values from selected ListItem
-                    String name = ((TextView) view.findViewById(R.id.nomeGrupo)).getText().toString();
-                    String idGrupo = ((TextView) view.findViewById(R.id.idGrupo)).getText().toString();
-                    
-//                    String cost = ((TextView) view.findViewById(R.id.cost)).getText().toString();
-//                    String description = ((TextView) view.findViewById(R.id.desciption)).getText().toString();
-//                     
-                    // Starting new intent
-                    
+                    String name = ((TextView) view.findViewById(R.id.nomeGrupo))
+                            .getText().toString();
+                    String idGrupo = ((TextView) view
+                            .findViewById(R.id.idGrupo)).getText().toString();
+
                     Bundle param = new Bundle();
-                    
+
                     for (Grupo grupo : gruposParaMostrar) {
-                        if(String.valueOf(grupo.getId()).equals(idGrupo)){
+                        if (String.valueOf(grupo.getId()).equals(idGrupo)) {
                             param.putString("KEY_NAME", grupo.getNome());
                             param.putInt("KEY_ID", grupo.getId());
                             param.putString("KEY_SENHA", grupo.getSenha());
                         }
                     }
-                    
-                    Intent intent = new Intent(getApplicationContext(), EntraNoGrupo.class);
+
+                    Intent intent = new Intent(getApplicationContext(),
+                            EntraNoGrupo.class);
                     intent.putExtras(param);
                     startActivity(intent);
                 }
             });
-            
+
             dialog.dismiss();
         }
 
         /**
          * Gets the json.
-         *
+         * 
          * @return the json
          */
         private List<Grupo> getJSON() {
-            JSONParse parser = new JSONParse(urlBD + "/findYouFriends/grupo/listGroups");
+            JSONParse parser = new JSONParse(urlBD
+                    + "/findYouFriends/grupo/listGroups");
             return parser.getGruposBD();
         }
     }
-	
-	
-	
+
 }
-
-
