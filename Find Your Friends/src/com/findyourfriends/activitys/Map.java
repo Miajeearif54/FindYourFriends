@@ -89,17 +89,19 @@ public class Map extends Activity implements LocationListener,
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mContext = getApplicationContext();
 
-        LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
+        LocationManager service = 
+                (LocationManager) getSystemService(LOCATION_SERVICE);
         boolean enabledGPS = service
                 .isProviderEnabled(LocationManager.GPS_PROVIDER);
         habilitaGPS(enabledGPS);
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager = 
+                (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         provider = locationManager.getBestProvider(criteria, false);
         Location location = locationManager.getLastKnownLocation(provider);
@@ -119,7 +121,7 @@ public class Map extends Activity implements LocationListener,
             grupos = (ImageButton) findViewById(R.id.grupos);
             grupos.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(final View v) {
                     Intent i = new Intent(mContext, ViewGroupActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     startActivity(i);
@@ -130,7 +132,7 @@ public class Map extends Activity implements LocationListener,
             meusGrupos = (ImageButton) findViewById(R.id.meusGrupos);
             meusGrupos.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(final View v) {
                     Intent i = new Intent(mContext, MeusGruposActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     startActivity(i);
@@ -140,7 +142,7 @@ public class Map extends Activity implements LocationListener,
             editar = (ImageButton) findViewById(R.id.editar);
             editar.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(final View v) {
                     Intent i = new Intent(mContext, EditarActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     startActivity(i);
@@ -181,7 +183,8 @@ public class Map extends Activity implements LocationListener,
      * Sets the internet visible.
      */
     private void setInternetVisible() {
-        final LinearLayout layout = (LinearLayout) findViewById(R.id.LayoutNoInternet);
+        final LinearLayout layout = 
+                (LinearLayout) findViewById(R.id.LayoutNoInternet);
         layout.setVisibility(LinearLayout.VISIBLE);
         final CountDownTimer counter = new CountDownTimer(COUNTDOWNTIMER_PARAM,
                 COUNTDOWNTIMER_PARAM) {
@@ -203,7 +206,7 @@ public class Map extends Activity implements LocationListener,
      * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
      */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public final boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -212,7 +215,8 @@ public class Map extends Activity implements LocationListener,
      * @see android.app.Activity#onMenuItemSelected(int, android.view.MenuItem)
      */
     @Override
-    public boolean onMenuItemSelected(final int featureId, final MenuItem item) {
+    public final boolean onMenuItemSelected(final int featureId, 
+            final MenuItem item) {
 
         // about - depois mudar
         if (item.getItemId() == R.id.perfil) {
@@ -235,11 +239,12 @@ public class Map extends Activity implements LocationListener,
      *
      * @param enabledGPS the enabled gps
      */
-    private void habilitaGPS(boolean enabledGPS) {
+    private void habilitaGPS(final boolean enabledGPS) {
         if (!enabledGPS) {
             Toast.makeText(this, "GPS signal not found", Toast.LENGTH_LONG)
                     .show();
-            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            Intent intent = 
+                    new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(intent);
         }
     }
@@ -250,7 +255,8 @@ public class Map extends Activity implements LocationListener,
      * @param location the location
      * @param exibirBotoes the exibir botoes
      */
-    private void initilizeMap(Location location, boolean exibirBotoes) {
+    private void initilizeMap(final Location location, 
+            final boolean exibirBotoes) {
         try {
 
             if (googleMap == null) {
@@ -267,7 +273,7 @@ public class Map extends Activity implements LocationListener,
                     googleMap.setOnMapClickListener(new OnMapClickListener() {
 
                         @Override
-                        public void onMapClick(LatLng latLng) {
+                        public void onMapClick(final LatLng latLng) {
 
                             selecionarTipoPonto(latLng);
 
@@ -298,7 +304,7 @@ public class Map extends Activity implements LocationListener,
      *
      * @param latLng the lat lng
      */
-    public void selecionarTipoPonto(final LatLng latLng) {
+    public final void selecionarTipoPonto(final LatLng latLng) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Defina o nome e o tipo");
 
@@ -307,7 +313,8 @@ public class Map extends Activity implements LocationListener,
 
         builder.setSingleChoiceItems(tiposDePonto, -1,
                 new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
+                    public void onClick(final DialogInterface dialog, 
+                            final int item) {
 
                         MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions.position(latLng);
@@ -364,7 +371,8 @@ public class Map extends Activity implements LocationListener,
      * @param novo the novo
      * @return the string
      */
-    public String mudaCaractere(String str, String antigo, String novo) {
+    public final String mudaCaractere(String str, 
+            final String antigo, final String novo) {
         str = str.replace(antigo, novo);
         return str;
     }
@@ -376,7 +384,8 @@ public class Map extends Activity implements LocationListener,
      * @param latitude the latitude
      * @param longitude the longitude
      */
-    private void marcaUsuario(String nome, double latitude, double longitude) {
+    /*private void marcaUsuario(final String nome, 
+            final double latitude, final double longitude) {
 
         LatLng coordinate = new LatLng(latitude, longitude);
 
@@ -385,40 +394,45 @@ public class Map extends Activity implements LocationListener,
                 .position(coordinate)
                 .icon(BitmapDescriptorFactory
                         .fromResource(R.drawable.ic_launcher)).visible(true));
-    }
+    }*/
 
     /* (non-Javadoc)
-     * @see android.location.LocationListener#onLocationChanged(android.location.Location)
+     * @see android.location.LocationListener
+     * #onLocationChanged(android.location.Location)
      */
     @Override
-    public void onLocationChanged(Location location) {
+    public final void onLocationChanged(final Location location) {
         if (startPerc != null) {
             // startPerc.remove();
         }
     }
 
     /* (non-Javadoc)
-     * @see android.location.LocationListener#onStatusChanged(java.lang.String, int, android.os.Bundle)
+     * @see android.location.LocationListener
+     * #onStatusChanged(java.lang.String, int, android.os.Bundle)
      */
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
+    public void onStatusChanged(final String provider, 
+            final int status, final Bundle extras) {
         // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
-     * @see android.location.LocationListener#onProviderDisabled(java.lang.String)
+     * @see android.location.LocationListener
+     * #onProviderDisabled(java.lang.String)
      */
     @Override
-    public void onProviderDisabled(String provider) {
+    public final void onProviderDisabled(final String provider) {
         Toast.makeText(this, "Enabled new provider " + provider,
                 Toast.LENGTH_SHORT).show();
     }
 
     /* (non-Javadoc)
-     * @see android.location.LocationListener#onProviderEnabled(java.lang.String)
+     * @see android.location.LocationListener
+     * #onProviderEnabled(java.lang.String)
      */
     @Override
-    public void onProviderEnabled(String provider) {
+    public final void onProviderEnabled(final String provider) {
         Toast.makeText(this, "Disabled provider " + provider,
                 Toast.LENGTH_SHORT).show();
     }
@@ -428,7 +442,7 @@ public class Map extends Activity implements LocationListener,
      * @see android.app.Activity#onResume()
      */
     @Override
-    protected void onResume() {
+    protected final void onResume() {
         super.onResume();
         locationManager.requestLocationUpdates(provider, 400, 1, this);
     }
@@ -438,7 +452,7 @@ public class Map extends Activity implements LocationListener,
      * @see android.app.Activity#onPause()
      */
     @Override
-    protected void onPause() {
+    protected final void onPause() {
         super.onPause();
         locationManager.removeUpdates(this);
     }
@@ -447,15 +461,16 @@ public class Map extends Activity implements LocationListener,
      * @see android.app.Activity#onBackPressed()
      */
     @Override
-    public void onBackPressed() {
+    public final void onBackPressed() {
         this.finish();
     }
 
     /* (non-Javadoc)
-     * @see com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback#onMapLoaded()
+     * @see com.google.android.gms.maps.GoogleMap.
+     * OnMapLoadedCallback#onMapLoaded()
      */
     @Override
-    public void onMapLoaded() {
+    public final void onMapLoaded() {
         loadedMap = true;
     }
 

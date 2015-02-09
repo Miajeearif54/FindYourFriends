@@ -29,7 +29,7 @@ import android.widget.AdapterView.OnItemClickListener;
 /**
  * The Class MeusGruposActivity.
  */
-public class MeusGruposActivity extends Activity{
+public class MeusGruposActivity extends Activity {
 	
 	/** The m context. */
 	private Context mContext;
@@ -47,7 +47,7 @@ public class MeusGruposActivity extends Activity{
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+    protected final void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.meus_grupos);
 		mContext = getApplicationContext();
@@ -55,7 +55,7 @@ public class MeusGruposActivity extends Activity{
 		grupos = (ImageButton) findViewById(R.id.grupos);        
         grupos.setOnClickListener(new View.OnClickListener() {	
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				Intent i = new Intent(mContext, ViewGroupActivity.class);
 				i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 				startActivity(i);
@@ -65,7 +65,7 @@ public class MeusGruposActivity extends Activity{
         editar = (ImageButton) findViewById(R.id.editar);
         editar.setOnClickListener(new View.OnClickListener() {	
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				Intent i = new Intent(mContext, EditarActivity.class);
 				i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 				startActivity(i);
@@ -90,14 +90,15 @@ public class MeusGruposActivity extends Activity{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(MeusGruposActivity.this, "Aguarde", "Estamos conferindo seus grupos ...");
+            dialog = ProgressDialog.show(MeusGruposActivity.this, 
+                    "Aguarde", "Estamos conferindo seus grupos ...");
         }
         
         /* (non-Javadoc)
          * @see android.os.AsyncTask#doInBackground(Params[])
          */
         @Override
-        protected List<Integer> doInBackground(Void... params) {
+        protected List<Integer> doInBackground(final Void... params) {
             return getJSON(Session.getInstancia().getDono());
         }
 
@@ -105,7 +106,7 @@ public class MeusGruposActivity extends Activity{
          * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
          */
         @Override
-        protected void onPostExecute(List<Integer> result) {
+        protected void onPostExecute(final List<Integer> result) {
             super.onPostExecute(result);
             
             new RecuperaGruposDoUsuario().execute(result);
@@ -119,8 +120,10 @@ public class MeusGruposActivity extends Activity{
          * @param login the login
          * @return the json
          */
-        private List<Integer> getJSON(String login) {
-            String url = urlBD + "/findYouFriends/usuario/getCurrentLocation?login="  + login;
+        private List<Integer> getJSON(final String login) {
+            String url = urlBD 
+                    + "/findYouFriends/usuario/getCurrentLocation?login="  
+                    + login;
             JSONParse parser = new JSONParse(url);
             return parser.getGruposUsuarios();
         }
@@ -129,7 +132,8 @@ public class MeusGruposActivity extends Activity{
 	/**
 	 * The Class RecuperaGruposDoUsuario.
 	 */
-	private class RecuperaGruposDoUsuario extends AsyncTask<List<Integer>, Void, List<Grupo>> {
+	private class RecuperaGruposDoUsuario extends 
+	AsyncTask<List<Integer>, Void, List<Grupo>> {
         
         /** The dialog. */
         private ProgressDialog dialog;
@@ -146,14 +150,15 @@ public class MeusGruposActivity extends Activity{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(MeusGruposActivity.this, "Aguarde", "Gerando lista de grupos.");
+            dialog = ProgressDialog.show(MeusGruposActivity.this, 
+                    "Aguarde", "Gerando lista de grupos.");
         }
 
         /* (non-Javadoc)
          * @see android.os.AsyncTask#doInBackground(Params[])
          */
         @Override
-        protected List<Grupo> doInBackground(List<Integer>... params) {
+        protected List<Grupo> doInBackground(final List<Integer>... params) {
             idGrupos = params[0];
             return getJSON();
         }
@@ -162,14 +167,14 @@ public class MeusGruposActivity extends Activity{
          * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
          */
         @Override
-        protected void onPostExecute(List<Grupo> result) {
+        protected void onPostExecute(final List<Grupo> result) {
             super.onPostExecute(result);
             
             gruposDoUsuario = new ArrayList<Grupo>();
             
             for (Grupo grupo : result) {
                 for (Integer idGrupo : idGrupos) {
-                    if (grupo.getId() == idGrupo && grupo.isAtivo()){
+                    if (grupo.getId() == idGrupo && grupo.isAtivo()) {
                         grupo.setNome(mudaCaractere(grupo.getNome(), "_", " "));
                         gruposDoUsuario.add(grupo);
                         break;
@@ -179,28 +184,37 @@ public class MeusGruposActivity extends Activity{
             
             
             ListView list = (ListView) findViewById(R.id.listMyGroups);
-            GrupoAdapter adapter = new GrupoAdapter(getApplicationContext(), gruposDoUsuario);
+            GrupoAdapter adapter = new GrupoAdapter(
+                    getApplicationContext(), gruposDoUsuario);
             list.setAdapter(adapter);
             
             list.setOnItemClickListener(new OnItemClickListener() {
                 
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                        int position, long id) {
-                    String name = ((TextView) view.findViewById(R.id.nomeGrupo)).getText().toString();
-                    String idGrupo = ((TextView) view.findViewById(R.id.idGrupo)).getText().toString();
+                public void onItemClick(final AdapterView<?> parent, 
+                        final View view,
+                        final int position, final long id) {
+                    
+                    String name = ((TextView) 
+                            view.findViewById(R.id.nomeGrupo)).getText()
+                            .toString();
+                    
+                    String idGrupo = ((TextView) 
+                            view.findViewById(R.id.idGrupo)).getText()
+                            .toString();
                     
                     Bundle param = new Bundle();
                     
                     for (Grupo grupo : gruposDoUsuario) {
-                        if(String.valueOf(grupo.getId()).equals(idGrupo)){
+                        if (String.valueOf(grupo.getId()).equals(idGrupo)) {
                             param.putString("KEY_NAME", grupo.getNome());
                             param.putInt("KEY_ID", grupo.getId());
                             
                         }
                     }
                     
-                    Intent intent = new Intent(getApplicationContext(), GrupoActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), 
+                            GrupoActivity.class);
                     intent.putExtras(param);
                     startActivity(intent);
                 }
@@ -215,7 +229,8 @@ public class MeusGruposActivity extends Activity{
          * @return the json
          */
         private List<Grupo> getJSON() {
-            JSONParse parser = new JSONParse(urlBD + "/findYouFriends/grupo/listGroups");
+            JSONParse parser = new JSONParse(urlBD 
+                    + "/findYouFriends/grupo/listGroups");
             return parser.getGruposBD();
         }
     }
@@ -228,7 +243,8 @@ public class MeusGruposActivity extends Activity{
    	 * @param novo the novo
    	 * @return the string
    	 */
-   	public String mudaCaractere(String str, String antigo, String novo) {
+   	public final String mudaCaractere(String str, 
+   	        final String antigo, final String novo) {
 	        str = str.replace(antigo, novo);
 	        return str;
 	    }

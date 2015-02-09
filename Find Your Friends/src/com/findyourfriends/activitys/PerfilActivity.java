@@ -34,7 +34,7 @@ import android.widget.TextView;
 /**
  * The Class PerfilActivity.
  */
-public class PerfilActivity extends Activity{
+public class PerfilActivity extends Activity {
     
     /** The Constant TAG. */
     private static final String TAG = "PerfilActivity";
@@ -57,7 +57,7 @@ public class PerfilActivity extends Activity{
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
-    protected void onCreate(Bundle savedInstanceState) {
+    protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.perfil);
 
@@ -78,7 +78,7 @@ public class PerfilActivity extends Activity{
         userName.setText(nome);
         userEmail.setText(email);
         
-        if (hasExternalStoragePublicPicture()){
+        if (hasExternalStoragePublicPicture()) {
             try {
                 readImagem();
             } catch (FileNotFoundException e) {
@@ -88,14 +88,14 @@ public class PerfilActivity extends Activity{
         
         btnSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 signOutFromGplus();
             }
         });
         
         btnRevokeAccess.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 revokeGplusAccess();
             }
         });
@@ -128,7 +128,7 @@ public class PerfilActivity extends Activity{
             Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient)
                     .setResultCallback(new ResultCallback<Status>() {
                         @Override
-                        public void onResult(Status arg0) {
+                        public void onResult(final Status arg0) {
                             Log.e(TAG, "User access revoked!");
                             mGoogleApiClient.connect();
                         }
@@ -140,7 +140,7 @@ public class PerfilActivity extends Activity{
     /**
      * Delete external storage public picture.
      */
-    void deleteExternalStoragePublicPicture() {
+    final void deleteExternalStoragePublicPicture() {
         File path = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DCIM);       
         File file = new File(path, "ImagemPerfil.jpg");
@@ -152,10 +152,12 @@ public class PerfilActivity extends Activity{
      *
      * @return true, if successful
      */
-    boolean hasExternalStoragePublicPicture() {
+    final boolean hasExternalStoragePublicPicture() {
         //TODO        
         String path = Environment.getExternalStorageDirectory()
-                .getAbsolutePath()+ File.separator + ".FindYourFriends" + File.separator;        
+                .getAbsolutePath() 
+                + File.separator + ".FindYourFriends" 
+                + File.separator;        
         File file = new File(path, "ImagemPerfil.jpg");
         return file.exists();
     }
@@ -165,9 +167,11 @@ public class PerfilActivity extends Activity{
      *
      * @throws FileNotFoundException the file not found exception
      */
-    public void readImagem() throws FileNotFoundException{
+    public final void readImagem() throws FileNotFoundException {
         String path  = Environment.getExternalStorageDirectory()
-                .getAbsolutePath()+ File.separator + ".FindYourFriends" + File.separator;
+                .getAbsolutePath() 
+                + File.separator + ".FindYourFriends" 
+                + File.separator;
         File file = new File(path, "ImagemPerfil.jpg");
         
         InputStream is = new FileInputStream(file);
@@ -179,7 +183,7 @@ public class PerfilActivity extends Activity{
      * @see android.app.Activity#onBackPressed()
      */
     @Override
-    public void onBackPressed() {
+    public final void onBackPressed() {
         Intent in = new Intent(mContext, Map.class);
         in.putExtra("mostrar_botoes", true);
         startActivity(in);
