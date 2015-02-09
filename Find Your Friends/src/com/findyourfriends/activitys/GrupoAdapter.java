@@ -36,7 +36,7 @@ public class GrupoAdapter extends BaseAdapter {
      * @param context the context
      * @param grupos the grupos
      */
-    public GrupoAdapter(Context context, List<Grupo> grupos) {
+    public GrupoAdapter(final Context context, final List<Grupo> grupos) {
         mInflater = LayoutInflater.from(context);
         mGrupos = grupos;
     }
@@ -45,7 +45,7 @@ public class GrupoAdapter extends BaseAdapter {
      * @see android.widget.Adapter#getCount()
      */
     @Override
-    public int getCount() {
+    public final int getCount() {
         return mGrupos.size();
     }
 
@@ -53,7 +53,7 @@ public class GrupoAdapter extends BaseAdapter {
      * @see android.widget.Adapter#getItem(int)
      */
     @Override
-    public Object getItem(int index) {
+    public final Object getItem(final int index) {
         return mGrupos.get(index);
     }
 
@@ -61,7 +61,7 @@ public class GrupoAdapter extends BaseAdapter {
      * @see android.widget.Adapter#getItemId(int)
      */
     @Override
-    public long getItemId(int index) {
+    public final long getItemId(final int index) {
         return index;
     }
 
@@ -69,8 +69,7 @@ public class GrupoAdapter extends BaseAdapter {
      * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
      */
     @Override
-    public View getView(int posicao, View view, ViewGroup viewGroup) {
-        view = mInflater.inflate(R.layout.grupo_adapter_item, null);
+    public final View getView(final int posicao, final View view, final ViewGroup viewGroup) {
         Grupo grupo = mGrupos.get(posicao);
         
         TextView tvNome = (TextView) view.findViewById(R.id.nomeGrupo);
@@ -79,7 +78,7 @@ public class GrupoAdapter extends BaseAdapter {
         TextView tvId = (TextView) view.findViewById(R.id.idGrupo);
         tvId.setText(String.valueOf(grupo.getId()));
 
-        return view;
+        return mInflater.inflate(R.layout.grupo_adapter_item, null);
     }
 
 }

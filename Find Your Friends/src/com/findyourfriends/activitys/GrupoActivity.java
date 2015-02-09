@@ -57,7 +57,7 @@ public class GrupoActivity extends Activity {
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_users_in_groups);
         mContext = getApplicationContext();
@@ -66,8 +66,8 @@ public class GrupoActivity extends Activity {
         visualizarMapa = (Button) findViewById(R.id.visualizarMapa);
         visualizarMapa.setOnClickListener(new View.OnClickListener() {  
             @Override
-            public void onClick(View v) {
-                if(gpsManager == null){
+            public void onClick(final View v) {
+                if (gpsManager == null) {
                     gpsManager = new GPSManager(mContext);
                 }
                 gpsManager.searchProvider();
@@ -104,14 +104,16 @@ public class GrupoActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(GrupoActivity.this, "Aguarde", "Gerando lista de usuários nesse grupo.");
+            dialog = ProgressDialog.show(GrupoActivity.this,
+                    "Aguarde",
+                    "Gerando lista de usuários nesse grupo.");
         }
 
         /* (non-Javadoc)
          * @see android.os.AsyncTask#doInBackground(Params[])
          */
         @Override
-        protected List<Usuario> doInBackground(Void... params) {
+        protected List<Usuario> doInBackground(final Void... params) {
             return getJSON();
         }
 
@@ -119,7 +121,7 @@ public class GrupoActivity extends Activity {
          * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
          */
         @Override
-        protected void onPostExecute(List<Usuario> result) {
+        protected void onPostExecute(final List<Usuario> result) {
             super.onPostExecute(result);
             
            usuariosDoGrupo = new ArrayList<Usuario>();
@@ -127,7 +129,7 @@ public class GrupoActivity extends Activity {
             for (Usuario usuario : result) {
                 List<Integer> idsGruposDoUsuario = usuario.getIdGrupos();
                 for (Integer idGrupoDoUsuario : idsGruposDoUsuario) {
-                    if(idGrupoDoUsuario == idGrupo){
+                    if (idGrupoDoUsuario == idGrupo) {
                         usuariosDoGrupo.add(usuario);
                     }
                 }
@@ -146,7 +148,8 @@ public class GrupoActivity extends Activity {
          * @return the json
          */
         private List<Usuario> getJSON() {
-            JSONParse parser = new JSONParse(urlBD + "/findYouFriends/usuario/listUsers");
+            JSONParse parser = new JSONParse(urlBD
+                                    + "/findYouFriends/usuario/listUsers");
             return parser.getUsuariosBD();
         }
     }
@@ -165,14 +168,16 @@ public class GrupoActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(GrupoActivity.this, "Aguarde", "Atualizando Posição");
+            dialog = ProgressDialog.show(GrupoActivity.this,
+                    "Aguarde",
+                    "Atualizando Posição");
         }
 
         /* (non-Javadoc)
          * @see android.os.AsyncTask#doInBackground(Params[])
          */
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(final Void... params) {
             while (gpsManager.isCurrentPositionNull()) {
             }
             
@@ -187,7 +192,7 @@ public class GrupoActivity extends Activity {
          * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
          */
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(final Void result) {
             super.onPostExecute(result);
             
             Bundle param = new Bundle();

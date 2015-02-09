@@ -14,96 +14,91 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
-
 /**
  * The Class JSONParse.
  */
 public class JSONParse {
-    
+
     /** The feed url. */
-    protected URL feedUrl;
-    
+    private URL feedUrl;
+
     /** The json. */
     private JSONArray json;
-    
+
     /** The json string. */
-    private String jsonString; 
-    
+    private String jsonString;
+
     /** The Constant DONO. */
     private static final String DONO = "dono";
-    
+
     /** The Constant ATIVO. */
     private static final String ATIVO = "ativo";
-    
+
     /** The Constant NOME. */
     private static final String NOME = "nome";
-    
+
     /** The Constant SENHA. */
     private static final String SENHA = "senha";
-    
+
     /** The Constant USUARIOS. */
     private static final String USUARIOS = "usuarios";
-    
+
     /** The Constant ID. */
     private static final String ID = "id";
-    
+
     /** The adicionou. */
     private boolean adicionou;
-    
+
     /**
      * Instantiates a new JSON parse.
-     *
-     * @param feedUrl the feed url
+     * 
+     * @param feedUrlParam
+     *            the feed url
      */
-    public JSONParse(String feedUrl) {
+    public JSONParse(final String feedUrlParam) {
         adicionou = true;
         try {
-            this.feedUrl = new URL(feedUrl);
+            feedUrl = new URL(feedUrlParam);
             json();
         } catch (MalformedURLException e) {
             adicionou = false;
         }
-        
+
     }
-    
+
     /**
      * Json.
      */
     private void json() {
         try {
-            jsonString = convertStreamToString(feedUrl.openConnection().getInputStream());
-//            String jsonString = "[{\"class\":\"findyoufriends.Grupo\",\"id\":1,\"dono\":\"werton007\",\"duracao\":60,\"nome\":\"Forninho\",\"senha\":\"123\",\"usuarios\":[{\"class\":\"Usuario\",\"id\":1}]},"
-//                    + "{\"class\":\"findyoufriends.Grupo\",\"id\":2,\"dono\":\"werton\",\"duracao\":132,\"nome\":\"Plecas\",\"senha\":\"adsad\",\"usuarios\":[]}," 
-//                    + "{\"class\":\"findyoufriends.Grupo\",\"id\":3,\"dono\":\"Ines Brasil\",\"duracao\":123123,\"nome\":\"xpto\",\"senha\":\"adsa\",\"usuarios\":[]},"
-//                    + "{\"class\":\"findyoufriends.Grupo\",\"id\":4,\"dono\":\"pff\",\"duracao\":12313,\"nome\":\"Pff\",\"senha\":\"ww\",\"usuarios\":[]}]";
+            jsonString = convertStreamToString(feedUrl.openConnection()
+                    .getInputStream());
             json = new JSONArray(jsonString);
-            
+
         } catch (JSONException e) {
             e.printStackTrace();
-        } 
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Convert stream to string.
-     *
-     * @param input the input
+     * 
+     * @param input
+     *            the input
      * @return the string
      */
     private String convertStreamToString(final InputStream input) {
 
-        final BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(
+                input));
         final StringBuilder sBuf = new StringBuilder();
 
         String line = null;
@@ -118,28 +113,27 @@ public class JSONParse {
             } catch (IOException e) {
             }
         }
-        Log.d("werton", sBuf.toString());
         return sBuf.toString();
     }
-    
+
     /**
      * Checks if is null.
-     *
+     * 
      * @return true, if is null
      */
-    public boolean isNull(){
+    public final boolean isNull() {
         return (json == null);
     }
-    
+
     /**
      * Gets the grupos bd.
-     *
+     * 
      * @return the grupos bd
      */
-    public List<Grupo> getGruposBD() {
+    public final List<Grupo> getGruposBD() {
         List<Grupo> grupos = new ArrayList<Grupo>();
 
-        if(json != null){
+        if (json != null) {
             for (int i = 0; i < json.length(); i++) {
                 JSONObject grupo;
                 try {
@@ -148,22 +142,22 @@ public class JSONParse {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-    
+
             }
         }
 
         return grupos;
     }
-    
+
     /**
      * Gets the usuarios bd.
-     *
+     * 
      * @return the usuarios bd
      */
-    public List<Usuario> getUsuariosBD() {
+    public final List<Usuario> getUsuariosBD() {
         List<Usuario> usuarios = new ArrayList<Usuario>();
 
-        if(json != null){
+        if (json != null) {
             for (int i = 0; i < json.length(); i++) {
                 JSONObject usuario;
                 try {
@@ -172,47 +166,48 @@ public class JSONParse {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-    
+
             }
         }
 
         return usuarios;
     }
-    
+
     /**
      * Gets the id usuario.
-     *
+     * 
      * @return the id usuario
      */
-    public Integer getIdUsuario(){
+    public final Integer getIdUsuario() {
         try {
-            /*if (jsonString == null) {
-                return -1;
-            }*/
+            /*
+             * if (jsonString == null) { return -1; }
+             */
             JSONObject idUser = new JSONObject(jsonString);
             return convert(idUser.get("id"), Integer.class);
-            
+
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return -1;
     }
-    
+
     /**
      * Gets the grupos usuarios.
-     *
+     * 
      * @return the grupos usuarios
      */
-    public List<Integer> getGruposUsuarios() {
+    public final List<Integer> getGruposUsuarios() {
         List<Integer> idGrupos = new ArrayList<Integer>();
         try {
             if (jsonString == null) {
                 return idGrupos;
             }
             JSONObject usuario = new JSONObject(jsonString);
-            JSONArray gUsuarios = convert(usuario.get("grupos"), JSONArray.class);
-            
+            JSONArray gUsuarios = convert(usuario.get("grupos"),
+                    JSONArray.class);
+
             for (int i = 0; i < gUsuarios.length(); i++) {
                 JSONObject grupo;
                 try {
@@ -222,21 +217,22 @@ public class JSONParse {
                     e.printStackTrace();
                 }
             }
-            
+
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return idGrupos;
     }
-    
+
     /**
      * Gets the ids.
-     *
-     * @param ids the ids
+     * 
+     * @param ids
+     *            the ids
      * @return the ids
      */
-    public List<Integer> getIds(JSONArray ids) {
+    public final List<Integer> getIds(final JSONArray ids) {
         List<Integer> idList = new ArrayList<Integer>();
         for (int i = 0; i < ids.length(); i++) {
             JSONObject usuario;
@@ -249,71 +245,83 @@ public class JSONParse {
         }
         return idList;
     }
-    
+
     /**
      * Recupera usuarios.
-     *
-     * @param item the item
+     * 
+     * @param item
+     *            the item
      * @return the usuario
-     * @throws JSONException the JSON exception
+     * @throws JSONException
+     *             the JSON exception
      */
-    private Usuario recuperaUsuarios(JSONObject item) throws JSONException {
-        return new Usuario(convert(item.get(ID), Integer.class),
+    private Usuario recuperaUsuarios(final JSONObject item)
+            throws JSONException {
+        return new Usuario(
+                convert(item.get(ID), Integer.class),
                 convert(item.get("login"), String.class),
                 Double.parseDouble(convert(item.get("latitude"), String.class)),
                 Double.parseDouble(convert(item.get("longitude"), String.class)),
-                convert(item.get(NOME), String.class),
-                getIds(convert(item.get("grupos"), JSONArray.class))); //aqui deve ser colocado a lista de usuarios (os id deles);
+                convert(item.get(NOME), String.class), getIds(convert(
+                        item.get("grupos"), JSONArray.class)));
+        // aqui deve ser colocado a lista de usuarios (os id deles);
     }
-    
+
     /**
      * Recupera grupos.
-     *
-     * @param item the item
+     * 
+     * @param item
+     *            the item
      * @return the grupo
-     * @throws JSONException the JSON exception
+     * @throws JSONException
+     *             the JSON exception
      */
-    private Grupo recuperaGrupos(JSONObject item) throws JSONException {
+    private Grupo recuperaGrupos(final JSONObject item) throws JSONException {
         String nome = convert(item.get(NOME), String.class);
-        nome = mudaCaractere(nome, "_", " ");   
-        
-        return new Grupo(convert(item.get(ID), Integer.class),
-                nome,
-                convert(item.get(DONO), String.class),
-                convert(item.get(ATIVO), Boolean.class),
-                convert(item.get(SENHA), String.class),
-                getIds(convert(item.get(USUARIOS), JSONArray.class))); //aqui deve ser colocado a lista de usuarios (os id deles);
+        nome = mudaCaractere(nome, "_", " ");
+
+        return new Grupo(convert(item.get(ID), Integer.class), nome, convert(
+                item.get(DONO), String.class), convert(item.get(ATIVO),
+                Boolean.class), convert(item.get(SENHA), String.class),
+                getIds(convert(item.get(USUARIOS), JSONArray.class)));
+        // aqui deve ser colocado a lista de usuarios (os id deles);
     }
-    
+
     /**
-     * O metodo Auxiliar que converte um Objeto do JSON para um tipo especificado.
-     *
-     * @param <T> the generic type
-     * @param obj - O objesto do JSON.
-     * @param type - O tipo que sera o Objeto.
+     * O metodo Auxiliar que converte um Objeto do JSON para um tipo
+     * especificado.
+     * 
+     * @param <T>
+     *            the generic type
+     * @param obj
+     *            - O objesto do JSON.
+     * @param type
+     *            - O tipo que sera o Objeto.
      * @return O objeto convertido com algum tipo.
      */
-    
+
     @SuppressWarnings("unchecked")
-    private <T> T convert(Object obj, Class<T> type) {
+    private <T> T convert(final Object obj, final Class<T> type) {
         if (obj == null) {
-            return null;        
+            return null;
         }
         return (T) obj;
     }
-    
+
     /**
      * Muda caractere.
-     *
-     * @param str the str
-     * @param antigo the antigo
-     * @param novo the novo
+     * 
+     * @param str
+     *            the str
+     * @param antigo
+     *            the antigo
+     * @param novo
+     *            the novo
      * @return the string
      */
-    public String mudaCaractere(String str, String antigo, String novo){
-        str = str.replace(antigo, novo);
-        return str;
+    public final String mudaCaractere(final String str, final String antigo,
+            final String novo) {
+        return str.replace(antigo, novo);
     }
-     
 
 }
