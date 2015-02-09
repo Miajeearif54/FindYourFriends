@@ -84,7 +84,7 @@ public class Map extends Activity implements LocationListener,
 
     /** The meus grupos. */
     private ImageButton editar, grupos, meusGrupos;
-
+    
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
@@ -318,7 +318,8 @@ public class Map extends Activity implements LocationListener,
 
                         MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions.position(latLng);
-                        double lat, lng;
+                        
+//                        double lat, lng;
 
                         switch (item) {
                         case 0:
@@ -336,8 +337,8 @@ public class Map extends Activity implements LocationListener,
                             googleMap.animateCamera(CameraUpdateFactory
                                     .newLatLng(latLng));
                             googleMap.addMarker(markerOptions);
-                            lat = markerOptions.getPosition().latitude;
-                            lng = markerOptions.getPosition().longitude;
+/*                            lat = markerOptions.getPosition().latitude;
+                            lng = markerOptions.getPosition().longitude;*/
                             break;
 
                         case 1:
@@ -351,8 +352,10 @@ public class Map extends Activity implements LocationListener,
                             googleMap.animateCamera(CameraUpdateFactory
                                     .newLatLng(latLng));
                             googleMap.addMarker(markerOptions);
-                            lat = markerOptions.getPosition().latitude;
-                            lng = markerOptions.getPosition().longitude;
+/*                            lat = markerOptions.getPosition().latitude;
+                            lng = markerOptions.getPosition().longitude;*/
+                            break;
+                        default:
                             break;
                         }
                         tipoDePontoDialog.dismiss();
@@ -371,10 +374,9 @@ public class Map extends Activity implements LocationListener,
      * @param novo the novo
      * @return the string
      */
-    public final String mudaCaractere(String str, 
+    public final String mudaCaractere(final String str, 
             final String antigo, final String novo) {
-        str = str.replace(antigo, novo);
-        return str;
+        return str.replace(antigo, novo);
     }
 
     /**

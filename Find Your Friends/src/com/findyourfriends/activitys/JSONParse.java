@@ -53,7 +53,7 @@ public class JSONParse {
     private static final String ID = "id";
 
     /** The adicionou. */
-    private boolean adicionou;
+    private static boolean adicionou;
 
     /**
      * Instantiates a new JSON parse.
@@ -71,6 +71,15 @@ public class JSONParse {
         }
 
     }
+    
+    /**
+     * 
+     * @return a requisição do usuario foi feita com sucesso.
+     */
+    public static boolean getAdicionou() {
+        return adicionou;
+    }
+    
 
     /**
      * Json.

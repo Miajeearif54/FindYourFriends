@@ -232,7 +232,8 @@ public class EditarActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(EditarActivity.this, "Aguarde",
+            dialog = ProgressDialog.show(EditarActivity.this,
+                    "Aguarde",
                     "Removendo o grupo");
         }
 
@@ -257,6 +258,8 @@ public class EditarActivity extends Activity {
         @Override
         protected void onPostExecute(final Void result) {
             super.onPostExecute(result);
+            
+            dialog.dismiss();
 
             Intent intent = new Intent(getApplicationContext(), Map.class);
             startActivity(intent);

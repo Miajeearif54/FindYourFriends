@@ -156,7 +156,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
 
         // testar conexao
         haveNetworkConnection();
-        status = getSharedPreferences(LOGIN, 0);
+        setStatus(getSharedPreferences(LOGIN, 0));
         editor = status.edit();
 
         logado = status.getBoolean("logado", false);
@@ -217,6 +217,24 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
                     .findFragmentById(android.R.id.content);
         }
 
+    }
+    
+    /**
+     * Troca o status. 
+     * 
+     * @param statusParam 
+     */
+    public static void setStatus(final SharedPreferences statusParam) {
+        MainActivity.status = statusParam;
+    }
+    
+    /**
+     * 
+     * 
+     * @param sairParam 
+     */
+    public static void setSair(final boolean sairParam) {
+        MainActivity.sair = sairParam;
     }
 
     /**
@@ -411,7 +429,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
      */
     @Override
     public final void onConnected(final Bundle arg0) {
-        sair = status.getBoolean("sair", false);
+        setSair(status.getBoolean("sair", false));
 
         if (sair) {
             signOutFromGplus();
