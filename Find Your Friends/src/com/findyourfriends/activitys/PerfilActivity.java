@@ -57,6 +57,7 @@ public class PerfilActivity extends Activity {
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
+    @Override
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.perfil);
@@ -72,8 +73,8 @@ public class PerfilActivity extends Activity {
         userEmail = (TextView) findViewById(R.id.txtEmail);
         
         //pega a string "nome/email" caso nao encontrado "NOME/EMAIL"
-        String nome = MainActivity.status.getString("nome", "NOME");
-        String email = MainActivity.status.getString("email", "EMAIL");
+        String nome = MainActivity.getStatus().getString("nome", "NOME");
+        String email = MainActivity.getStatus().getString("email", "EMAIL");
         
         userName.setText(nome);
         userEmail.setText(email);
@@ -108,10 +109,10 @@ public class PerfilActivity extends Activity {
     private void signOutFromGplus() {
         Log.d("logout", "clicado logout");
         
-        MainActivity.editor.clear();
-        MainActivity.editor.putBoolean("logado", false);
-        MainActivity.editor.putBoolean("sair", true);
-        MainActivity.editor.commit();
+        MainActivity.getEditor().clear();
+        MainActivity.getEditor().putBoolean("logado", false);
+        MainActivity.getEditor().putBoolean("sair", true);
+        MainActivity.getEditor().commit();
 
         Intent in = new Intent(this, MainActivity.class);
 
