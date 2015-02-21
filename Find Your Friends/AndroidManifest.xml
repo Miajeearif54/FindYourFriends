@@ -108,6 +108,26 @@
             android:label="@string/perfil">
         </activity>
         
+        <activity
+            android:name="com.findyourfriends.activitys.FacebookActivity"
+            android:label="@string/app_name">
+        </activity>
+        
+        <activity
+            android:name="com.findyourfriends.activitys.LoginActivity"
+            android:label="@string/app_name">
+        </activity>
+        
+        <activity
+            android:name="com.findyourfriends.activitys.GoogleActivity"
+            android:label="@string/app_name">
+        </activity>
+        
+        <activity
+            android:name="com.findyourfriends.activitys.MainFragment"
+            android:label="@string/app_name">
+        </activity>
+        
         <!--
         Werton (embedded) -->
         <meta-data

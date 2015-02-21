@@ -35,7 +35,7 @@ public final class Splash extends Activity {
             @Override
             public void run() {
                 final Intent i = new Intent(Splash.this,
-                        MainActivity.class);
+                        LoginActivity.class);
                 startActivity(i);
                 finish();
             }

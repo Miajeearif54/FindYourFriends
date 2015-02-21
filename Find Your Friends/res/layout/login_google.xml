@@ -1,25 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_map"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
-
+    android:orientation="vertical" >
+    
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center"
         android:src="@drawable/logo_menor"
-        android:layout_marginBottom="20dp"
-        tools:ignore="ContentDescription" />
-     
-     <!-- informacoes usuario -->
+        android:layout_marginBottom="20dp" />
+    
+    <!--  informações usuario -->
     <LinearLayout
         android:id="@+id/llProfile"
         android:layout_width="wrap_content"
@@ -35,8 +29,7 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
-            android:layout_weight="1"
-            tools:ignore="ContentDescription" />
+            android:layout_weight="1" />
  
         <LinearLayout
             android:layout_width="wrap_content"
@@ -61,24 +54,7 @@
         </LinearLayout>
     </LinearLayout>
     
-    <!--botao FB -->	
-    <com.facebook.widget.LoginButton
-        android:id="@+id/authButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"/>
-    
-    <!-- botao google -->
-    <com.google.android.gms.common.SignInButton
-            android:id="@+id/btn_sign_in"
-        	android:layout_gravity="center_horizontal"
-       		android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="10dp" >
-    	</com.google.android.gms.common.SignInButton>
-
-	<!-- /LinearLayout botoes continuar--><LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -113,5 +89,6 @@
             android:visibility="gone" />
         
     </LinearLayout>
+    
 
 </LinearLayout>

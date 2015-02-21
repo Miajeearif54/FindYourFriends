@@ -32,6 +32,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,7 +61,7 @@ import com.google.android.gms.plus.model.people.Person;
 /**
  * The Class MainActivity.
  */
-public class MainActivity extends Activity implements OnClickListener,
+public class MainActivity extends FragmentActivity implements OnClickListener,
         ConnectionCallbacks, OnConnectionFailedListener {
 
     // mudei de extends Activity pra Fragment Activity
@@ -154,16 +155,12 @@ public class MainActivity extends Activity implements OnClickListener,
         setContentView(R.layout.activity_main);
         mContext = getApplicationContext();
         
-        loadView();
-
-        // Initializing google plus api client
-        
+        loadView();       
 
         // testar conexao
         haveNetworkConnection();
         setStatus(getSharedPreferences(LOGIN, 0));
         editor = status.edit();
-
         logado = status.getBoolean("logado", false);
         
         if (logado) {
@@ -177,6 +174,19 @@ public class MainActivity extends Activity implements OnClickListener,
                 finish();
             }
         }
+        
+        /*if (savedInstanceState == null) {
+            // Add the fragment on initial activity setup
+            mainFragment = new MainFragment();
+            getSupportFragmentManager()
+            .beginTransaction()
+            .add(android.R.id.content, mainFragment)
+            .commit();
+        } else {
+            // Or set the fragment from restored state info
+            mainFragment = (MainFragment) getSupportFragmentManager()
+            .findFragmentById(android.R.id.content);
+        }*/
         
         mGoogleApiClient = new GoogleApiClient.Builder(this)
         .addConnectionCallbacks(this)
