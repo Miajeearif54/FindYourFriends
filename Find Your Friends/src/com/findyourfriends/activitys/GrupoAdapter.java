@@ -7,16 +7,22 @@
 
 package com.findyourfriends.activitys;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import com.les.findyourfriends.R;
+import java.util.Locale;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.les.findyourfriends.R;
 
 /**
  * The Class GrupoAdapter.
@@ -29,6 +35,17 @@ public class GrupoAdapter extends BaseAdapter {
     /** The m inflater. */
     private LayoutInflater mInflater;
 
+    private List<Grupo> auxlist;
+
+    private List<Integer> idGruposUsuario;
+
+    private boolean isRequisicao;
+    
+    /** The url bd. */
+    private String urlBD = "http://150.165.15.89:10008";
+
+    private ImageView botao;
+    
     /**
      * Instantiates a new grupo adapter.
      * 
@@ -37,9 +54,13 @@ public class GrupoAdapter extends BaseAdapter {
      * @param grupos
      *            the grupos
      */
-    public GrupoAdapter(final Context context, final List<Grupo> grupos) {
+    public GrupoAdapter(final Context context, final List<Grupo> grupos,
+            final List<Integer> idGruposUsuario, boolean isRequisicao) {
         mInflater = LayoutInflater.from(context);
         mGrupos = grupos;
+        auxlist = new ArrayList<Grupo>(grupos);
+        this.idGruposUsuario = idGruposUsuario;
+        this.isRequisicao = isRequisicao;
     }
 
     /*
@@ -81,9 +102,9 @@ public class GrupoAdapter extends BaseAdapter {
     @Override
     public final View getView(final int posicao, final View view,
             final ViewGroup viewGroup) {
-        View viewAux = view;
-        viewAux = mInflater.inflate(R.layout.grupo_adapter_item, null);
-        Grupo grupo = mGrupos.get(posicao);
+        final View viewAux = mInflater.inflate(R.layout.grupo_adapter_item,
+                null);
+        final Grupo grupo = mGrupos.get(posicao);
 
         TextView tvNome = (TextView) viewAux.findViewById(R.id.nomeGrupo);
         tvNome.setText(grupo.getNome());
@@ -91,7 +112,84 @@ public class GrupoAdapter extends BaseAdapter {
         TextView tvId = (TextView) viewAux.findViewById(R.id.idGrupo);
         tvId.setText(String.valueOf(grupo.getId()));
 
+        botao = (ImageView) viewAux.findViewById(R.id.botao);
+
+        for (Integer i : idGruposUsuario) {
+            if (i.toString().equals(grupo.getId().toString())) {
+                botao.setVisibility(View.GONE);
+                return viewAux;
+            }
+        }
+
+        if (isRequisicao) { // TODO QUando o usuário ja requisitou
+            // if (grupo.getRequisitantes().contais(usuario))
+            
+           // botao.setImageDrawable(viewAux.getResources().getDrawable(
+            //        R.drawable.ic_clock));
+            //else
+            // Requisitando entrada em grupo
+            botao.setImageDrawable(viewAux.getResources().getDrawable(
+                    R.drawable.ic_lock));
+            botao.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Log.d("REQUEST", "GRUPO " + grupo.getNome());
+                   ((ImageView)v).setImageDrawable(viewAux.getResources().getDrawable(
+                           R.drawable.ic_clock));
+                   //TODO adicionar usuario a lista de requisicoes e salvar 
+                }
+            });
+        } else {
+            // Deletando grupo
+            botao.setImageDrawable(viewAux.getResources().getDrawable(
+                    R.drawable.ic_delete));
+            botao.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Log.d("DELETE", "GRUPO " + grupo.getNome());
+                    mGrupos.remove(posicao);
+                    notifyDataSetChanged();
+                    new RemoveGrupo().execute(grupo.getId());
+                }
+            });
+        }
+
         return viewAux;
     }
 
+    // Filter Class
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        mGrupos.clear();
+        if (charText.length() == 0) {
+            mGrupos.addAll(auxlist);
+        } else {
+            for (Grupo g : auxlist) {
+                if (g.getNome().toLowerCase(Locale.getDefault())
+                        .contains(charText)) {
+                    mGrupos.add(g);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * The Class RemoveGrupo.
+     */
+    private class RemoveGrupo extends AsyncTask<Integer, Void, Void> {
+
+        /** The id grupo. */
+        private Integer idGrupo;
+
+        @Override
+        protected Void doInBackground(final Integer... params) {
+            idGrupo = params[0];
+            new JSONParse(urlBD + "/findYouFriends/grupo/updateStatus?idGrupo="
+                    + idGrupo + "&status=false");
+            return null;
+        }
+    }
 }

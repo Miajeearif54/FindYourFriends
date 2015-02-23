@@ -26,6 +26,8 @@ public class Usuario {
     /** The id grupos. */
     private List<Integer> idGrupos;
 
+    //TODO colocar email
+    
     /**
      * Instantiates a new usuario.
      * 

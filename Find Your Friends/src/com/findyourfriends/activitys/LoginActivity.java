@@ -144,7 +144,7 @@ public class LoginActivity extends Activity{
  // METHODS FACEBOOK
     public void onSessionStateChanged(final Session session, SessionState state, Exception exception){
         if(session != null && session.isOpened()){
-            Log.i("Script", "Usu√°rio conectado");
+            Log.i("Script", "Usu·rio conectado");
             Request.newMeRequest(session, new Request.GraphUserCallback() {
                 @Override
                 public void onCompleted(GraphUser user, Response response) {
@@ -159,6 +159,9 @@ public class LoginActivity extends Activity{
                         tvName.setText(user.getFirstName()+" "+user.getLastName());
                        
                         tvEmail.setText(user.getProperty("email").toString());
+                        
+                        com.findyourfriends.activitys.Session.getInstancia().setDono(user.getProperty("email").toString());
+                        com.findyourfriends.activitys.Session.getInstancia().setIdUser(Integer.getInteger(user.getId()));
 
                         //foto.setProfileId(user.getId());
                     }
@@ -166,7 +169,7 @@ public class LoginActivity extends Activity{
             }).executeAsync();
         }
         else{
-            Log.i("Script", "Usu√°rio n√£o conectado");
+            Log.i("Script", "Usu·rio n„o conectado");
             llInfoUser.setVisibility(View.GONE);
             btContinuar.setVisibility(View.GONE);
             btnSignIn.setVisibility(View.VISIBLE);

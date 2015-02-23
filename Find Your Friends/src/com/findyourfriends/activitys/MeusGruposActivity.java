@@ -9,8 +9,7 @@ package com.findyourfriends.activitys;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.les.findyourfriends.R;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -18,13 +17,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.les.findyourfriends.R;
 
 /**
  * The Class MeusGruposActivity.
@@ -99,6 +103,7 @@ public class MeusGruposActivity extends Activity {
          */
         @Override
         protected List<Integer> doInBackground(final Void... params) {
+            Log.d("DONOOO ", ""+Session.getInstancia().getDono());
             return getJSON(Session.getInstancia().getDono());
         }
 
@@ -143,6 +148,8 @@ public class MeusGruposActivity extends Activity {
         
         /** The grupos do usuario. */
         private List<Grupo> gruposDoUsuario;
+        
+        private EditText editsearch;
 
         /* (non-Javadoc)
          * @see android.os.AsyncTask#onPreExecute()
@@ -171,6 +178,7 @@ public class MeusGruposActivity extends Activity {
             super.onPostExecute(result);
             
             gruposDoUsuario = new ArrayList<Grupo>();
+           
             
             for (Grupo grupo : result) {
                 for (Integer idGrupo : idGrupos) {
@@ -182,11 +190,33 @@ public class MeusGruposActivity extends Activity {
                 }
             }
             
-            
             ListView list = (ListView) findViewById(R.id.listMyGroups);
-            GrupoAdapter adapter = new GrupoAdapter(
-                    getApplicationContext(), gruposDoUsuario);
+            final GrupoAdapter adapter = new GrupoAdapter(
+                    getApplicationContext(), gruposDoUsuario, idGrupos, false);
             list.setAdapter(adapter);
+            
+            editsearch = (EditText) findViewById(R.id.search);
+
+            // Capture Text in EditText
+            editsearch.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void afterTextChanged(Editable arg0) {
+                    String text = editsearch.getText().toString()
+                            .toLowerCase(Locale.getDefault());
+                    adapter.filter(text);
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence arg0, int arg1,
+                        int arg2, int arg3) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence arg0, int arg1,
+                        int arg2, int arg3) {
+                }
+            });
             
             list.setOnItemClickListener(new OnItemClickListener() {
                 

@@ -8,10 +8,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:orientation="horizontal"
-        android:gravity="center" >
-        
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
         <ImageButton
             android:id="@+id/grupos"
             android:layout_width="wrap_content"
@@ -19,7 +19,7 @@
             android:layout_weight="1"
             android:src="@drawable/selector_grupos"
             tools:ignore="ContentDescription" />
-        
+
         <ImageButton
             android:id="@+id/meusGrupos"
             android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
             android:layout_weight="1"
             android:src="@drawable/meusgrupos_rosa"
             tools:ignore="ContentDescription" />
-        
+
         <ImageButton
             android:id="@+id/editar"
             android:layout_width="wrap_content"
@@ -35,21 +35,21 @@
             android:layout_weight="1"
             android:src="@drawable/selector_edit"
             tools:ignore="ContentDescription" />
-        
-        
     </LinearLayout>
-    
-    <!-- 
-    android:fontFamily="sans-serif"          
-	android:fontFamily="sans-serif-light"    
-	android:fontFamily="sans-serif-condensed"
-	android:fontFamily="sans-serif-thin"     
-	 -->
-    
+
+
+    <EditText
+        android:id="@+id/search"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search" >
+
+    </EditText>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
         <ListView
             android:id="@+id/listMyGroups"
@@ -57,7 +57,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp" >
         </ListView>
+    </LinearLayout>
 
-     </LinearLayout>
-     
 </LinearLayout>

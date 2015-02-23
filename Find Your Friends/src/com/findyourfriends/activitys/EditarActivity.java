@@ -10,8 +10,6 @@ package com.findyourfriends.activitys;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.les.findyourfriends.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -21,12 +19,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.les.findyourfriends.R;
 
 /**
  * The Class EditarActivity.
@@ -139,10 +136,10 @@ public class EditarActivity extends Activity {
                 }
             }
             GrupoAdapter adapter = new GrupoAdapter(getApplicationContext(),
-                    editarGrupos);
+                    editarGrupos, new ArrayList<Integer>(), false);
             list.setAdapter(adapter);
 
-            list.setOnItemClickListener(new OnItemClickListener() {
+         /*   list.setOnItemClickListener(new OnItemClickListener() {
 
                 @Override
                 public void onItemClick(final AdapterView<?> parent,
@@ -157,7 +154,7 @@ public class EditarActivity extends Activity {
                             "Você realmente gostaria de excluir o grupo \""
                                     + name + "\"? :(", idGrupo);
                 }
-            });
+            });*/
 
             dialog.dismiss();
         }

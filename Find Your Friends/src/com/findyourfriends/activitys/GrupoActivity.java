@@ -7,7 +7,6 @@
 
 package com.findyourfriends.activitys;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,32 +27,34 @@ import com.les.findyourfriends.R;
  * The Class GrupoActivity.
  */
 public class GrupoActivity extends Activity {
-    
+
     /** The m context. */
     private Context mContext;
-    
+
     /** The meus grupos. */
     private ImageButton editar, meusGrupos;
-    
+
     /** The visualizar mapa. */
     private Button visualizarMapa;
-    
+
     /** The id grupo. */
     private Integer idGrupo;
-    
+
     /** The name grupo. */
-    private String nameGrupo;
-    
+    private String donoGrupo;
+
     /** The gps manager. */
     private GPSManager gpsManager;
-    
+
     /** The usuarios do grupo. */
     private List<Usuario> usuariosDoGrupo;
-    
+
     /** The url bd. */
     private String urlBD = "http://150.165.15.89:10008";
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
     @Override
@@ -61,10 +62,9 @@ public class GrupoActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_users_in_groups);
         mContext = getApplicationContext();
-        
-        
+
         visualizarMapa = (Button) findViewById(R.id.visualizarMapa);
-        visualizarMapa.setOnClickListener(new View.OnClickListener() {  
+        visualizarMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 if (gpsManager == null) {
@@ -72,44 +72,43 @@ public class GrupoActivity extends Activity {
                 }
                 gpsManager.searchProvider();
                 gpsManager.updateCurrentPosition();
-                
+
                 new AtualizaPosicao().execute();
-                
-                
+
             }
         });
-        
-        
+
         Intent it = getIntent();
         Bundle param = it.getExtras();
-        //nameGrupo = param.getString("KEY_NAME");
+        donoGrupo = param.getString("KEY_DONO");
         idGrupo = param.getInt("KEY_ID");
-        
+
         new CapturaJSON().execute();
     }
-    
-    
+
     /**
      * The Class CapturaJSON.
      */
     private class CapturaJSON extends AsyncTask<Void, Void, List<Usuario>> {
-        
+
         /** The dialog. */
         private ProgressDialog dialog;
-        
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see android.os.AsyncTask#onPreExecute()
          */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(GrupoActivity.this,
-                    "Aguarde",
-                    "Gerando lista de usu√°rios nesse grupo.");
+            dialog = ProgressDialog.show(GrupoActivity.this, "Aguarde",
+                    "Gerando lista de usu·rios do grupo.");
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see android.os.AsyncTask#doInBackground(Params[])
          */
         @Override
@@ -117,15 +116,17 @@ public class GrupoActivity extends Activity {
             return getJSON();
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
          */
         @Override
         protected void onPostExecute(final List<Usuario> result) {
             super.onPostExecute(result);
-            
-           usuariosDoGrupo = new ArrayList<Usuario>();
-           
+
+            usuariosDoGrupo = new ArrayList<Usuario>();
+
             for (Usuario usuario : result) {
                 List<Integer> idsGruposDoUsuario = usuario.getIdGrupos();
                 for (Integer idGrupoDoUsuario : idsGruposDoUsuario) {
@@ -134,82 +135,89 @@ public class GrupoActivity extends Activity {
                     }
                 }
             }
-            
+
             ListView list = (ListView) findViewById(R.id.userInGroup);
-            UsuarioAdapter adapter = new UsuarioAdapter(getApplicationContext(), usuariosDoGrupo);
+            
+            UsuarioAdapter adapter = new UsuarioAdapter(
+                    getApplicationContext(), usuariosDoGrupo, false, idGrupo, donoGrupo);
             list.setAdapter(adapter);
-                        
+
             dialog.dismiss();
         }
 
         /**
          * Gets the json.
-         *
+         * 
          * @return the json
          */
         private List<Usuario> getJSON() {
             JSONParse parser = new JSONParse(urlBD
-                                    + "/findYouFriends/usuario/listUsers");
+                    + "/findYouFriends/usuario/listUsers");
             return parser.getUsuariosBD();
         }
     }
-    
+
     /**
      * The Class AtualizaPosicao.
      */
     private class AtualizaPosicao extends AsyncTask<Void, Void, Void> {
-        
+
         /** The dialog. */
         private ProgressDialog dialog;
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see android.os.AsyncTask#onPreExecute()
          */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(GrupoActivity.this,
-                    "Aguarde",
-                    "Atualizando Posi√ß√£o");
+            dialog = ProgressDialog.show(GrupoActivity.this, "Aguarde",
+                    "Atualizando PosiÁ„o");
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see android.os.AsyncTask#doInBackground(Params[])
          */
         @Override
         protected Void doInBackground(final Void... params) {
             while (gpsManager.isCurrentPositionNull()) {
             }
-            
+
             new JSONParse(urlBD + "/findYouFriends/usuario/updateLocation?"
-                        + "id=" + Session.getInstancia().getIdUser()
-                        + "&latitude=" + gpsManager.getLatitude()
-                        + "&longitude=" + gpsManager.getLongitude());
+                    + "id=" + Session.getInstancia().getIdUser() + "&latitude="
+                    + gpsManager.getLatitude() + "&longitude="
+                    + gpsManager.getLongitude());
             return null;
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
          */
         @Override
         protected void onPostExecute(final Void result) {
             super.onPostExecute(result);
-            
+
             Bundle param = new Bundle();
             ArrayList<String> usuariosParse = new ArrayList<String>();
             ArrayList<String> latParse = new ArrayList<String>();
             ArrayList<String> longParse = new ArrayList<String>();
-           
+
             for (Usuario usuario : usuariosDoGrupo) {
                 usuariosParse.add(usuario.getNome());
-                
+
                 String latitude = Double.toString(usuario.getLatitude());
                 latParse.add(latitude);
-                
+
                 String longitude = Double.toString(usuario.getLongitude());
                 longParse.add(longitude);
             }
-                       
+
             param.putStringArrayList("NOMES", usuariosParse);
             param.putStringArrayList("LATITUDE", latParse);
             param.putStringArrayList("LONGITUDE", longParse);
@@ -219,9 +227,7 @@ public class GrupoActivity extends Activity {
             startActivity(i);
             dialog.dismiss();
         }
-        
+
     }
-    
+
 }
-
-

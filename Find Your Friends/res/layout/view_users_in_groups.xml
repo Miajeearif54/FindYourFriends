@@ -5,26 +5,25 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_map"
     android:orientation="vertical" >
-    
-    <Button 
+
+    <Button
         android:id="@+id/visualizarMapa"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_gravity="center"
-        android:text="@string/visualizarMapa"/>
-    
+        android:text="@string/visualizarMapa" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
         <ListView
             android:id="@+id/userInGroup"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="382dp"
             android:layout_marginTop="15dp" >
         </ListView>
+    </LinearLayout>
 
-     </LinearLayout>
-     
 </LinearLayout>

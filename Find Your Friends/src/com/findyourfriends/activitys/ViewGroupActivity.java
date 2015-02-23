@@ -9,8 +9,7 @@ package com.findyourfriends.activitys;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.les.findyourfriends.R;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -18,12 +17,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.les.findyourfriends.R;
 
 /**
  * The Class ViewGroupActivity.
@@ -70,20 +75,15 @@ public class ViewGroupActivity extends Activity {
             }
         });
 
-        new CapturaJSON().execute();
+        new RecuperaGruposUsuario().execute();
 
     }
 
-    /**
-     * The Class CapturaJSON.
-     */
-    private class CapturaJSON extends AsyncTask<Void, Void, List<Grupo>> {
+    private class RecuperaGruposUsuario extends
+            AsyncTask<Void, Void, List<Integer>> {
 
         /** The dialog. */
         private ProgressDialog dialog;
-
-        /** The grupos para mostrar. */
-        private List<Grupo> gruposParaMostrar;
 
         /*
          * (non-Javadoc)
@@ -93,7 +93,76 @@ public class ViewGroupActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            dialog = ProgressDialog.show(ViewGroupActivity.this, "Aguarde",
+                    "Gerando lista de grupos.");
 
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
+        @Override
+        protected List<Integer> doInBackground(final Void... params) {
+            return getJSON(Session.getInstancia().getDono());
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
+        @Override
+        protected void onPostExecute(final List<Integer> result) {
+            super.onPostExecute(result);
+            new CapturaJSON().execute(result);
+
+            dialog.dismiss();
+        }
+
+        /**
+         * Gets the json.
+         * 
+         * @param login
+         *            the login
+         * @return the json
+         */
+        private List<Integer> getJSON(final String login) {
+            String url = urlBD
+                    + "/findYouFriends/usuario/getCurrentLocation?login="
+                    + login;
+            JSONParse parser = new JSONParse(url);
+            return parser.getGruposUsuarios();
+        }
+    }
+
+    /**
+     * The Class CapturaJSON.
+     */
+    private class CapturaJSON extends
+            AsyncTask<List<Integer>, Void, List<Grupo>> {
+
+        /** The dialog. */
+        private ProgressDialog dialog;
+
+        /** The grupos para mostrar. */
+        private List<Grupo> gruposParaMostrar;
+
+        private GrupoAdapter adapter;
+
+        private EditText editsearch;
+
+        private List<Integer> idGruposUsuario;
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.os.AsyncTask#onPreExecute()
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
             dialog = ProgressDialog.show(ViewGroupActivity.this, "Aguarde",
                     "Gerando lista de grupos.");
         }
@@ -104,7 +173,8 @@ public class ViewGroupActivity extends Activity {
          * @see android.os.AsyncTask#doInBackground(Params[])
          */
         @Override
-        protected List<Grupo> doInBackground(final Void... params) {
+        protected List<Grupo> doInBackground(final List<Integer>... params) {
+            idGruposUsuario = params[0];
             return getJSON();
         }
 
@@ -126,20 +196,58 @@ public class ViewGroupActivity extends Activity {
             }
 
             ListView list = (ListView) findViewById(R.id.listGroups);
-            GrupoAdapter adapter = new GrupoAdapter(getApplicationContext(),
-                    gruposParaMostrar);
+            adapter = new GrupoAdapter(getApplicationContext(),
+                    gruposParaMostrar, idGruposUsuario, true);
             list.setAdapter(adapter);
+
+            editsearch = (EditText) findViewById(R.id.search);
+
+            // Capture Text in EditText
+            editsearch.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void afterTextChanged(Editable arg0) {
+                    String text = editsearch.getText().toString()
+                            .toLowerCase(Locale.getDefault());
+                    adapter.filter(text);
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start,
+                        int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start,
+                        int before, int count) {
+                }
+            });
 
             list.setOnItemClickListener(new OnItemClickListener() {
 
                 @Override
                 public void onItemClick(final AdapterView<?> parent,
                         final View view, final int position, final long id) {
-                    // getting values from selected ListItem
+
                     String name = ((TextView) view.findViewById(R.id.nomeGrupo))
                             .getText().toString();
+
                     String idGrupo = ((TextView) view
                             .findViewById(R.id.idGrupo)).getText().toString();
+                    Log.d("CLICOU NO ", "" + idGrupo);
+
+                    // TODO melhorar
+                    boolean isRequisitar = true;
+                    for (Integer i : idGruposUsuario) {
+                        if (i.toString().equals(idGrupo)) {
+                            isRequisitar = false;
+                            break;
+                        }
+                    }
+                    if (isRequisitar) {
+                        return;
+                    }
+                    // fim melhorar
 
                     Bundle param = new Bundle();
 
@@ -147,12 +255,13 @@ public class ViewGroupActivity extends Activity {
                         if (String.valueOf(grupo.getId()).equals(idGrupo)) {
                             param.putString("KEY_NAME", grupo.getNome());
                             param.putInt("KEY_ID", grupo.getId());
-                            param.putString("KEY_SENHA", grupo.getSenha());
+                            param.putString("KEY_DONO", grupo.getDono());
+                            break;
                         }
                     }
 
                     Intent intent = new Intent(getApplicationContext(),
-                            EntraNoGrupo.class);
+                            GrupoActivity.class);
                     intent.putExtras(param);
                     startActivity(intent);
                 }
@@ -172,5 +281,4 @@ public class ViewGroupActivity extends Activity {
             return parser.getGruposBD();
         }
     }
-
 }

@@ -9,14 +9,17 @@ package com.findyourfriends.activitys;
 
 import java.util.List;
 
-import com.les.findyourfriends.R;
-
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.les.findyourfriends.R;
 
 /**
  * The Class UsuarioAdapter.
@@ -29,6 +32,13 @@ public class UsuarioAdapter extends BaseAdapter {
     /** The m inflater. */
     private LayoutInflater mInflater;
 
+    /** The url bd. */
+    private String urlBD = "http://150.165.15.89:10008";
+
+    private Integer idGrupo;
+
+    private String donoGrupo;
+
     /**
      * Instantiates a new usuario adapter.
      * 
@@ -37,9 +47,12 @@ public class UsuarioAdapter extends BaseAdapter {
      * @param usuario
      *            the usuario
      */
-    public UsuarioAdapter(final Context context, final List<Usuario> usuario) {
+    public UsuarioAdapter(final Context context, final List<Usuario> usuario,
+            boolean isRequisicao, Integer idGrupo, String donoGrupo) {
         mInflater = LayoutInflater.from(context);
         mUsuario = usuario;
+        this.idGrupo = idGrupo;
+        this.donoGrupo = donoGrupo;
     }
 
     /*
@@ -81,14 +94,45 @@ public class UsuarioAdapter extends BaseAdapter {
     @Override
     public final View getView(final int posicao, final View view,
             final ViewGroup viewGroup) {
-        Usuario usuario = mUsuario.get(posicao);
-
+        final Usuario usuario = mUsuario.get(posicao);
+        View viewAux = mInflater.inflate(R.layout.usuario_adapter_item, null);
         String nome = mudaCaractere(usuario.getNome(), "_", " ");
-
-        TextView tvNome = (TextView) view.findViewById(R.id.nomeUsuario);
+        TextView tvNome = (TextView) viewAux.findViewById(R.id.nomeUsuario);
         tvNome.setText(nome);
 
-        return mInflater.inflate(R.layout.usuario_adapter_item, null);
+        ImageView botao = (ImageView) viewAux.findViewById(R.id.button);
+        ImageView botao2 = (ImageView) viewAux.findViewById(R.id.button2);
+
+        botao.setImageDrawable(viewAux.getResources().getDrawable(
+                R.drawable.ic_delete));
+        
+        //TODO if (idsRequisitantes.contais(usuario.getIdUsuario()))
+      //  else {
+            botao2.setVisibility(View.GONE);
+        //}
+
+        /*
+         * if (usuario.getEmail().equals(donoGrupo)) {
+         * botao.setVisibility(View.GONE); }
+         */
+
+        botao.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+               
+                //TODO if (idsRequisitantes.contais(usuario.getIdUsuario()))
+                //new AdicionaUsuario().execute(usuario.getIdUsuario(), idGrupo);
+                
+            //else 
+                // Remocao de usuario
+                mUsuario.remove(posicao);
+                notifyDataSetChanged();
+                new AdicionaUsuario().execute(usuario.getIdUsuario(), idGrupo);
+            }
+        });
+
+        return viewAux;
     }
 
     /**
@@ -105,5 +149,36 @@ public class UsuarioAdapter extends BaseAdapter {
     public final String mudaCaractere(final String str, final String antigo,
             final String novo) {
         return str.replace(antigo, novo);
+    }
+
+    private class RemoveUsuario extends AsyncTask<Integer, Void, Void> {
+
+        int idUsuario;
+        int idGrupo;
+
+        @Override
+        protected Void doInBackground(final Integer... params) {
+            idUsuario = params[0];
+            idGrupo = params[1];
+            new JSONParse(urlBD + "/findYouFriends/grupo/removeUser?idGrupo="
+                    + idGrupo + "&idUsuario=" + idUsuario);
+            return null;
+        }
+    }
+
+    private class AdicionaUsuario extends AsyncTask<Integer, Void, Void> {
+
+        int idUsuario;
+        int idGrupo;
+
+        @Override
+        protected Void doInBackground(final Integer... params) {
+            idUsuario = params[0];
+            idGrupo = params[1];
+            new JSONParse(urlBD
+                    + "/findYouFriends/grupo/addUser?idGrupo=" + idGrupo
+                    + "&idUsuario=" + idUsuario);
+            return null;
+        }
     }
 }

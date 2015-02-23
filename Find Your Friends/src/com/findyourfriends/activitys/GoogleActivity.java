@@ -251,7 +251,6 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks, OnC
         
         public void getDataProfile(){
             Person p = Plus.PeopleApi.getCurrentPerson(googleApiClient);
-            Log.d("login", "NAO pegando informacoes google");
             
             if(p != null){
                 Log.d("login", "pegando informacoes google");
@@ -266,6 +265,8 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks, OnC
                 //tvLanguage.setText(language);
                 tvName.setText(name);
                 tvEmail.setText(email);
+                Session.getInstancia().setDono(email);
+                Session.getInstancia().setIdUser(Integer.getInteger(id));
                 Log.d("login", "Nome: " + name);
                 Log.d("login", "Email: " + email);
                 
@@ -278,7 +279,7 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks, OnC
                 //loadImage(ivProfile, pbProfile, imageUrl);
             }
             else{
-                Toast.makeText(GoogleActivity.this, "Dados n√£o liberados", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GoogleActivity.this, "Dados n„o liberados", Toast.LENGTH_SHORT).show();
             }
         }
         

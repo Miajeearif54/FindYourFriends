@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -44,8 +43,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.les.findyourfriends.R;
-
 import com.facebook.AppEventsLogger;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -57,6 +54,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
+import com.les.findyourfriends.R;
 
 /**
  * The Class MainActivity.
@@ -740,8 +738,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(MainActivity.this,
-                    "Verificando usuÃ¡rios",
-                    "Aguarde, o sistema estÃ¡ verificando a sua conta");
+                    "Verificando usuários",
+                    "Aguarde, o sistema está verificando a sua conta");
         }
 
         /*
@@ -798,7 +796,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
             super.onPreExecute();
             
               dialog = ProgressDialog.show(MainActivity.this, "Cadastrando",
-             "VocÃª esta sendo cadastrado");
+             "Você esta sendo cadastrado");
              
         }
 

@@ -18,26 +18,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:gravity="center_vertical"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingLeft="15dp" >
 
         <TextView
             android:id="@+id/nomeGrupo"
-            android:layout_width="wrap_content"
+            android:layout_width="190dp"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:text="Nome"
             android:textColor="@color/black"
-            android:text="Nome" />
-        
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/idGrupo"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:textSize="0sp"
-            android:text="id" />
+            android:text="id"
+            android:textSize="0sp" />
 
-
+        <ImageView
+            android:id="@+id/botao"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:src="@drawable/ic_delete" />
     </LinearLayout>
 
 </LinearLayout>
