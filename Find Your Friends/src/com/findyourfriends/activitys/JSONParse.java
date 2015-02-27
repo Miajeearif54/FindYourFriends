@@ -49,7 +49,10 @@ public class JSONParse {
     private static final String SENHA = "senha";
 
     /** The Constant USUARIOS. */
-    private static final String USUARIOS = "usuarios";
+    private static final String MEMBROS = "membros";
+
+    /** The Constant USUARIOS. */
+    private static final String INSCRITOS = "inscritos";
 
     /** The Constant ID. */
     private static final String ID = "id";
@@ -73,7 +76,7 @@ public class JSONParse {
         }
 
     }
-    
+
     /**
      * 
      * @return a requisição do usuario foi feita com sucesso.
@@ -81,7 +84,6 @@ public class JSONParse {
     public static boolean getAdicionou() {
         return adicionou;
     }
-    
 
     /**
      * Json.
@@ -220,6 +222,7 @@ public class JSONParse {
                     JSONArray.class);
 
             for (int i = 0; i < gUsuarios.length(); i++) {
+                Log.d("werton", i + "");
                 JSONObject grupo;
                 try {
                     grupo = gUsuarios.getJSONObject(i);
@@ -233,6 +236,7 @@ public class JSONParse {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        Log.d("werton", "totalDeGrupos: " + idGrupos.size());
         return idGrupos;
     }
 
@@ -273,8 +277,9 @@ public class JSONParse {
                 convert(item.get("login"), String.class),
                 Double.parseDouble(convert(item.get("latitude"), String.class)),
                 Double.parseDouble(convert(item.get("longitude"), String.class)),
-                convert(item.get(NOME), String.class), getIds(convert(
-                        item.get("grupos"), JSONArray.class)));
+                convert(item.get(NOME), String.class),
+                getIds(convert(item.get("grupos"), JSONArray.class)),
+                getIds(convert(item.get("gruposInscritos"), JSONArray.class)));
         // aqui deve ser colocado a lista de usuarios (os id deles);
     }
 
@@ -290,11 +295,12 @@ public class JSONParse {
     private Grupo recuperaGrupos(final JSONObject item) throws JSONException {
         String nome = convert(item.get(NOME), String.class);
         nome = mudaCaractere(nome, "_", " ");
-
+        
         return new Grupo(convert(item.get(ID), Integer.class), nome, convert(
                 item.get(DONO), String.class), convert(item.get(ATIVO),
                 Boolean.class), convert(item.get(SENHA), String.class),
-                getIds(convert(item.get(USUARIOS), JSONArray.class)));
+                getIds(convert(item.get(MEMBROS), JSONArray.class)),
+                getIds(convert(item.get(INSCRITOS), JSONArray.class)));
         // aqui deve ser colocado a lista de usuarios (os id deles);
     }
 

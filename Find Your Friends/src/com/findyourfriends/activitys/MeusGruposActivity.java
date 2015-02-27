@@ -103,7 +103,6 @@ public class MeusGruposActivity extends Activity {
          */
         @Override
         protected List<Integer> doInBackground(final Void... params) {
-            Log.d("DONOOO ", ""+Session.getInstancia().getDono());
             return getJSON(Session.getInstancia().getDono());
         }
 
@@ -113,10 +112,13 @@ public class MeusGruposActivity extends Activity {
         @Override
         protected void onPostExecute(final List<Integer> result) {
             super.onPostExecute(result);
-            
+                        
             new RecuperaGruposDoUsuario().execute(result);
-               
+            
             dialog.dismiss();
+            
+               
+            
         }
 
         /**

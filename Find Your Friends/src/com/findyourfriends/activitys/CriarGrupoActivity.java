@@ -75,7 +75,7 @@ public class CriarGrupoActivity extends Activity {
             
             dialog = ProgressDialog.show(CriarGrupoActivity.this,
                     "Criando Grupo",
-                    "Aguarde, o sistema está cadastrando o grupo.");
+                    "Aguarde, o sistema estï¿½ cadastrando o grupo.");
         }
 
         /* (non-Javadoc)
@@ -87,13 +87,6 @@ public class CriarGrupoActivity extends Activity {
             String senhaDoGrupo = params[1];
             
             nomeDoGrupo = mudaCaractere(nomeDoGrupo, " ", "_");
-            
-            Log.d("werton", "nome = " + nomeDoGrupo);
-            Log.d("werton", "dono = " + Session.getInstancia().getDono());
-            Log.d("werton", "duracao = " + 0);
-            Log.d("werton", "ativo = " + true);
-            Log.d("werton", "senha = " + senhaDoGrupo);
-            
             
             String url = urlBD + "/findYouFriends/grupo/saveGroup?"
                     + "nome="     + nomeDoGrupo

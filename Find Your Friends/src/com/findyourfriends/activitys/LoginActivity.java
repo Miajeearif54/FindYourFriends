@@ -144,7 +144,7 @@ public class LoginActivity extends Activity{
  // METHODS FACEBOOK
     public void onSessionStateChanged(final Session session, SessionState state, Exception exception){
         if(session != null && session.isOpened()){
-            Log.i("Script", "Usuário conectado");
+            Log.i("Script", "UsuÃ¡rio conectado");
             Request.newMeRequest(session, new Request.GraphUserCallback() {
                 @Override
                 public void onCompleted(GraphUser user, Response response) {
@@ -169,7 +169,7 @@ public class LoginActivity extends Activity{
             }).executeAsync();
         }
         else{
-            Log.i("Script", "Usuário não conectado");
+            Log.i("Script", "Usuï¿½rio nï¿½o conectado");
             llInfoUser.setVisibility(View.GONE);
             btContinuar.setVisibility(View.GONE);
             btnSignIn.setVisibility(View.VISIBLE);

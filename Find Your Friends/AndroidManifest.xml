@@ -160,10 +160,10 @@
             android:value="AIzaSyBqmcxsRep0HKVIWoxj0DmZEQ4upTIMYbk"/>  -->
             
              <!-- 
-        Carla (casa)  -->
+        Carla (casa)  
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBDEvKZ5qHB686Iolf3tiPlTmzEv58GoA4"/> 
+            android:value="AIzaSyBDEvKZ5qHB686Iolf3tiPlTmzEv58GoA4"/> -->
         
         <!-- 
         Talita (casa) -->

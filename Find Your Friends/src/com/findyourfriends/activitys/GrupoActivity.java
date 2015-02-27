@@ -103,7 +103,7 @@ public class GrupoActivity extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(GrupoActivity.this, "Aguarde",
-                    "Gerando lista de usuários do grupo.");
+                    "Gerando lista de usuÃ¡rios do grupo.");
         }
 
         /*
@@ -174,7 +174,7 @@ public class GrupoActivity extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(GrupoActivity.this, "Aguarde",
-                    "Atualizando Posição");
+                    "Atualizando Posiï¿½ï¿½o");
         }
 
         /*

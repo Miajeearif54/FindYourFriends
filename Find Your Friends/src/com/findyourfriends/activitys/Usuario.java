@@ -25,6 +25,11 @@ public class Usuario {
 
     /** The id grupos. */
     private List<Integer> idGrupos;
+    
+    /** The id grupos. */
+    private List<Integer> idGruposInscritos;
+    
+    
 
     //TODO colocar email
     
@@ -46,13 +51,14 @@ public class Usuario {
      */
     public Usuario(final Integer idUsuarioParam, final String loginParam,
             final Double latitudeParam, final Double longitudeParam,
-            final String nomeParam, final List<Integer> idGruposParam) {
+            final String nomeParam, final List<Integer> idGruposParam, final List<Integer> idGruposInscritosParam) {
         login = loginParam;
         nome = nomeParam;
         latitude = latitudeParam;
         longitude = longitudeParam;
         idUsuario = idUsuarioParam;
         idGrupos = idGruposParam;
+        idGruposInscritos = idGruposInscritosParam;
     }
 
     /**

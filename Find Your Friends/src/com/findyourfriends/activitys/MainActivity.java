@@ -153,7 +153,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         setContentView(R.layout.activity_main);
         mContext = getApplicationContext();
         
-        loadView();       
+        loadView();      
+        
+        Log.d("werton", "menu");
 
         // testar conexao
         haveNetworkConnection();
@@ -162,6 +164,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         logado = status.getBoolean("logado", false);
         
         if (logado) {
+            Log.d("werton", "logado");
             email = MainActivity.getStatus().getString("email", "EMAIL");
             Session.delInstancia();
             Session.getInstancia().setDono(email);
@@ -202,6 +205,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         continuar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+                Log.d("werton", "teeeesteee");
                 if (haveNetworkConnection()) {
                     Session.delInstancia();
                     Session.getInstancia().setDono(email);
@@ -738,8 +742,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(MainActivity.this,
-                    "Verificando usuários",
-                    "Aguarde, o sistema está verificando a sua conta");
+                    "Verificando usuÃ¡rios",
+                    "Aguarde, o sistema estÃ¡ verificando a sua conta");
         }
 
         /*
@@ -796,7 +800,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
             super.onPreExecute();
             
               dialog = ProgressDialog.show(MainActivity.this, "Cadastrando",
-             "Você esta sendo cadastrado");
+             "Vocï¿½ esta sendo cadastrado");
              
         }
 
@@ -814,11 +818,12 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
             String url = urlBD + "/findYouFriends/usuario/saveUser?" + "login="
                     + login + "&latitude=" + "0" + "&longitude=" + "0"
                     + "&nome=" + nome;
+            
+            Log.d("werton", url);
 
             new JSONParse(url);
             
             
-
             return null;
         }
 

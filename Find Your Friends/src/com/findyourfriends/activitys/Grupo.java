@@ -25,6 +25,11 @@ public class Grupo {
 
     /** The usuarios. */
     private List<Integer> usuarios;
+    
+    /** The usuarios. */
+    private List<Integer> usuariosPendentes;
+    
+    
 
     /**
      * Instantiates a new grupo.
@@ -41,15 +46,20 @@ public class Grupo {
      *            the senhaParam
      * @param usuariosParam
      *            the usuariosParam
+     * @param usuariosPendentesParam
+     *            the usuariosPendentesParam
+     * 
      */
     public Grupo(final Integer idParam, final String nomeParam,
             final String donoParam, final Boolean ativoParam,
-            final String senhaParam, final List<Integer> usuariosParam) {
+            final String senhaParam, final List<Integer> usuariosParam,
+            final List<Integer> usuariosPendentesParam) {
         nome = nomeParam;
         dono = donoParam;
         senha = senhaParam;
         ativo = ativoParam;
         usuarios = usuariosParam;
+        usuariosPendentes = usuariosPendentesParam;
         id = idParam;
     }
 
@@ -115,5 +125,14 @@ public class Grupo {
      */
     public final List<Integer> getUsuarios() {
         return usuarios;
+    }
+    
+    /**
+     * Gets the usuariosPendentes.
+     * 
+     * @return the usuariosPendentes.
+     */
+    public final List<Integer> getUsuariosPendentes() {
+        return usuariosPendentes;
     }
 }
