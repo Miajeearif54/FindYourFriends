@@ -1,31 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/bg_map" >
+-->
 
-    <!--
-     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/bg_map">
-    -->
+    android:background="@drawable/bg_map"
+    android:orientation="vertical" >
 
-    
-
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.MapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_alignParentTop="true"
+        android:gravity="center"
         android:orientation="horizontal"
         android:visibility="visible"
         android:weightSum="3" >
@@ -52,14 +44,18 @@
             android:src="@drawable/selector_edit" />
     </LinearLayout>
 
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:id="@+id/LayoutNoInternet"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
         android:background="@color/black"
-        android:gravity="center"
+        android:gravity="bottom"
         android:orientation="horizontal"
         android:visibility="invisible" >
 
@@ -72,4 +68,4 @@
             android:textColor="@color/white" />
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

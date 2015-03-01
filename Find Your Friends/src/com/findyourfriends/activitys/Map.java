@@ -7,6 +7,8 @@
 
 package com.findyourfriends.activitys;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -219,12 +221,12 @@ public class Map extends Activity implements LocationListener,
             final MenuItem item) {
 
         // about - depois mudar
-        if (item.getItemId() == R.id.perfil) {
+       /* if (item.getItemId() == R.id.perfil) {
             final Intent i = new Intent(mContext, PerfilActivity.class);
             startActivity(i);
             finish();
             return true;
-        }
+        }*/
 
         if (item.getItemId() == R.id.about2) {
             final Intent i = new Intent(mContext, About.class);
@@ -279,7 +281,42 @@ public class Map extends Activity implements LocationListener,
 
                         }
                     });
+                    
+                    
+                    Intent it2 = getIntent();
+
+                    ArrayList<String> usuariosParse = it2
+                            .getStringArrayListExtra("NOMES");
+
+                    ArrayList<String> latParse = it2
+                            .getStringArrayListExtra("LATITUDE");
+
+                    ArrayList<String> longParse = it2
+                            .getStringArrayListExtra("LONGITUDE");
+
+                    double latitude, longitude;
+                    int indice = 0;
+
+                    for (String nome : usuariosParse) {
+                        String userName = mudaCaractere(nome, "_", " ");
+
+                        if (indice < latParse.size()) {
+
+                            longitude = Double.parseDouble(longParse
+                                    .get(indice));
+                            latitude = Double.parseDouble(latParse.get(indice));
+                            
+                            marcaUsuario(userName, latitude, longitude);
+                            indice++;
+                        }
+                    }
+                                       
                 }
+                
+                             
+                
+                
+                
 
                 googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 googleMap.setMyLocationEnabled(true);
@@ -386,7 +423,7 @@ public class Map extends Activity implements LocationListener,
      * @param latitude the latitude
      * @param longitude the longitude
      */
-    /*private void marcaUsuario(final String nome, 
+    private void marcaUsuario(final String nome, 
             final double latitude, final double longitude) {
 
         LatLng coordinate = new LatLng(latitude, longitude);
@@ -396,7 +433,7 @@ public class Map extends Activity implements LocationListener,
                 .position(coordinate)
                 .icon(BitmapDescriptorFactory
                         .fromResource(R.drawable.ic_launcher)).visible(true));
-    }*/
+    }
 
     /* (non-Javadoc)
      * @see android.location.LocationListener

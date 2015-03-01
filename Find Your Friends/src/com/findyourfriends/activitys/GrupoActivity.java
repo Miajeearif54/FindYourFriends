@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -132,6 +133,7 @@ public class GrupoActivity extends Activity {
                 for (Integer idGrupoDoUsuario : idsGruposDoUsuario) {
                     if (idGrupoDoUsuario == idGrupo) {
                         usuariosDoGrupo.add(usuario);
+                        Log.d("usuarios", "Usuarios do grupo: "  + usuario.getNome());
                     }
                 }
             }
@@ -174,7 +176,7 @@ public class GrupoActivity extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(GrupoActivity.this, "Aguarde",
-                    "Atualizando Posi��o");
+                    "Atualizando Posição");
         }
 
         /*
@@ -186,6 +188,8 @@ public class GrupoActivity extends Activity {
         protected Void doInBackground(final Void... params) {
             while (gpsManager.isCurrentPositionNull()) {
             }
+            
+            Log.d("usuarios", "Id do user: " +  Session.getInstancia().getIdUser());
 
             new JSONParse(urlBD + "/findYouFriends/usuario/updateLocation?"
                     + "id=" + Session.getInstancia().getIdUser() + "&latitude="
@@ -216,6 +220,8 @@ public class GrupoActivity extends Activity {
 
                 String longitude = Double.toString(usuario.getLongitude());
                 longParse.add(longitude);
+                
+                Log.d("usuarios", "Usuarios grupo mapa: "  + usuario.getNome());
             }
 
             param.putStringArrayList("NOMES", usuariosParse);

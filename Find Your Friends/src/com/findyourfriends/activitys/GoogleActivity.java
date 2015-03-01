@@ -1,11 +1,16 @@
 package com.findyourfriends.activitys;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.IntentSender.SendIntentException;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.util.Linkify;
@@ -85,9 +90,15 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks,
         btContinuar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                Log.d("login", "continuar");
-                tvEmail = (TextView) findViewById(R.id.txtEmail);
-                new ListUsers().execute(tvEmail.getText().toString());
+                
+                if (haveNetworkConnection()) {
+                    tvEmail = (TextView) findViewById(R.id.txtEmail);
+                    new ListUsers().execute(tvEmail.getText().toString());
+                } else {
+                    confirmacaoDeRede();
+                }
+
+                
 
 //                Intent in = new Intent(getApplicationContext(), Map.class);
 //                in.putExtra("mostrar_botoes", true);
@@ -272,6 +283,11 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks,
             Session.getInstancia().setIdUser(Integer.getInteger(id));
             Log.d("login", "Nome: " + name);
             Log.d("login", "Email: " + email);
+            
+            
+            LoginActivity.editorStatusLogin.putString("Name", name);
+            LoginActivity.editorStatusLogin.putString("Email", email);
+            LoginActivity.editorStatusLogin.apply();
 
             // tvUrlProfile.setText(profileUrl);
             // Linkify.addLinks(tvUrlProfile, Linkify.WEB_URLS);
@@ -399,7 +415,8 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks,
      */
     private class CadastrarUsuario extends AsyncTask<String, Void, Void> {
 
-        /** The dialog. */
+        /** The dialog. */                
+        
         private ProgressDialog dialog;
 
         /** The login. */
@@ -506,7 +523,7 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks,
             Intent i = new Intent(getApplicationContext(), Map.class);
             i.putExtra("mostrar_botoes", true);
             startActivity(i);
-            finish();
+            //finish();
         }
 
     }
@@ -527,4 +544,44 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks,
         str = str.replace(antigo, novo);
         return str;
     }
+    
+    /**
+     * Confirmacao de rede.
+     */
+    @SuppressWarnings("deprecation")
+    private void confirmacaoDeRede() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(R.string.semConexao);
+        alertDialog.setMessage("Verifique sua conexão com a internet");
+
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(final DialogInterface dialog, final int which) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+    
+    private boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI")) {
+                if (ni.isConnected()) {
+                    haveConnectedWifi = true;
+                }
+            }
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE")) {
+                if (ni.isConnected()) {
+                    haveConnectedMobile = true;
+                }
+            }
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+    }
+    
+    
 }
