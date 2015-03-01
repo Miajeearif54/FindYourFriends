@@ -12,7 +12,7 @@
         android:layout_gravity="top|center"
         android:src="@drawable/logo_menor"
         android:layout_marginBottom="20dp"
-        android:visibility="gone" />
+        android:visibility="visible" />
     
     <LinearLayout
         android:id="@+id/llProfile"
@@ -57,8 +57,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
         android:gravity="bottom|center"
         android:orientation="vertical" >
 
@@ -66,7 +67,6 @@
             android:id="@+id/buttonContinuar"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginBottom="10dp"
             android:background="@drawable/botao_login_fino"
             android:text="@string/continar"
             android:visibility="gone" />
@@ -77,18 +77,22 @@
     <!--botao FB -->	
     <com.facebook.widget.LoginButton
         android:id="@+id/authButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"/>
     
     <!-- botao google -->
     <com.google.android.gms.common.SignInButton
             android:id="@+id/btn_sign_in"
-        	android:layout_gravity="center_horizontal"
-       		android:layout_width="wrap_content"
+        	android:layout_gravity="center"
+       		android:layout_width="match_parent"
         	android:layout_height="wrap_content"
-        	android:layout_marginBottom="10dp" >
+        	android:layout_marginTop="30dp"
+        	android:layout_marginLeft="76dp"
+        	android:layout_marginRight="76dp" >
     	</com.google.android.gms.common.SignInButton>
     	
     

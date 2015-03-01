@@ -3,8 +3,11 @@ package com.findyourfriends.activitys;
 import java.util.Arrays;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -30,8 +33,6 @@ public class LoginActivity extends Activity{
     private MainFragment mainFragment;
     private Context context;
     
-    private TextView userNameView;
-    private View view;
     /** The Constant TAG. */
     private static final String TAG = "MainFragment";
     
@@ -42,6 +43,19 @@ public class LoginActivity extends Activity{
     private SignInButton btnSignIn;
     private Button btContinuar;
     private ImageView logo;
+    
+    /** The url bd. */
+    private String urlBD = "http://150.165.15.89:10008";
+    
+    /** The logado. */
+    private static boolean logado;
+    
+    /** The status. */
+    public static SharedPreferences statusLogin;
+    
+    /** The editor. */
+    public static SharedPreferences.Editor editorStatusLogin;
+
 
     /** The ui helper. */
     private UiLifecycleHelper uiHelper;
@@ -74,13 +88,11 @@ public class LoginActivity extends Activity{
         
         llInfoUser = (LinearLayout) findViewById(R.id.llProfile);
         
-        
+        //botao login google
         btnSignIn = (SignInButton) findViewById(R.id.btn_sign_in);
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v) {
-                Log.d("login", "clicou Google");
-                
+            public void onClick(final View v) {              
                 Intent in = new Intent(context, GoogleActivity.class);
                 startActivity(in);
                 finish();
@@ -92,14 +104,34 @@ public class LoginActivity extends Activity{
         btContinuar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                Log.d("login", "continuar");
-                Intent in = new Intent(getApplicationContext(), Map.class);
+                tvEmail = (TextView) findViewById(R.id.txtEmail);
+                new ListUsers().execute(tvEmail.getText().toString());
+                /*Intent in = new Intent(getApplicationContext(), Map.class);
                 in.putExtra("mostrar_botoes", true);
                 startActivity(in);
-                finish();
+                finish();*/
             }         
         });
+        
+        statusLogin = getPreferences(MODE_PRIVATE);
+        editorStatusLogin = statusLogin.edit();
+        logado = statusLogin.getBoolean("logado", false);
+        
+        if (logado) {
+            Intent in = new Intent(context, GoogleActivity.class);
+            startActivity(in);
+            finish();
+        }
        
+    }
+    
+    /**
+     * Troca o status. 
+     * 
+     * @param statusParam 
+     */
+    public static void setStatus(final SharedPreferences statusParam) {
+        LoginActivity.statusLogin = statusParam;
     }
     
     @Override
@@ -154,26 +186,218 @@ public class LoginActivity extends Activity{
                         
                         llInfoUser.setVisibility(View.VISIBLE);
                         btContinuar.setVisibility(View.VISIBLE);
-                        logo.setVisibility(View.VISIBLE);
+                        //logo.setVisibility(View.VISIBLE);
                         
                         tvName.setText(user.getFirstName()+" "+user.getLastName());
                        
                         tvEmail.setText(user.getProperty("email").toString());
-                        
+                                                
                         com.findyourfriends.activitys.Session.getInstancia().setDono(user.getProperty("email").toString());
                         com.findyourfriends.activitys.Session.getInstancia().setIdUser(Integer.getInteger(user.getId()));
-
+                       
                         //foto.setProfileId(user.getId());
                     }
                 }
             }).executeAsync();
         }
         else{
-            Log.i("Script", "Usu�rio n�o conectado");
+            Log.i("Script", "Usuário não conectado");
             llInfoUser.setVisibility(View.GONE);
             btContinuar.setVisibility(View.GONE);
             btnSignIn.setVisibility(View.VISIBLE);
-            logo.setVisibility(View.GONE);
+            //logo.setVisibility(View.GONE);
         }
     }
+    
+    /**
+     * The Class ListUsers.
+     */
+    private class ListUsers extends AsyncTask<String, Void, Boolean> {
+
+        /** The dialog. */
+        private ProgressDialog dialog;
+
+        /** The login. */
+        private String login;
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.os.AsyncTask#onPreExecute()
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = ProgressDialog.show(LoginActivity.this,
+                    "Verificando usuários",
+                    "Aguarde, o sistema está verificando a sua conta");
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
+        @Override
+        protected Boolean doInBackground(final String... params) {
+            login = params[0];
+            String url = urlBD
+                    + "/findYouFriends/usuario/getCurrentLocation?login="
+                    + login;
+            boolean usuarioCadastrado = new JSONParse(url).isNull();
+            return usuarioCadastrado;
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
+        @Override
+        protected void onPostExecute(final Boolean result) {
+            super.onPostExecute(result);
+            dialog.dismiss();
+            if (result) {
+                new CapturaID().execute(login);
+            } else {                
+                new CadastrarUsuario().execute(login);
+            }
+        }
+    }
+    
+    /**
+     * The Class CadastrarUsuario.
+     */
+    private class CadastrarUsuario extends AsyncTask<String, Void, Void> {
+
+        /** The dialog. */
+        private ProgressDialog dialog;
+
+        /** The login. */
+        private String login;
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.os.AsyncTask#onPreExecute()
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            dialog = ProgressDialog.show(LoginActivity.this, "Cadastrando",
+                    "Você está sendo cadastrado");
+
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
+        @Override
+        protected Void doInBackground(final String... params) {
+
+            login = params[0];
+            tvName = (TextView) findViewById(R.id.txtName);
+
+            String nome = mudaCaractere(tvName.getText().toString(), " ", "_");
+            String url = urlBD + "/findYouFriends/usuario/saveUser?" + "login="
+                    + login + "&latitude=" + "0" + "&longitude=" + "0"
+                    + "&nome=" + nome;
+            new JSONParse(url);
+
+            return null;
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
+        @Override
+        protected void onPostExecute(final Void result) {
+            super.onPostExecute(result);
+            dialog.dismiss();
+
+            new CapturaID().execute(login);
+        }
+    }
+
+    /**
+     * The Class CapturaID.
+     */
+    private class CapturaID extends AsyncTask<String, Void, Integer> {
+
+        /** The dialog. */
+        private ProgressDialog dialog;
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.os.AsyncTask#onPreExecute()
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            /*
+             * dialog = ProgressDialog.show(MainActivity.this, "Cadastrando",
+             * "Você esta sendo cadastrado");
+             */
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
+        @Override
+        protected Integer doInBackground(final String... params) {
+            String url = urlBD
+                    + "/findYouFriends/usuario/getCurrentLocation?login="
+                    + params[0];
+            Integer x = new JSONParse(url).getIdUsuario();
+            return x;
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
+        @Override
+        protected void onPostExecute(final Integer result) {
+            super.onPostExecute(result);
+            
+            com.findyourfriends.activitys.Session.getInstancia().setIdUser(result);
+            //Session.getInstancia().setIdUser(result);
+
+            //dialog.dismiss();
+
+            Intent i = new Intent(getApplicationContext(), Map.class);
+            i.putExtra("mostrar_botoes", true);
+            startActivity(i);
+            finish();
+        }
+
+    }
+    
+    /**
+     * Muda caractere.
+     * 
+     * @param str
+     *            the str
+     * @param antigo
+     *            the antigo
+     * @param novo
+     *            the novo
+     * @return the string
+     */
+    public final String mudaCaractere(String str, final String antigo,
+            final String novo) {
+        str = str.replace(antigo, novo);
+        return str;
+    }
+    
+    
 }

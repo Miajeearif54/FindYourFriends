@@ -3,6 +3,7 @@ package com.findyourfriends.activitys;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.IntentSender.SendIntentException;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -64,6 +65,7 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks,
     
     /** The url bd. */
     private String urlBD = "http://150.165.15.89:10008";
+    
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,7 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks,
         Log.d("login", "entrou Google");
 
         accessViews();
+               
 
         googleApiClient = new GoogleApiClient.Builder(GoogleActivity.this)
                 .addConnectionCallbacks(GoogleActivity.this)
@@ -102,6 +105,9 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks,
                     googleApiClient.disconnect();
                     googleApiClient.connect();
                     showUi(false, false);
+                    
+                    LoginActivity.editorStatusLogin.putBoolean("logado", false);
+                    LoginActivity.editorStatusLogin.apply();
 
                     Intent in = new Intent(getApplicationContext(),
                             LoginActivity.class);
@@ -113,7 +119,8 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks,
         });
 
     }
-
+    
+    
     @Override
     public void onStart() {
         super.onStart();
@@ -211,6 +218,7 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks,
             btSignOut.setVisibility(View.VISIBLE);
             btContinuar.setVisibility(View.VISIBLE);
             llInfoUsuario.setVisibility(View.VISIBLE);
+            
             /*
              * llContainerAll.setVisibility(View.GONE);
              * pbContainer.setVisibility(View.VISIBLE);
@@ -233,8 +241,6 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks,
      */
 
     public void resolveSignIn() {
-        Log.d("login", "bt iniciou clicado");
-
         if (connectionResult != null && connectionResult.hasResolution()) {
             try {
                 isConsentScreenOpened = true;
@@ -251,7 +257,6 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks,
         Person p = Plus.PeopleApi.getCurrentPerson(googleApiClient);
 
         if (p != null) {
-            Log.d("login", "pegando informacoes google");
             String id = p.getId();
             String name = p.getDisplayName();
             String language = p.getLanguage();
@@ -302,6 +307,9 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks,
         isSignInButtonClicked = true;
         showUi(true, true);
         getDataProfile();
+        
+        LoginActivity.editorStatusLogin.putBoolean("logado", true);
+        LoginActivity.editorStatusLogin.apply();
     }
 
     @Override
@@ -377,9 +385,11 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks,
             super.onPostExecute(result);
             dialog.dismiss();
             if (result) {
-                new CadastrarUsuario().execute(login);
-            } else {
+                Log.d("werton", "captura id");
                 new CapturaID().execute(login);
+            } else {                
+                Log.d("werton", "cadastrar");
+                new CadastrarUsuario().execute(login);
             }
         }
     }
