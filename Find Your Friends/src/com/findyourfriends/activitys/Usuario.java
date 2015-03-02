@@ -33,6 +33,14 @@ public class Usuario {
 
     //TODO colocar email
     
+    public List<Integer> getIdGruposInscritos() {
+        return idGruposInscritos;
+    }
+
+    public void setIdGruposInscritos(List<Integer> idGruposInscritos) {
+        this.idGruposInscritos = idGruposInscritos;
+    }
+
     /**
      * Instantiates a new usuario.
      * 

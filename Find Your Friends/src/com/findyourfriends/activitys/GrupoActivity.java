@@ -49,6 +49,8 @@ public class GrupoActivity extends Activity {
 
     /** The usuarios do grupo. */
     private List<Usuario> usuariosDoGrupo;
+    
+    private List<Integer> pendentesDoGrupo;
 
     /** The url bd. */
     private String urlBD = "http://150.165.15.89:10008";
@@ -83,6 +85,8 @@ public class GrupoActivity extends Activity {
         Bundle param = it.getExtras();
         donoGrupo = param.getString("KEY_DONO");
         idGrupo = param.getInt("KEY_ID");
+        
+        Log.d("GRUPOActivity DONO GRUPO", ""+donoGrupo);
 
         new CapturaJSON().execute();
     }
@@ -104,7 +108,7 @@ public class GrupoActivity extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(GrupoActivity.this, "Aguarde",
-                    "Gerando lista de usu√°rios do grupo.");
+                    "Gerando lista de usu·rios do grupo.");
         }
 
         /*
@@ -127,6 +131,8 @@ public class GrupoActivity extends Activity {
             super.onPostExecute(result);
 
             usuariosDoGrupo = new ArrayList<Usuario>();
+            
+            pendentesDoGrupo = new ArrayList<Integer>();
 
             for (Usuario usuario : result) {
                 List<Integer> idsGruposDoUsuario = usuario.getIdGrupos();
@@ -137,11 +143,26 @@ public class GrupoActivity extends Activity {
                     }
                 }
             }
+            
+            for (Usuario usuario : result) {
+                List<Integer> idGruposRequisicoes = usuario.getIdGruposInscritos();
+                Log.d("USuario "+usuario.getNome(), idGruposRequisicoes.size() +"");
+                for (Integer idGrupoRequisicao : idGruposRequisicoes) {
+                    Log.d("USuario "+usuario.getNome(), idGrupoRequisicao +"");
+                    if (idGrupoRequisicao == idGrupo) {
+                        pendentesDoGrupo.add(usuario.getIdUsuario());
+                        usuariosDoGrupo.add(usuario);
+                        
+                    Log.d("usuario "+usuario.getNome(), "REQUISITOU");
+                    }
+                }
+            }
+
 
             ListView list = (ListView) findViewById(R.id.userInGroup);
             
             UsuarioAdapter adapter = new UsuarioAdapter(
-                    getApplicationContext(), usuariosDoGrupo, false, idGrupo, donoGrupo);
+                    getApplicationContext(), usuariosDoGrupo, false, idGrupo, donoGrupo, pendentesDoGrupo);
             list.setAdapter(adapter);
 
             dialog.dismiss();
@@ -176,7 +197,7 @@ public class GrupoActivity extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(GrupoActivity.this, "Aguarde",
-                    "Atualizando Posi√ß√£o");
+                    "Atualizando PosiÁ„o");
         }
 
         /*

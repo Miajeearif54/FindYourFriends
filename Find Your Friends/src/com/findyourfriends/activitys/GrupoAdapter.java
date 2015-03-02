@@ -13,7 +13,6 @@ import java.util.Locale;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -121,25 +120,26 @@ public class GrupoAdapter extends BaseAdapter {
             }
         }
 
-        if (isRequisicao) { // TODO QUando o usuário ja requisitou
-            // if (grupo.getRequisitantes().contais(usuario))
-            
-           // botao.setImageDrawable(viewAux.getResources().getDrawable(
-            //        R.drawable.ic_clock));
-            //else
-            // Requisitando entrada em grupo
-            botao.setImageDrawable(viewAux.getResources().getDrawable(
-                    R.drawable.ic_lock));
-            botao.setOnClickListener(new View.OnClickListener() {
+        if (isRequisicao) {
+            if (grupo.getUsuariosPendentes().contains(Session.getInstancia().getIdUser())) {
+                botao.setImageDrawable(viewAux.getResources().getDrawable(
+                               R.drawable.ic_clock));
+            } else {
+                // Requisitando entrada em grupo
+                botao.setImageDrawable(viewAux.getResources().getDrawable(
+                        R.drawable.ic_lock));
+                
+                botao.setOnClickListener(new View.OnClickListener() {
 
-                @Override
-                public void onClick(View v) {
-                    Log.d("REQUEST", "GRUPO " + grupo.getNome());
-                   ((ImageView)v).setImageDrawable(viewAux.getResources().getDrawable(
-                           R.drawable.ic_clock));
-                   //TODO adicionar usuario a lista de requisicoes e salvar 
-                }
-            });
+                    @Override
+                    public void onClick(View v) {
+                       ((ImageView)v).setImageDrawable(viewAux.getResources().getDrawable(
+                               R.drawable.ic_clock));
+                       new AddListaRequisitantes().execute(grupo.getId());
+                       //TODO adicionar usuario a lista de requisicoes e salvar 
+                    }
+                });
+            }
         } else {
             // Deletando grupo
             botao.setImageDrawable(viewAux.getResources().getDrawable(
@@ -148,7 +148,6 @@ public class GrupoAdapter extends BaseAdapter {
 
                 @Override
                 public void onClick(View v) {
-                    Log.d("DELETE", "GRUPO " + grupo.getNome());
                     mGrupos.remove(posicao);
                     notifyDataSetChanged();
                     new RemoveGrupo().execute(grupo.getId());
@@ -189,6 +188,20 @@ public class GrupoAdapter extends BaseAdapter {
             idGrupo = params[0];
             new JSONParse(urlBD + "/findYouFriends/grupo/updateStatus?idGrupo="
                     + idGrupo + "&status=false");
+            return null;
+        }
+    }
+    
+    private class AddListaRequisitantes extends AsyncTask<Integer, Void, Void> {
+
+        /** The id grupo. */
+        private Integer idGrupo;
+
+        @Override
+        protected Void doInBackground(final Integer... params) {
+            idGrupo = params[0];
+            new JSONParse(urlBD + "/findYouFriends/grupo/groupApprovalRequest?idGrupo="
+                    + idGrupo + "&idUsuario=" + Session.getInstancia().getIdUser());
             return null;
         }
     }

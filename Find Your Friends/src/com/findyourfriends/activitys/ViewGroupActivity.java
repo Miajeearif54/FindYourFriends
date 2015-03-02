@@ -256,9 +256,12 @@ public class ViewGroupActivity extends Activity {
                             param.putString("KEY_NAME", grupo.getNome());
                             param.putInt("KEY_ID", grupo.getId());
                             param.putString("KEY_DONO", grupo.getDono());
+                            
+                            Log.d("VIEWGROUP DONO DO GRUPO", ""+grupo.getDono());
                             break;
                         }
                     }
+                    
 
                     Intent intent = new Intent(getApplicationContext(),
                             GrupoActivity.class);

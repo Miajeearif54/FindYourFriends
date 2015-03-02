@@ -7,10 +7,12 @@
 
 package com.findyourfriends.activitys;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,6 +41,10 @@ public class UsuarioAdapter extends BaseAdapter {
 
     private String donoGrupo;
 
+    private List<Integer> pendentesGrupo;
+    
+    private ImageView botao;
+
     /**
      * Instantiates a new usuario adapter.
      * 
@@ -48,11 +54,13 @@ public class UsuarioAdapter extends BaseAdapter {
      *            the usuario
      */
     public UsuarioAdapter(final Context context, final List<Usuario> usuario,
-            boolean isRequisicao, Integer idGrupo, String donoGrupo) {
+            boolean isRequisicao, Integer idGrupo, String donoGrupo,
+            List<Integer> pendentesGrupo) {
         mInflater = LayoutInflater.from(context);
         mUsuario = usuario;
         this.idGrupo = idGrupo;
         this.donoGrupo = donoGrupo;
+        this.pendentesGrupo = new ArrayList<Integer>(pendentesGrupo);
     }
 
     /*
@@ -95,40 +103,44 @@ public class UsuarioAdapter extends BaseAdapter {
     public final View getView(final int posicao, final View view,
             final ViewGroup viewGroup) {
         final Usuario usuario = mUsuario.get(posicao);
-        View viewAux = mInflater.inflate(R.layout.usuario_adapter_item, null);
+        final View viewAux = mInflater.inflate(R.layout.usuario_adapter_item, null);
         String nome = mudaCaractere(usuario.getNome(), "_", " ");
         TextView tvNome = (TextView) viewAux.findViewById(R.id.nomeUsuario);
         tvNome.setText(nome);
 
-        ImageView botao = (ImageView) viewAux.findViewById(R.id.button);
-        ImageView botao2 = (ImageView) viewAux.findViewById(R.id.button2);
+        botao = (ImageView) viewAux.findViewById(R.id.button);
 
-        botao.setImageDrawable(viewAux.getResources().getDrawable(
-                R.drawable.ic_delete));
+        if (pendentesGrupo.contains(usuario.getIdUsuario())) {
+            botao.setImageDrawable(viewAux.getResources().getDrawable(
+                    R.drawable.ic_yes));
+        }
         
-        //TODO if (idsRequisitantes.contais(usuario.getIdUsuario()))
-      //  else {
-            botao2.setVisibility(View.GONE);
-        //}
-
-        /*
-         * if (usuario.getEmail().equals(donoGrupo)) {
-         * botao.setVisibility(View.GONE); }
-         */
+        if (usuario.getLogin().equals(donoGrupo)) {
+            botao.setVisibility(View.GONE);
+        }
 
         botao.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-               
-                //TODO if (idsRequisitantes.contais(usuario.getIdUsuario()))
-                //new AdicionaUsuario().execute(usuario.getIdUsuario(), idGrupo);
-                
-            //else 
-                // Remocao de usuario
-                mUsuario.remove(posicao);
+
+                if (pendentesGrupo.contains(usuario.getIdUsuario())) {
+                    new AceitarRequisicao().execute(usuario.getIdUsuario(),
+                            idGrupo);
+                    
+                    botao.setImageDrawable(viewAux.getResources().getDrawable(
+                            R.drawable.ic_delete));
+                    pendentesGrupo.remove(usuario.getIdUsuario());
+                    
+                } else {
+                    // Remocao de usuario
+                    new RejeitarRequisicao().execute(usuario.getIdUsuario(),
+                            idGrupo);
+                    botao.setImageDrawable(viewAux.getResources().getDrawable(
+                            R.drawable.ic_yes));
+                    pendentesGrupo.add(usuario.getIdUsuario());
+                }
                 notifyDataSetChanged();
-                new AdicionaUsuario().execute(usuario.getIdUsuario(), idGrupo);
             }
         });
 
@@ -151,22 +163,7 @@ public class UsuarioAdapter extends BaseAdapter {
         return str.replace(antigo, novo);
     }
 
-    private class RemoveUsuario extends AsyncTask<Integer, Void, Void> {
-
-        int idUsuario;
-        int idGrupo;
-
-        @Override
-        protected Void doInBackground(final Integer... params) {
-            idUsuario = params[0];
-            idGrupo = params[1];
-            new JSONParse(urlBD + "/findYouFriends/grupo/removeUser?idGrupo="
-                    + idGrupo + "&idUsuario=" + idUsuario);
-            return null;
-        }
-    }
-
-    private class AdicionaUsuario extends AsyncTask<Integer, Void, Void> {
+    private class RejeitarRequisicao extends AsyncTask<Integer, Void, Void> {
 
         int idUsuario;
         int idGrupo;
@@ -176,7 +173,23 @@ public class UsuarioAdapter extends BaseAdapter {
             idUsuario = params[0];
             idGrupo = params[1];
             new JSONParse(urlBD
-                    + "/findYouFriends/grupo/addUser?idGrupo=" + idGrupo
+                    + "/findYouFriends/grupo/denyPermission?idGrupo=" + idGrupo
+                    + "&idUsuario=" + idUsuario);
+            return null;
+        }
+    }
+
+    private class AceitarRequisicao extends AsyncTask<Integer, Void, Void> {
+
+        int idUsuario;
+        int idGrupo;
+
+        @Override
+        protected Void doInBackground(final Integer... params) {
+            idUsuario = params[0];
+            idGrupo = params[1];
+            new JSONParse(urlBD
+                    + "/findYouFriends/grupo/approveRequest?idGrupo=" + idGrupo
                     + "&idUsuario=" + idUsuario);
             return null;
         }
