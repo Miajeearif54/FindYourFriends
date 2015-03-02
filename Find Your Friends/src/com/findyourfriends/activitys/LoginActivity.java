@@ -83,8 +83,31 @@ public class LoginActivity extends Activity{
         uiHelper.onCreate(savedInstanceState);
         
         LoginButton authButton = (LoginButton) findViewById(R.id.authButton);
-        //authButton.setReadPermissions(Arrays.asList("public_profile"));
         authButton.setPublishPermissions(Arrays.asList("email", "public_profile"));
+        
+        /*Button theButton = (Button)findViewById(R.id.fbButton2);
+        theButton.setVisibility(View.VISIBLE);
+        theButton.setBackgroundColor(Color.TRANSPARENT);
+        //Botao de verificacao de internet FB
+        authButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if (haveNetworkConnection()) {
+                    /*Intent in = new Intent(context, GoogleActivity.class);
+                    startActivity(in);
+                    finish();
+                    //authButton.performClick();
+                    //LoginButton authButton = (LoginButton) findViewById(R.id.authButton);
+                    //authButton.setPublishPermissions(Arrays.asList("email", "public_profile"));
+                } else {
+                    confirmacaoDeRede();
+                }
+                
+            }
+        });*/
+        
+        //authButton.setReadPermissions(Arrays.asList("public_profile"));
+        //authButton.setPublishPermissions(Arrays.asList("email", "public_profile"));
         
         tvName = (TextView) findViewById(R.id.txtName);
         tvEmail = (TextView) findViewById(R.id.txtEmail);
@@ -156,12 +179,18 @@ public class LoginActivity extends Activity{
     protected void onResume() {
         super.onResume();
         
-        Session session = Session.getActiveSession();
-        if(session != null && (session.isClosed() || session.isOpened())){
-            onSessionStateChanged(session, session.getState(), null);
+        if (haveNetworkConnection()) {
+            Session session = Session.getActiveSession();
+            if(session != null && (session.isClosed() || session.isOpened())){
+                onSessionStateChanged(session, session.getState(), null);
+            }
+            
+            uiHelper.onResume();
+        } else {
+            confirmacaoDeRede();
         }
         
-        uiHelper.onResume();
+        
     }
     
     @Override
@@ -186,19 +215,20 @@ public class LoginActivity extends Activity{
     
     
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {      
         super.onActivityResult(requestCode, resultCode, data);
         uiHelper.onActivityResult(requestCode, resultCode, data);
     }
     
  // METHODS FACEBOOK
-    public void onSessionStateChanged(final Session session, SessionState state, Exception exception){
+    public void onSessionStateChanged(final Session session, SessionState state, Exception exception){      
         if(session != null && session.isOpened()){
             Log.i("Script", "Usu√°rio conectado");
             Request.newMeRequest(session, new Request.GraphUserCallback() {
                 @Override
                 public void onCompleted(GraphUser user, Response response) {
                     if(user != null){
+                        Log.i("Script", "Usuario clicou");
                         
                         btnSignIn.setVisibility(View.GONE);
                         
@@ -247,8 +277,8 @@ public class LoginActivity extends Activity{
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(LoginActivity.this,
-                    "Verificando usu√°rios",
-                    "Aguarde, o sistema est√° verificando a sua conta");
+                    "Verificando usu·rios",
+                    "Aguarde, o sistema est· verificando a sua conta");
         }
 
         /*
@@ -306,7 +336,7 @@ public class LoginActivity extends Activity{
             super.onPreExecute();
 
             dialog = ProgressDialog.show(LoginActivity.this, "Cadastrando",
-                    "Voc√™ est√° sendo cadastrado");
+                    "VocÍ est· sendo cadastrado");
 
         }
 
@@ -427,7 +457,7 @@ public class LoginActivity extends Activity{
     private void confirmacaoDeRede() {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle(R.string.semConexao);
-        alertDialog.setMessage("Verifique sua conex√£o com a internet");
+        alertDialog.setMessage("Verifique sua conex„o com a internet");
 
         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(final DialogInterface dialog, final int which) {

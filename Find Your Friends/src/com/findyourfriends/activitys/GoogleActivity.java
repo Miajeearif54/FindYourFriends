@@ -134,6 +134,7 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks,
     
     @Override
     public void onStart() {
+               
         super.onStart();
 
         if (googleApiClient != null) {

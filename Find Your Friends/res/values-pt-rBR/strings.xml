@@ -33,5 +33,5 @@
     <!--  menssagens dialog -->
     <string name="semConexao">Sem conexão </string>
     <string name="verifiqueConexao">Verifique sua conexão com a internet</string>
-
+    
 </resources>
