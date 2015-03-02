@@ -402,10 +402,12 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks,
             dialog.dismiss();
             if (result) {
                 Log.d("werton", "captura id");
-                new CapturaID().execute(login);
+                //new CapturaID().execute(login);
+                new CadastrarUsuario().execute(login);
             } else {                
                 Log.d("werton", "cadastrar");
-                new CadastrarUsuario().execute(login);
+                //new CadastrarUsuario().execute(login);
+                new CapturaID().execute(login);
             }
         }
     }

@@ -276,9 +276,11 @@ public class LoginActivity extends Activity{
             super.onPostExecute(result);
             dialog.dismiss();
             if (result) {
-                new CapturaID().execute(login);
-            } else {                
+                //new CapturaID().execute(login);
                 new CadastrarUsuario().execute(login);
+            } else {                
+                //new CadastrarUsuario().execute(login);
+                new CapturaID().execute(login);
             }
         }
     }
