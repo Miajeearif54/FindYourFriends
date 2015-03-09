@@ -74,7 +74,7 @@ public class GrupoActivity extends Activity {
                     gpsManager = new GPSManager(mContext);
                 }
                 gpsManager.searchProvider();
-                gpsManager.updateCurrentPosition();
+                gpsManager.updateCurrentPosition();//TODO
 
                 new AtualizaPosicao().execute();
 
@@ -248,6 +248,7 @@ public class GrupoActivity extends Activity {
             param.putStringArrayList("NOMES", usuariosParse);
             param.putStringArrayList("LATITUDE", latParse);
             param.putStringArrayList("LONGITUDE", longParse);
+            param.putInt("KEY_ID", idGrupo);
 
             Intent i = new Intent(mContext, Map.class);
             i.putExtras(param);

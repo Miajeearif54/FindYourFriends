@@ -136,9 +136,10 @@ public class UsuarioAdapter extends BaseAdapter {
                     // Remocao de usuario
                     new RejeitarRequisicao().execute(usuario.getIdUsuario(),
                             idGrupo);
-                    botao.setImageDrawable(viewAux.getResources().getDrawable(
+                    mUsuario.remove(usuario);
+                    /*botao.setImageDrawable(viewAux.getResources().getDrawable(
                             R.drawable.ic_yes));
-                    pendentesGrupo.add(usuario.getIdUsuario());
+                    pendentesGrupo.add(usuario.getIdUsuario());*/
                 }
                 notifyDataSetChanged();
             }

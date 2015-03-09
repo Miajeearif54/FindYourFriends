@@ -18,10 +18,12 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -87,6 +89,17 @@ public class Map extends Activity implements LocationListener,
     /** The meus grupos. */
     private ImageButton editar, grupos, meusGrupos;
     
+    /** The url bd. */
+    private String urlBD = "http://150.165.15.89:10008";
+    private String nomePontoBD;
+    
+    double latPonto, longePonto;
+    
+    /** The id grupo. */
+    private Integer idGrupo;
+    
+    
+    
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
@@ -111,6 +124,9 @@ public class Map extends Activity implements LocationListener,
         Intent it = getIntent();
         boolean exibirBotoes = it.getBooleanExtra("mostrar_botoes", false);
         // boolean exibirBotoes = false;
+        Bundle param = it.getExtras();
+        idGrupo = param.getInt("KEY_ID");
+        
 
         if (exibirBotoes) {
             setContentView(R.layout.map);
@@ -368,14 +384,21 @@ public class Map extends Activity implements LocationListener,
                                 markerOptions.title(nomePonto.getText()
                                         .toString());
                             }
+                            
+                            
 
+                            nomePontoBD=markerOptions.getTitle().toString();
+                            
                             markerOptions.icon(BitmapDescriptorFactory
                                     .fromResource(R.drawable.marker));
                             googleMap.animateCamera(CameraUpdateFactory
                                     .newLatLng(latLng));
                             googleMap.addMarker(markerOptions);
-/*                            lat = markerOptions.getPosition().latitude;
-                            lng = markerOptions.getPosition().longitude;*/
+                            
+                            latPonto = markerOptions.getPosition().latitude;
+                            longePonto = markerOptions.getPosition().longitude;
+                            Log.d("ponto", "pontoEncontro lat: " + latPonto + " lng:" + longePonto);
+                            new AceitarPonto().execute();
                             break;
 
                         case 1:
@@ -389,8 +412,11 @@ public class Map extends Activity implements LocationListener,
                             googleMap.animateCamera(CameraUpdateFactory
                                     .newLatLng(latLng));
                             googleMap.addMarker(markerOptions);
-/*                            lat = markerOptions.getPosition().latitude;
-                            lng = markerOptions.getPosition().longitude;*/
+                            
+                            double latLocalEspecifico = markerOptions.getPosition().latitude;
+                            double lngLocalEspecifico = markerOptions.getPosition().longitude;
+                            Log.d("ponto", "local especifico lat: " + latLocalEspecifico + " lng:" + lngLocalEspecifico);
+                            
                             break;
                         default:
                             break;
@@ -402,6 +428,7 @@ public class Map extends Activity implements LocationListener,
         tipoDePontoDialog = builder.create();
         tipoDePontoDialog.show();
     }
+    
 
     /**
      * Muda caractere.
@@ -513,4 +540,27 @@ public class Map extends Activity implements LocationListener,
         loadedMap = true;
     }
 
+    private class AceitarPonto extends AsyncTask<Void, Void, Void> {
+        
+        @Override
+        protected Void doInBackground(Void... params) {
+            Log.d("Entrou", ""+ idGrupo);
+            Log.d("Entrou", ""+ latPonto);
+            Log.d("Entrou", ""+ longePonto);
+            Log.d("Entrou", ""+ nomePontoBD);
+            
+            nomePontoBD = mudaCaractere(nomePontoBD, " ", "_");
+            
+            new JSONParse(urlBD
+                    + "/findYouFriends/grupo/updatePontoEncontro?latPontoEncontro=" + latPonto
+                    + "&lngPontoEncontro=" + longePonto + "&nomePontoEncontro=" + nomePontoBD + "&idGrupo=" + idGrupo);
+            return null;
+        
+        }
+    }
 }
+
+    
+
+
+
