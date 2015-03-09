@@ -15,7 +15,7 @@ import java.util.List;
 public class Grupo {
 
     /** The senha. */
-    private String nome, dono, senha;
+    private String nome, dono;
 
     /** The ativo. */
     private boolean ativo;
@@ -52,11 +52,10 @@ public class Grupo {
      */
     public Grupo(final Integer idParam, final String nomeParam,
             final String donoParam, final Boolean ativoParam,
-            final String senhaParam, final List<Integer> usuariosParam,
+            final List<Integer> usuariosParam,
             final List<Integer> usuariosPendentesParam) {
         nome = nomeParam;
         dono = donoParam;
-        senha = senhaParam;
         ativo = ativoParam;
         usuarios = usuariosParam;
         usuariosPendentes = usuariosPendentesParam;
@@ -107,15 +106,6 @@ public class Grupo {
      */
     public final void setNome(final String nomeParam) {
         nome = nomeParam;
-    }
-
-    /**
-     * Gets the senha.
-     * 
-     * @return the senha.
-     */
-    public final String getSenha() {
-        return senha;
     }
 
     /**

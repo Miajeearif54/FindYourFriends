@@ -21,6 +21,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -183,10 +184,12 @@ public class MeusGruposActivity extends Activity {
            
             
             for (Grupo grupo : result) {
+                Log.d("grupos", "grupo: " + grupo.getNome());
                 for (Integer idGrupo : idGrupos) {
                     if (grupo.getId() == idGrupo && grupo.isAtivo()) {
                         grupo.setNome(mudaCaractere(grupo.getNome(), "_", " "));
                         gruposDoUsuario.add(grupo);
+                        
                         break;
                     }
                 }
@@ -198,6 +201,7 @@ public class MeusGruposActivity extends Activity {
             list.setAdapter(adapter);
             
             editsearch = (EditText) findViewById(R.id.search);
+
 
             // Capture Text in EditText
             editsearch.addTextChangedListener(new TextWatcher() {

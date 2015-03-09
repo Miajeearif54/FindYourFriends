@@ -45,9 +45,6 @@ public class JSONParse {
     /** The Constant NOME. */
     private static final String NOME = "nome";
 
-    /** The Constant SENHA. */
-    private static final String SENHA = "senha";
-
     /** The Constant USUARIOS. */
     private static final String MEMBROS = "membros";
 
@@ -296,9 +293,10 @@ public class JSONParse {
         String nome = convert(item.get(NOME), String.class);
         nome = mudaCaractere(nome, "_", " ");
         
-        return new Grupo(convert(item.get(ID), Integer.class), nome, convert(
-                item.get(DONO), String.class), convert(item.get(ATIVO),
-                Boolean.class), convert(item.get(SENHA), String.class),
+        return new Grupo(
+                convert(item.get(ID), Integer.class),
+                nome, convert(item.get(DONO), String.class),
+                convert(item.get(ATIVO), Boolean.class), 
                 getIds(convert(item.get(MEMBROS), JSONArray.class)),
                 getIds(convert(item.get(INSCRITOS), JSONArray.class)));
         // aqui deve ser colocado a lista de usuarios (os id deles);

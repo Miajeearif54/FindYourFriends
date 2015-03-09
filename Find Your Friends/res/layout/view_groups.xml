@@ -47,12 +47,22 @@
 	android:fontFamily="sans-serif-thin"     
 	 -->
     
-     <EditText
+      <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        
+        <EditText
         android:id="@+id/search"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:hint="Search">
+        android:layout_height="wrap_content"
+        android:hint="@string/pesquisa">
+        <requestFocus />
+        
     </EditText>
+        
+    </LinearLayout>
     
     <LinearLayout
         android:layout_width="match_parent"

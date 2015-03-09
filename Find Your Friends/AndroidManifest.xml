@@ -70,17 +70,20 @@
         
         <activity
             android:name="com.findyourfriends.activitys.ViewGroupActivity"
-            android:label="@string/todosOsGrupos">
+            android:label="@string/todosOsGrupos"
+            android:windowSoftInputMode="stateHidden|adjustResize">
         </activity>
         
         <activity
             android:name="com.findyourfriends.activitys.EditarActivity"
-            android:label="@string/editar">
+            android:label="@string/editar"
+            android:windowSoftInputMode="stateHidden|adjustResize">
         </activity>
         
         <activity
             android:name="com.findyourfriends.activitys.MeusGruposActivity"
-            android:label="@string/meusGrupo">
+            android:label="@string/meusGrupo"
+            android:windowSoftInputMode="stateHidden|adjustResize">
         </activity>
         
         <activity
@@ -95,7 +98,8 @@
         
         <activity
             android:name="com.findyourfriends.activitys.GrupoActivity"
-            android:label="@string/grupo">
+            android:label="@string/grupo"
+            android:windowSoftInputMode="stateHidden|adjustResize">
         </activity>
         
         <activity
@@ -142,10 +146,10 @@
         
         
         <!-- 
-        Renan (embedded) 
+        Renan (embedded) -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDDKDTEx5OG9PbNInf6FvotwOtHbwiS_Dg"/> -->
+            android:value="AIzaSyDDKDTEx5OG9PbNInf6FvotwOtHbwiS_Dg"/> 
             
         <!-- 
         Diego 

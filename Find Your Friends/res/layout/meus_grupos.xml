@@ -36,15 +36,25 @@
             android:src="@drawable/selector_edit"
             tools:ignore="ContentDescription" />
     </LinearLayout>
-
-
-    <EditText
+    
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        
+        <EditText
         android:id="@+id/search"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Search" >
-
+        android:hint="@string/pesquisa">
+        <requestFocus />
+        
     </EditText>
+        
+    </LinearLayout>
+    
 
     <LinearLayout
         android:layout_width="match_parent"
