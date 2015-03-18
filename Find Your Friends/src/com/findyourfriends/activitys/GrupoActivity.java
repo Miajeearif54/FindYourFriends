@@ -54,6 +54,9 @@ public class GrupoActivity extends Activity {
 
     /** The url bd. */
     private String urlBD = "http://150.165.15.89:10008";
+    
+    private double latPonto, lngPonto;
+    private String nomePonto;
 
     /*
      * (non-Javadoc)
@@ -85,6 +88,9 @@ public class GrupoActivity extends Activity {
         Bundle param = it.getExtras();
         donoGrupo = param.getString("KEY_DONO");
         idGrupo = param.getInt("KEY_ID");
+        latPonto = param.getDouble("latPonto");
+        lngPonto = param.getDouble("lngPonto");
+        nomePonto = param.getString("nomePonto");
         
         Log.d("GRUPOActivity DONO GRUPO", ""+donoGrupo);
 
@@ -108,7 +114,7 @@ public class GrupoActivity extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(GrupoActivity.this, "Aguarde",
-                    "Gerando lista de usu·rios do grupo.");
+                    "Gerando lista de usu√°rios do grupo.");
         }
 
         /*
@@ -197,7 +203,7 @@ public class GrupoActivity extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(GrupoActivity.this, "Aguarde",
-                    "Atualizando PosiÁ„o");
+                    "Atualizando Posi√ß√£oo");
             dialog.setCancelable(true);
         }
 
@@ -250,6 +256,9 @@ public class GrupoActivity extends Activity {
             param.putStringArrayList("LATITUDE", latParse);
             param.putStringArrayList("LONGITUDE", longParse);
             param.putInt("KEY_ID", idGrupo);
+            param.putDouble("latPonto", latPonto);
+            param.putDouble("lngPonto", lngPonto);
+            param.putString("nomePonto", nomePonto);
 
             Intent i = new Intent(mContext, Map.class);
             i.putExtras(param);

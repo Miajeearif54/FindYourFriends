@@ -266,6 +266,9 @@ public class ViewGroupActivity extends Activity {
                         }
                     }
                     
+                    param.putDouble("latPonto", gruposParaMostrar.get(position).getLatitude());
+                    param.putDouble("lngPonto", gruposParaMostrar.get(position).getLongitude());
+                    param.putString("nomePonto", gruposParaMostrar.get(position).getNomePonto());
 
                     Intent intent = new Intent(getApplicationContext(),
                             GrupoActivity.class);

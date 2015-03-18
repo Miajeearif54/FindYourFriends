@@ -95,6 +95,8 @@ public class Map extends Activity implements LocationListener,
     
     double latPonto, longePonto;
     
+    String nomePontoEncontro;
+    
     /** The id grupo. */
     private Integer idGrupo;
     
@@ -126,6 +128,7 @@ public class Map extends Activity implements LocationListener,
         // boolean exibirBotoes = false;
         Bundle param = it.getExtras();
         idGrupo = param.getInt("KEY_ID");
+        
         
 
         if (exibirBotoes) {
