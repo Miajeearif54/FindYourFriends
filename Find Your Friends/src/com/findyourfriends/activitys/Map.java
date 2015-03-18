@@ -128,6 +128,9 @@ public class Map extends Activity implements LocationListener,
         // boolean exibirBotoes = false;
         Bundle param = it.getExtras();
         idGrupo = param.getInt("KEY_ID");
+        latPonto = param.getDouble("latPonto");
+        longePonto = param.getDouble("lngPonto");
+        nomePontoEncontro = param.getString("nomePonto");
         
         
 
@@ -301,6 +304,17 @@ public class Map extends Activity implements LocationListener,
                         }
                     });
                     
+                    Log.d("ponto", "latponto: " + latPonto);
+                    
+                    LatLng coordinatePonto = new LatLng(latPonto, longePonto);
+                    googleMap.addMarker(new MarkerOptions()
+                    .title(nomePontoEncontro)
+                    .position(coordinatePonto)
+                    .icon(BitmapDescriptorFactory
+                            .fromResource(R.drawable.marker)).visible(true));
+                    
+                    
+                    
                     
                     Intent it2 = getIntent();
 
@@ -358,7 +372,7 @@ public class Map extends Activity implements LocationListener,
      */
     public final void selecionarTipoPonto(final LatLng latLng) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Defina o nome e o tipo");
+        builder.setTitle("Defina o nome do Ponto");
 
         final EditText nomePonto = new EditText(this);
         builder.setView(nomePonto);

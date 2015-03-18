@@ -249,7 +249,12 @@ public class MeusGruposActivity extends Activity {
                             
                             Log.d("VIEWGROUP DONO DO GRUPO", ""+grupo.getDono());                          
                         }
-                    }                    
+                    } 
+                    
+                    param.putDouble("latPonto", gruposDoUsuario.get(position).getLatitude());
+                    param.putDouble("lngPonto", gruposDoUsuario.get(position).getLongitude());
+                    param.putString("nomePonto", gruposDoUsuario.get(position).getNomePonto());
+                    
                     Intent intent = new Intent(getApplicationContext(), 
                             GrupoActivity.class);
                     intent.putExtras(param);
