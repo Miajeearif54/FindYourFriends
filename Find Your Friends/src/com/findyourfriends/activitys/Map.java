@@ -329,10 +329,6 @@ public class Map extends Activity implements LocationListener,
                                        
                 }
                 
-                             
-                
-                
-                
 
                 googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 googleMap.setMyLocationEnabled(true);

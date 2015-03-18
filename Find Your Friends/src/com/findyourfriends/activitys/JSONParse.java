@@ -53,6 +53,12 @@ public class JSONParse {
 
     /** The Constant ID. */
     private static final String ID = "id";
+    
+    private static final String LATITUDE = "latPontoEncontro";
+    
+    private static final String LONGITUDE = "lngPontoEncontro";
+    
+    private static final String NOMEPONTO = "nomePontoEncontro";
 
     /** The adicionou. */
     private static boolean adicionou;
@@ -149,6 +155,8 @@ public class JSONParse {
                 try {
                     grupo = json.getJSONObject(i);
                     grupos.add(recuperaGrupos(grupo));
+                    Log.d("item", "nome grupo: " + grupos.get(i).getNome());
+                    
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -293,12 +301,31 @@ public class JSONParse {
         String nome = convert(item.get(NOME), String.class);
         nome = mudaCaractere(nome, "_", " ");
         
-        return new Grupo(
-                convert(item.get(ID), Integer.class),
-                nome, convert(item.get(DONO), String.class),
-                convert(item.get(ATIVO), Boolean.class), 
-                getIds(convert(item.get(MEMBROS), JSONArray.class)),
-                getIds(convert(item.get(INSCRITOS), JSONArray.class)));
+        Log.d("item", "lat: " + item.get(LATITUDE));
+        Log.d("item", "longit: " + item.get(LONGITUDE));
+        Log.d("item", "nomePonto: " + item.get(NOMEPONTO));
+        
+        if (item.get(LATITUDE) == null || item.get(LONGITUDE).equals(null) || item.get(NOMEPONTO).equals("null")) {
+            return new Grupo(
+                    convert(item.get(ID), Integer.class),
+                    nome, convert(item.get(DONO), String.class),
+                    convert(item.get(ATIVO), Boolean.class), 
+                    getIds(convert(item.get(MEMBROS), JSONArray.class)),
+                    getIds(convert(item.get(INSCRITOS), JSONArray.class)));
+        } else {
+            return new Grupo(
+                    convert(item.get(ID), Integer.class),
+                    nome, convert(item.get(DONO), String.class),
+                    convert(item.get(ATIVO), Boolean.class), 
+                    getIds(convert(item.get(MEMBROS), JSONArray.class)),
+                    getIds(convert(item.get(INSCRITOS), JSONArray.class)),
+
+                    Double.valueOf((String)item.get(LATITUDE)),
+                    Double.valueOf((String)item.get(LONGITUDE)),
+                    (String)item.get(NOMEPONTO));         
+        }
+        
+        
         // aqui deve ser colocado a lista de usuarios (os id deles);
     }
 

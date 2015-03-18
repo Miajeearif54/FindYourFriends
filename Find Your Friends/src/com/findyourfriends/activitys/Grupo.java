@@ -29,6 +29,10 @@ public class Grupo {
     /** The usuarios. */
     private List<Integer> usuariosPendentes;
     
+    private double latitude, longitude;
+    
+    private String nomePonto;
+    
     
 
     /**
@@ -53,13 +57,30 @@ public class Grupo {
     public Grupo(final Integer idParam, final String nomeParam,
             final String donoParam, final Boolean ativoParam,
             final List<Integer> usuariosParam,
-            final List<Integer> usuariosPendentesParam) {
+            final List<Integer> usuariosPendentesParam,
+            final double latitudeParam, final double longitudeParam, 
+            final String nomePontoParam) {
         nome = nomeParam;
         dono = donoParam;
         ativo = ativoParam;
         usuarios = usuariosParam;
         usuariosPendentes = usuariosPendentesParam;
         id = idParam;
+        latitude = latitudeParam;
+        longitude = longitudeParam;
+        nomePonto = nomePontoParam;  
+    }
+    
+    public Grupo(final Integer idParam, final String nomeParam,
+            final String donoParam, final Boolean ativoParam,
+            final List<Integer> usuariosParam,
+            final List<Integer> usuariosPendentesParam) {
+        nome = nomeParam;
+        dono = donoParam;
+        ativo = ativoParam;
+        usuarios = usuariosParam;
+        usuariosPendentes = usuariosPendentesParam;
+        id = idParam;        
     }
 
     /**
