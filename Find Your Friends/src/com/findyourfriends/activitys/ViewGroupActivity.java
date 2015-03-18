@@ -95,6 +95,8 @@ public class ViewGroupActivity extends Activity {
             super.onPreExecute();
             dialog = ProgressDialog.show(ViewGroupActivity.this, "Aguarde",
                     "Gerando lista de grupos.");
+            
+            dialog.setCancelable(true);
 
         }
 
@@ -165,6 +167,8 @@ public class ViewGroupActivity extends Activity {
             super.onPreExecute();
             dialog = ProgressDialog.show(ViewGroupActivity.this, "Aguarde",
                     "Gerando lista de grupos.");
+            
+            dialog.setCancelable(true);
         }
 
         /*

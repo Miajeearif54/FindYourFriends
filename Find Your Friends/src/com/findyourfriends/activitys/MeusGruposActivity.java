@@ -117,9 +117,7 @@ public class MeusGruposActivity extends Activity {
             new RecuperaGruposDoUsuario().execute(result);
             
             dialog.dismiss();
-            
-               
-            
+ 
         }
 
         /**
@@ -162,6 +160,8 @@ public class MeusGruposActivity extends Activity {
             super.onPreExecute();
             dialog = ProgressDialog.show(MeusGruposActivity.this, 
                     "Aguarde", "Gerando lista de grupos.");
+            
+            dialog.setCancelable(true);
         }
 
         /* (non-Javadoc)
@@ -245,10 +245,11 @@ public class MeusGruposActivity extends Activity {
                         if (String.valueOf(grupo.getId()).equals(idGrupo)) {
                             param.putString("KEY_NAME", grupo.getNome());
                             param.putInt("KEY_ID", grupo.getId());
+                            param.putString("KEY_DONO", grupo.getDono());
                             
+                            Log.d("VIEWGROUP DONO DO GRUPO", ""+grupo.getDono());                          
                         }
-                    }
-                    
+                    }                    
                     Intent intent = new Intent(getApplicationContext(), 
                             GrupoActivity.class);
                     intent.putExtras(param);
