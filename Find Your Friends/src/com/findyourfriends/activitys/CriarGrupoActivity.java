@@ -75,7 +75,7 @@ public class CriarGrupoActivity extends Activity {
             
             dialog = ProgressDialog.show(CriarGrupoActivity.this,
                     "Criando Grupo",
-                    "Aguarde, o sistema est� cadastrando o grupo.");
+                    "Aguarde, o sistema está cadastrando o grupo.");
         }
 
         /* (non-Javadoc)

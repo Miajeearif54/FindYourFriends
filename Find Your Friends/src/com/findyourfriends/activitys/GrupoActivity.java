@@ -203,7 +203,7 @@ public class GrupoActivity extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(GrupoActivity.this, "Aguarde",
-                    "Atualizando Posiçãoo");
+                    "Atualizando Posição");
             dialog.setCancelable(true);
         }
 

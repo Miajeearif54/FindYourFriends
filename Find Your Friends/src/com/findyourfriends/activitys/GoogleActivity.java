@@ -298,7 +298,7 @@ public class GoogleActivity extends Activity implements ConnectionCallbacks,
             // Log.i("Script", "IMG after: "+imageUrl);
             // loadImage(ivProfile, pbProfile, imageUrl);
         } else {
-            Toast.makeText(GoogleActivity.this, "Dados n�o liberados",
+            Toast.makeText(GoogleActivity.this, "Dados não liberados",
                     Toast.LENGTH_SHORT).show();
         }
     }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +28,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -304,17 +308,18 @@ public class Map extends Activity implements LocationListener,
                         }
                     });
                     
-                    Log.d("ponto", "latponto: " + latPonto);
                     
-                    LatLng coordinatePonto = new LatLng(latPonto, longePonto);
-                    googleMap.addMarker(new MarkerOptions()
-                    .title(nomePontoEncontro)
-                    .position(coordinatePonto)
-                    .icon(BitmapDescriptorFactory
-                            .fromResource(R.drawable.marker)).visible(true));
-                    
-                    
-                    
+                    if (!(nomePontoEncontro == null || nomePontoEncontro.equals(null) || nomePontoEncontro.equals("null"))) {
+                        Log.d("ponto", "latponto: " + latPonto);
+                        
+                        LatLng coordinatePonto = new LatLng(latPonto, longePonto);
+                        googleMap.addMarker(new MarkerOptions()
+                        .title(mudaCaractere(nomePontoEncontro, "_", " "))
+                        .position(coordinatePonto)
+                        .icon(BitmapDescriptorFactory
+                                .fromResource(R.drawable.marker)).visible(true));
+                    }
+
                     
                     Intent it2 = getIntent();
 
@@ -371,13 +376,58 @@ public class Map extends Activity implements LocationListener,
      * @param latLng the lat lng
      */
     public final void selecionarTipoPonto(final LatLng latLng) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_ponto_encontro);
+        
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Defina o nome do Ponto");
+*/
+        final EditText nomePonto = (EditText) dialog.findViewById(R.id.etDialogNomePonto);
+        
+        Button ok = (Button) dialog.findViewById(R.id.btOk);
+        
+        
+        ok.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(final View arg0) {
+                
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);
+                
+                Log.d("nomeponto", "ponto: " + nomePonto.getText().toString());
+                
+                if (TextUtils.isEmpty(nomePonto.getText()
+                        .toString())) {
+                    markerOptions.title("Ponto de encontro");
+                } else {
+                    markerOptions.title(nomePonto.getText()
+                            .toString());
+                }
+                
+                
 
-        final EditText nomePonto = new EditText(this);
-        builder.setView(nomePonto);
+                nomePontoBD=markerOptions.getTitle().toString();
+                
+                markerOptions.icon(BitmapDescriptorFactory
+                        .fromResource(R.drawable.marker));
+                googleMap.animateCamera(CameraUpdateFactory
+                        .newLatLng(latLng));
+                googleMap.addMarker(markerOptions);
+                
+                latPonto = markerOptions.getPosition().latitude;
+                longePonto = markerOptions.getPosition().longitude;
+                Log.d("ponto", "pontoEncontro lat: " + latPonto + " lng:" + longePonto);
+                new AceitarPonto().execute();
+                dialog.dismiss();
+            }
+        });
+        
+        dialog.show();
+              
 
-        builder.setSingleChoiceItems(tiposDePonto, -1,
+        /*builder.setSingleChoiceItems(tiposDePonto, -1,
                 new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, 
                             final int item) {
@@ -385,7 +435,7 @@ public class Map extends Activity implements LocationListener,
                         MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions.position(latLng);
                         
-//                        double lat, lng;
+
 
                         switch (item) {
                         case 0:
@@ -412,9 +462,9 @@ public class Map extends Activity implements LocationListener,
                             longePonto = markerOptions.getPosition().longitude;
                             Log.d("ponto", "pontoEncontro lat: " + latPonto + " lng:" + longePonto);
                             new AceitarPonto().execute();
-                            break;
+                            break;*/
 
-                        case 1:
+                        /*case 1:
                             if (TextUtils.isEmpty(nomePonto.getText()
                                     .toString())) {
                                 markerOptions.title("Local especifico");
@@ -432,14 +482,10 @@ public class Map extends Activity implements LocationListener,
                             
                             break;
                         default:
-                            break;
-                        }
-                        tipoDePontoDialog.dismiss();
-                    }
-                });
-
-        tipoDePontoDialog = builder.create();
-        tipoDePontoDialog.show();
+                            break;*/
+                      
+        /*tipoDePontoDialog = builder.create();*/
+        /*tipoDePontoDialog.show();*/
     }
     
 

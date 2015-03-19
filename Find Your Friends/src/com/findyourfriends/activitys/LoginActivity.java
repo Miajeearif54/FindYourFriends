@@ -277,8 +277,8 @@ public class LoginActivity extends Activity{
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(LoginActivity.this,
-                    "Verificando usu·rios",
-                    "Aguarde, o sistema est· verificando a sua conta");
+                    "Verificando usu√°rios",
+                    "Aguarde, o sistema est√° verificando a sua conta");
         }
 
         /*
@@ -336,7 +336,7 @@ public class LoginActivity extends Activity{
             super.onPreExecute();
 
             dialog = ProgressDialog.show(LoginActivity.this, "Cadastrando",
-                    "VocÍ est· sendo cadastrado");
+                    "Voc√™ est√° sendo cadastrado");
 
         }
 
@@ -457,7 +457,7 @@ public class LoginActivity extends Activity{
     private void confirmacaoDeRede() {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle(R.string.semConexao);
-        alertDialog.setMessage("Verifique sua conex„o com a internet");
+        alertDialog.setMessage("Verifique sua conex√£o com a internet");
 
         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(final DialogInterface dialog, final int which) {
