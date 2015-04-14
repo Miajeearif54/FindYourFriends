@@ -25,7 +25,7 @@ import android.widget.EditText;
 public class CriarGrupoActivity extends Activity {
     
     /** The url bd. */
-    private String urlBD = "http://150.165.15.89:10008";
+    private String urlBD = "http://150.165.98.11:8080";
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)

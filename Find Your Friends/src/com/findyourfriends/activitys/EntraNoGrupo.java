@@ -24,7 +24,7 @@ import com.les.findyourfriends.R;
 public class EntraNoGrupo extends Activity {
     
     /** The url bd. */
-    private String urlBD = "http://150.165.15.89:10008";
+    private String urlBD = "http://150.165.98.11:8080";
     
     /** The id grupo. */
     private Integer idGrupo;

@@ -43,7 +43,7 @@ public class EditarActivity extends Activity {
     private static final Object DONO = Session.getInstancia().getDono();
 
     /** The url bd. */
-    private String urlBD = "http://150.165.15.89:10008";
+    private String urlBD = "http://150.165.98.11:8080";
 
     /*
      * (non-Javadoc)

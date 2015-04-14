@@ -49,7 +49,7 @@ public class LoginActivity extends Activity{
     private ImageView logo;
     
     /** The url bd. */
-    private String urlBD = "http://150.165.15.89:10008";
+    private String urlBD = "http://150.165.98.11:8080";
     
     /** The logado. */
     private static boolean logado;

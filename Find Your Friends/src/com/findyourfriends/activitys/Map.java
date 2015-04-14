@@ -94,7 +94,7 @@ public class Map extends Activity implements LocationListener,
     private ImageButton editar, grupos, meusGrupos;
     
     /** The url bd. */
-    private String urlBD = "http://150.165.15.89:10008";
+    private String urlBD = "http://150.165.98.11:8080";
     private String nomePontoBD;
     
     double latPonto, longePonto;
