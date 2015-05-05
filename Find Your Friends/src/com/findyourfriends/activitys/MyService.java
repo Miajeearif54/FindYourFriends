@@ -1,6 +1,7 @@
 package com.findyourfriends.activitys;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 public class MyService extends Service {
     private static Timer timer = new Timer();
     private String urlBD = "http://150.165.98.11:8080";
+    private HashMap<String, String> mapAtual = new HashMap<String, String>();
     public MyService() {
     }
 
@@ -119,17 +121,41 @@ private class CapturaJSON extends AsyncTask<Void, Void, List<Integer>> {
                 
                 gruposDoUsuario = new ArrayList<Grupo>();
 
-                for (Grupo grupo : result) {
-                    for (Integer idGrupo : idGrupos) {
-                        if (grupo.getId() == idGrupo && grupo.isAtivo()) {
-                            grupo.setNome(mudaCaractere(grupo.getNome(), "_", " "));
-                            Log.d("ponto", "meu grupo: " + grupo.getNome());
-                            Log.d("ponto", "meu grupo lat: " + grupo.getLatitude());
-                            gruposDoUsuario.add(grupo);
-                            break;
+                if(mapAtual.isEmpty()){
+                    for (Grupo grupo : result) {
+                        for (Integer idGrupo : idGrupos) {
+                            if (grupo.getId() == idGrupo && grupo.isAtivo()) {
+                                grupo.setNome(mudaCaractere(grupo.getNome(), "_", " "));
+                                Log.d("ponto", "meu grupo: " + grupo.getNome());
+                                Log.d("ponto", "meu grupo lat: " + grupo.getLatitude());
+                                gruposDoUsuario.add(grupo);
+                                
+                                mapAtual.put(grupo.getNome(), grupo.getLatitude() + " " + grupo.getLongitude());
+                                break;
+                            }
+                        }
+                    }
+                }else{
+                    for (Grupo grupo : result) {
+                        for (Integer idGrupo : idGrupos) {
+                            if (grupo.getId() == idGrupo && grupo.isAtivo()) {
+                                grupo.setNome(mudaCaractere(grupo.getNome(), "_", " "));
+                                if(mapAtual.containsKey(grupo.getNome())){
+                                    if(!(mapAtual.get(grupo.getNome()).equals(grupo.getLatitude()+ " " +grupo.getLongitude()))){
+                                        //notifique
+                                        Log.d("renan", "notificou");
+                                        mapAtual.remove(grupo.getNome());
+                                        mapAtual.put(grupo.getNome(), grupo.getLatitude() + " " + grupo.getLongitude());
+                                    }
+                                }else{
+                                    mapAtual.put(grupo.getNome(), grupo.getLatitude() + " " + grupo.getLongitude());
+                                break;
+                                }
+                            }
                         }
                     }
                 }
+                
             }
                        
             /**
