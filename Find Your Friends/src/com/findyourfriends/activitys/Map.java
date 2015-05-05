@@ -8,10 +8,13 @@
 package com.findyourfriends.activitys;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,18 +26,25 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -145,7 +155,9 @@ public class Map extends Activity implements LocationListener,
             if (location != null) {
                 onLocationChanged(location);
             }
-
+            
+            startNewService();
+            
             grupos = (ImageButton) findViewById(R.id.grupos);
             grupos.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -161,6 +173,7 @@ public class Map extends Activity implements LocationListener,
             meusGrupos.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
+                    //startNewService(v);  Inicia o servico
                     Intent i = new Intent(mContext, MeusGruposActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     startActivity(i);
@@ -617,6 +630,111 @@ public class Map extends Activity implements LocationListener,
         
         }
     }
+    
+ // Start the  service
+    public void startNewService() {
+        Log.d("renan", "misera");
+        //new CapturaJSON().execute();
+        startService(new Intent(this, MyService.class));
+    }
+
+    // Stop the  service
+    public void stopNewService(View view) {
+        
+        stopService(new Intent(this, MyService.class));
+    }
+    
+    
+/*private class CapturaJSON extends AsyncTask<Void, Void, List<Integer>> {
+        
+        *//** The dialog. *//*
+        private ProgressDialog dialog;
+
+         (non-Javadoc)
+         * @see android.os.AsyncTask#onPreExecute()
+         
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = ProgressDialog.show(Map.this, 
+                    "Aguarde", "Estamos conferindo seus grupos ...");
+        }
+        
+        @Override
+        protected List<Integer> doInBackground(final Void... params) {
+            return getJSON(Session.getInstancia().getDono());
+        }
+
+        @Override
+        protected void onPostExecute(final List<Integer> result) {
+            super.onPostExecute(result);
+                        
+            new RecuperaPonto().execute(result);
+            
+            dialog.dismiss();
+ 
+        }
+
+        private List<Integer> getJSON(final String login) {
+            String url = urlBD 
+                    + "/findYouFriends/usuario/getCurrentLocation?login="  
+                    + login;
+            JSONParse parser = new JSONParse(url);
+            return parser.getGruposUsuarios();
+        }
+    }
+    
+    
+    private class RecuperaPonto extends AsyncTask<List<Integer>, Void, List<Grupo>> {
+                        
+            *//** The id grupos. *//*
+            private List<Integer> idGrupos;
+            
+            *//** The grupos do usuario. *//*
+            private List<Grupo> gruposDoUsuario;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected List<Grupo> doInBackground(final List<Integer>... params) {
+                idGrupos = params[0];
+                return getJSON();
+            }
+
+            @Override
+            protected void onPostExecute(final List<Grupo> result) {
+                super.onPostExecute(result);
+                
+                gruposDoUsuario = new ArrayList<Grupo>();
+
+                for (Grupo grupo : result) {
+                    for (Integer idGrupo : idGrupos) {
+                        if (grupo.getId() == idGrupo && grupo.isAtivo()) {
+                            grupo.setNome(mudaCaractere(grupo.getNome(), "_", " "));
+                            Log.d("ponto", "meu grupo: " + grupo.getNome());
+                            Log.d("ponto", "meu grupo lat: " + grupo.getLatitude());
+                            gruposDoUsuario.add(grupo);
+                            break;
+                        }
+                    }
+                }
+            }
+                       
+            *//**
+             * Gets the json.
+             *
+             * @return the json
+             *//*
+            private List<Grupo> getJSON() {
+                JSONParse parser = new JSONParse(urlBD 
+                        + "/findYouFriends/grupo/listGroups");
+                return parser.getGruposBD();
+            }
+    }*/      
+    
 }
 
     

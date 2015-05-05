@@ -1028,52 +1028,14 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         AppEventsLogger.deactivateApp(this);
     }
 
-    // ------------------------- PRIVATE PICTURE-----------------------
-    /*
-     * public void createExternalStoragePrivatePicture() { // Create a path
-     * where we will place our picture in our own private // pictures directory.
-     * Note that we don't really need to place a // picture in
-     * DIRECTORY_PICTURES, since the media scanner will see // all media in
-     * these directories; this may be useful with other // media types such as
-     * DIRECTORY_MUSIC however to help it classify // your media for display to
-     * the user. File path = getExternalFilesDir(Environment.DIRECTORY_DCIM);
-     * File file = new File(path, "ImagemPerfilPrivate.jpg");
-     * 
-     * try { // Very simple code to copy a picture from the application's //
-     * resource into the external file. Note that this code does // no error
-     * checking, and assumes the picture is small (does not // try to copy it in
-     * chunks). Note that if external storage is // not currently mounted this
-     * will silently fail. InputStream is =
-     * getResources().openRawResource(R.drawable.renan_perfil); OutputStream os
-     * = new FileOutputStream(file); byte[] data = new byte[is.available()];
-     * is.read(data); os.write(data); is.close(); os.close();
-     * 
-     * // Tell the media scanner about the new file so that it is // immediately
-     * available to the user. MediaScannerConnection.scanFile(this, new String[]
-     * { file.toString() }, null, new
-     * MediaScannerConnection.OnScanCompletedListener() { public void
-     * onScanCompleted(String path, Uri uri) { Log.i("ExternalStorage",
-     * "Scanned " + path + ":"); Log.i("ExternalStorage", "-> uri=" + uri); }
-     * });
-     * 
-     * } catch (IOException e) { // Unable to create file, likely because
-     * external storage is // not currently mounted. Log.w("ExternalStorage",
-     * "Error writing " + file, e); } }
-     * 
-     * public void deleteExternalStoragePrivatePicture() { // Create a path
-     * where we will place our picture in the user's // public pictures
-     * directory and delete the file. If external // storage is not currently
-     * mounted this will fail. File path =
-     * getExternalFilesDir(Environment.DIRECTORY_PICTURES); if (path != null) {
-     * File file = new File(path, "ImagemPerfil.jpg"); file.delete(); } }
-     * 
-     * public boolean hasExternalStoragePrivatePicture() { // Create a path
-     * where we will place our picture in the user's // public pictures
-     * directory and check if the file exists. If // external storage is not
-     * currently mounted this will think the // picture doesn't exist. File path
-     * = getExternalFilesDir(Environment.DIRECTORY_PICTURES); if (path != null)
-     * { File file = new File(path, "ImagemPerfil.jpg"); return file.exists(); }
-     * return false; }
-     */
+ // Method to start the service
+    public void startService(View view) {
+       startService(new Intent(getBaseContext(), MyService.class));
+    }
+
+    // Method to stop the service
+    public void stopService(View view) {
+       stopService(new Intent(getBaseContext(), MyService.class));
+    }
 
 }
