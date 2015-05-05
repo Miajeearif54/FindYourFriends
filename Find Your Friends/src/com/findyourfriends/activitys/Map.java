@@ -635,7 +635,9 @@ public class Map extends Activity implements LocationListener,
     public void startNewService() {
         Log.d("renan", "misera");
         //new CapturaJSON().execute();
-        startService(new Intent(this, MyService.class));
+        Intent intentService = new Intent(this, MyService.class);
+        //intentService.putExtra("donoDosGrupos", value);
+        startService(intentService);
     }
 
     // Stop the  service

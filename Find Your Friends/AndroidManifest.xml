@@ -37,6 +37,7 @@
 	<instrumentation
         android:name="android.test.InstrumentationTestRunner"
         android:targetPackage="com.les.findyourfriends" />
+	<uses-permission android:name="android.permission.VIBRATE"/>
     
     <application
         android:allowBackup="true"
