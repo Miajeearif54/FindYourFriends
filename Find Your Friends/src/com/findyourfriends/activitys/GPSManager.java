@@ -67,8 +67,7 @@ public class GPSManager implements
         this.locationListener = new LocationListenerLocal();
 
         this.mLocationRequest = LocationRequest.create();
-        this.mLocationRequest
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        this.mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         this.mLocationRequest.setInterval(300000);
         this.mLocationRequest.setFastestInterval(60000);
 
@@ -78,17 +77,16 @@ public class GPSManager implements
      * Search provider.
      */
     public final void searchProvider() {
-        provider = LocationManager.GPS_PROVIDER;
+        provider = LocationManager.NETWORK_PROVIDER;
     }
 
     /**
      * Update current position.
      */
     public final void updateCurrentPosition() {
-        if (provider != null && provider.equals(LocationManager.GPS_PROVIDER)) {
-            mLocationManager.requestLocationUpdates(provider, 10, 0,
-                    locationListener);
-        }
+        if (provider != null && provider.equals(LocationManager.NETWORK_PROVIDER)) {
+            mLocationManager.requestLocationUpdates(provider, 10, 0,locationListener);
+        } 
     }
 
     /**
